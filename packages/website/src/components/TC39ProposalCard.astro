@@ -1,0 +1,24 @@
+---
+import type { TC39Proposal } from '@ww/core/dist/integrations/tc39';
+import Card from './Card.astro';
+
+interface Props {
+	proposal: TC39Proposal;
+}
+
+const { proposal } = Astro.props;
+---
+
+<Card>
+	<h2
+		class="title"
+		set:html={proposal.name.replace(/`(.+?)`/, '<code>$1</code>')}
+	/>
+	<p>Stage: {proposal.stage}</p>
+</Card>
+
+<style>
+	.title {
+		font-size: inherit;
+	}
+</style>
