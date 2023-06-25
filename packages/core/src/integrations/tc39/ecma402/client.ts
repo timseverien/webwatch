@@ -15,7 +15,7 @@ import {
 } from '../shared.js';
 
 const client = axios.create({
-	baseURL: 'https://raw.githubusercontent.com/tc39/proposals/main',
+	baseURL: 'https://raw.githubusercontent.com/tc39/proposals/main/ecma402/',
 });
 
 export async function getStage0Proposals(): Promise<TC39ProposalUnfinished[]> {
@@ -32,8 +32,8 @@ export async function getStage0Proposals(): Promise<TC39ProposalUnfinished[]> {
 }
 
 export async function getStage1Proposals(): Promise<TC39ProposalUnfinished[]> {
-	const response = await client.get<string>('/stage-1-proposals.md');
-	const content = getTokens(response.data);
+	const response = await client.get<string>('/README.md');
+	const content = selectByHeader(getTokens(response.data), 'Stage 1');
 	const tables = selectTables(content);
 	const results: TC39ProposalUnfinished[] = [];
 
