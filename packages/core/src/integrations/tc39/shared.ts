@@ -23,8 +23,8 @@ export async function createProposalFromLink(
 	link: marked.Tokens.Link,
 	stage: TC39ProposalStage,
 ): Promise<TC39Proposal> {
+	const name = link.text;
 	const specificationUri = getSpecificationUriFromProposalUri(link.href);
-	const name = link.text.replace(/^`(.+)`$/, '$1');
 
 	if (stage === 4) {
 		return {
