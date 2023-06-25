@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ES2021",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"strict": true,
+		"strictBindCallApply": true,
+		"strictFunctionTypes": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true
+	}
+}

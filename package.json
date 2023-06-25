@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/core",
+    "packages/website"
+  ],
+  "devDependencies": {
+    "vite-node": "^0.32.2"
+  }
+}

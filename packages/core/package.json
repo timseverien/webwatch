@@ -1,0 +1,17 @@
+{
+  "name": "@ww/core",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vite-node ./src/index"
+  },
+  "dependencies": {
+    "assert-never": "^1.2.1",
+    "axios": "^1.4.0",
+    "caniuse-db": "^1.0.30001507",
+    "marked": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/marked": "^5.0.0"
+  }
+}
