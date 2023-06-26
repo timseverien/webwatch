@@ -1,28 +1,28 @@
 import { marked } from 'marked';
 import { isTokenLink } from '../../services/markdown.js';
 import {
-	TC39Proposal,
-	TC39ProposalFinished,
-	TC39ProposalFinishedStage,
-	TC39ProposalStage,
-	TC39ProposalUnfinished,
-	TC39ProposalUnfinishedStage,
+	Tc39Proposal,
+	Tc39ProposalFinished,
+	Tc39ProposalFinishedStage,
+	Tc39ProposalStage,
+	Tc39ProposalUnfinished,
+	Tc39ProposalUnfinishedStage,
 } from './index.js';
 
 export async function createProposalFromLink(
 	link: marked.Tokens.Link,
-	stage: TC39ProposalUnfinishedStage,
-): Promise<TC39ProposalUnfinished>;
+	stage: Tc39ProposalUnfinishedStage,
+): Promise<Tc39ProposalUnfinished>;
 
 export async function createProposalFromLink(
 	link: marked.Tokens.Link,
-	stage: TC39ProposalFinishedStage,
-): Promise<TC39ProposalFinished>;
+	stage: Tc39ProposalFinishedStage,
+): Promise<Tc39ProposalFinished>;
 
 export async function createProposalFromLink(
 	link: marked.Tokens.Link,
-	stage: TC39ProposalStage,
-): Promise<TC39Proposal> {
+	stage: Tc39ProposalStage,
+): Promise<Tc39Proposal> {
 	const name = link.text;
 	const specificationUri = getSpecificationUriFromProposalUri(link.href);
 

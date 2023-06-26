@@ -5,9 +5,9 @@ import {
 	selectTables,
 } from '../../../services/markdown.js';
 import {
-	TC39Proposal,
-	TC39ProposalFinished,
-	TC39ProposalUnfinished,
+	Tc39Proposal,
+	Tc39ProposalFinished,
+	Tc39ProposalUnfinished,
 } from '../index.js';
 import {
 	createProposalFromLink,
@@ -18,11 +18,11 @@ const client = axios.create({
 	baseURL: 'https://raw.githubusercontent.com/tc39/proposals/main/ecma402/',
 });
 
-export async function getStage0Proposals(): Promise<TC39ProposalUnfinished[]> {
+export async function getStage0Proposals(): Promise<Tc39ProposalUnfinished[]> {
 	const response = await client.get<string>('/stage-0-proposals.md');
 	const content = getTokens(response.data);
 	const tables = selectTables(content);
-	const results: TC39ProposalUnfinished[] = [];
+	const results: Tc39ProposalUnfinished[] = [];
 
 	for (const link of getProposalLinksFromTable(tables)) {
 		results.push(await createProposalFromLink(link, 0));
@@ -31,11 +31,11 @@ export async function getStage0Proposals(): Promise<TC39ProposalUnfinished[]> {
 	return results;
 }
 
-export async function getStage1Proposals(): Promise<TC39ProposalUnfinished[]> {
+export async function getStage1Proposals(): Promise<Tc39ProposalUnfinished[]> {
 	const response = await client.get<string>('/README.md');
 	const content = selectByHeader(getTokens(response.data), 'Stage 1');
 	const tables = selectTables(content);
-	const results: TC39ProposalUnfinished[] = [];
+	const results: Tc39ProposalUnfinished[] = [];
 
 	for (const link of getProposalLinksFromTable(tables)) {
 		results.push(await createProposalFromLink(link, 1));
@@ -44,11 +44,11 @@ export async function getStage1Proposals(): Promise<TC39ProposalUnfinished[]> {
 	return results;
 }
 
-export async function getStage2Proposals(): Promise<TC39ProposalUnfinished[]> {
+export async function getStage2Proposals(): Promise<Tc39ProposalUnfinished[]> {
 	const response = await client.get<string>('/README.md');
 	const content = selectByHeader(getTokens(response.data), 'Stage 2');
 	const tables = selectTables(content);
-	const results: TC39ProposalUnfinished[] = [];
+	const results: Tc39ProposalUnfinished[] = [];
 
 	for (const link of getProposalLinksFromTable(tables)) {
 		results.push(await createProposalFromLink(link, 2));
@@ -57,11 +57,11 @@ export async function getStage2Proposals(): Promise<TC39ProposalUnfinished[]> {
 	return results;
 }
 
-export async function getStage3Proposals(): Promise<TC39Proposal[]> {
+export async function getStage3Proposals(): Promise<Tc39Proposal[]> {
 	const response = await client.get<string>('/README.md');
 	const content = selectByHeader(getTokens(response.data), 'Stage 3');
 	const tables = selectTables(content);
-	const results: TC39ProposalUnfinished[] = [];
+	const results: Tc39ProposalUnfinished[] = [];
 
 	for (const link of getProposalLinksFromTable(tables)) {
 		results.push(await createProposalFromLink(link, 3));
@@ -70,7 +70,7 @@ export async function getStage3Proposals(): Promise<TC39Proposal[]> {
 	return results;
 }
 
-export async function getStage4Proposals(): Promise<TC39ProposalFinished[]> {
+export async function getStage4Proposals(): Promise<Tc39ProposalFinished[]> {
 	const response = await client.get<string>('/finished-proposals.md');
 	const content = getTokens(response.data);
 	const tables = selectTables(content);
@@ -83,7 +83,7 @@ export async function getStage4Proposals(): Promise<TC39ProposalFinished[]> {
 }
 
 export async function getProposals(): Promise<
-	(TC39ProposalUnfinished | TC39ProposalFinished)[]
+	(Tc39ProposalUnfinished | Tc39ProposalFinished)[]
 > {
 	const proposals = await Promise.all([
 		getStage0Proposals(),

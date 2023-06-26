@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { TC39Proposal } from '@ww/core/src/integrations/tc39/index';
+	import type { Tc39Proposal } from '@ww/core/src/integrations/tc39/index';
 	import ProposalName from '../ProposalName.svelte';
 	import Card from '../Card.svelte';
 
-	export let proposals: TC39Proposal[];
+	export let proposals: Tc39Proposal[];
 
 	$: proposalsSorted = proposals.sort((a, b) => {
 		if (a.stage === b.stage) {

@@ -1,14 +1,14 @@
 ---
-import type { TC39Proposal } from '@ww/core/src/integrations/tc39';
+import type { Tc39Proposal } from '@ww/core/src/integrations/tc39';
 import type { CssSpecification } from '@ww/core/src/integrations/w3/css';
 import specificationsCssData from '@ww/data/css.json';
 import proposalsEcma262Data from '@ww/data/ecma262.json';
 import proposalsEcma402Data from '@ww/data/ecma402.json';
 import CssSpecificationCardList from '../components/integrations/CssSpecificationCardList.svelte';
-import TC39ProposalCardList from '../components/integrations/TC39ProposalCardList.svelte';
+import Tc39ProposalCardList from '../components/integrations/Tc39ProposalCardList.svelte';
 
-type Ecma262ProposalData = TC39Proposal[];
-type Ecma402ProposalData = TC39Proposal[];
+type Ecma262ProposalData = Tc39Proposal[];
+type Ecma402ProposalData = Tc39Proposal[];
 
 type CssSpecificationData = (Omit<CssSpecification, 'lastUpdated'> & {
 	lastUpdated: string | null;
@@ -34,10 +34,10 @@ const specificationsCss = (
 		<h1>Webwatch (working title)</h1>
 
 		<h2>JavaScript/ECMA262 proposals</h2>
-		<TC39ProposalCardList proposals={proposalsEcma262} />
+		<Tc39ProposalCardList proposals={proposalsEcma262} />
 
 		<h2>JavaScript Intl/ECMA402 proposals</h2>
-		<TC39ProposalCardList proposals={proposalsEcma402} />
+		<Tc39ProposalCardList proposals={proposalsEcma402} />
 
 		<h2>CSS specifications</h2>
 		<CssSpecificationCardList proposals={specificationsCss} />
