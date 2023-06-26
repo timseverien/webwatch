@@ -1,0 +1,15 @@
+{
+  "name": "@ww/data",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "directories": {
+    "lib": "dist"
+  },
+  "scripts": {
+    "build": "vite-node ./src/index"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1"
+  }
+}

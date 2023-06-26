@@ -1,13 +1,28 @@
 ---
-import { getProposals as getEcma262Proposals } from '@ww/core/src/integrations/tc39/ecma262';
-import { getProposals as getEcma402Proposals } from '@ww/core/src/integrations/tc39/ecma402';
-import { getSpecifications as getCSSSpecifications } from '@ww/core/src/integrations/w3/css';
-import TC39ProposalCardList from '../components/integrations/TC39ProposalCardList.svelte';
+import type { TC39Proposal } from '@ww/core/src/integrations/tc39';
+import type { CSSSpecification } from '@ww/core/src/integrations/w3/css';
+import specificationsCssData from '@ww/data/css.json';
+import proposalsEcma262Data from '@ww/data/ecma262.json';
+import proposalsEcma402Data from '@ww/data/ecma402.json';
 import CssSpecificationCardList from '../components/integrations/CssSpecificationCardList.svelte';
+import TC39ProposalCardList from '../components/integrations/TC39ProposalCardList.svelte';
 
-const proposalsEcma262 = await getEcma262Proposals();
-const proposalsEcma402 = await getEcma402Proposals();
-const specificationsCSS = await getCSSSpecifications();
+type Ecma262ProposalData = TC39Proposal[];
+type Ecma402ProposalData = TC39Proposal[];
+
+type CssSpecificationData = (Omit<CSSSpecification, 'lastUpdated'> & {
+	lastUpdated: string | null;
+})[];
+
+const proposalsEcma262 = proposalsEcma262Data as Ecma262ProposalData;
+const proposalsEcma402 = proposalsEcma402Data as Ecma402ProposalData;
+
+const specificationsCss = (
+	specificationsCssData as CssSpecificationData
+).map<CSSSpecification>((spec) => ({
+	...spec,
+	lastUpdated: spec.lastUpdated ? new Date(Date.parse(spec.lastUpdated)) : null,
+}));
 ---
 
 <html lang="en">
@@ -25,7 +40,7 @@ const specificationsCSS = await getCSSSpecifications();
 		<TC39ProposalCardList proposals={proposalsEcma402} />
 
 		<h2>CSS specifications</h2>
-		<CssSpecificationCardList proposals={specificationsCSS} />
+		<CssSpecificationCardList proposals={specificationsCss} />
 	</body>
 </html>
 

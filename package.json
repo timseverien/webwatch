@@ -8,9 +8,11 @@
   },
   "workspaces": [
     "packages/core",
+    "packages/data",
     "packages/website"
   ],
   "devDependencies": {
+    "@types/node": "^20.3.1",
     "vite-node": "^0.32.2"
   }
 }

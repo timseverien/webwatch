@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as cheerio from 'cheerio';
 import { W3SpecificationLevel } from '../index.js';
 import { CSSSpecification } from './index.js';
 
@@ -25,7 +26,31 @@ function getNormalizedSpecificationUrl(uri: string): string {
 	return url.toString();
 }
 
+function createSpecificationDateFetcher(): (
+	specificationUrl: string,
+) => Promise<Date | null> {
+	const specificationUrlDateMap: Map<string, Date | null> = new Map();
+
+	return async (specificationUrl) => {
+		if (specificationUrlDateMap.has(specificationUrl)) {
+			return specificationUrlDateMap.get(specificationUrl)!;
+		}
+
+		const response = await axios.get<string>(specificationUrl);
+		const html = response.data;
+		const $ = cheerio.load(html);
+		const dateString = $('time.dt-updated').attr('datetime');
+		const date = dateString ? new Date(Date.parse(dateString)) : null;
+
+		specificationUrlDateMap.set(specificationUrl, date);
+
+		return date;
+	};
+}
+
 export async function getSpecifications(): Promise<CSSSpecification[]> {
+	const fetchSpecificationDate = createSpecificationDateFetcher();
+
 	const [descriptors, properties] = await Promise.all([
 		axios.get<DescriptorsResponseBody>(URL_DESCRIPTORS).then((r) => r.data),
 		axios.get<PropertiesResponseBody>(URL_PROPERTIES).then((r) => r.data),
@@ -42,6 +67,7 @@ export async function getSpecifications(): Promise<CSSSpecification[]> {
 				level: descriptor.status,
 				name: descriptor.specification,
 				specificationUrl,
+				lastUpdated: await fetchSpecificationDate(specificationUrl),
 				relatedProperties: [],
 				relatedDescriptors: [
 					{
@@ -69,6 +95,7 @@ export async function getSpecifications(): Promise<CSSSpecification[]> {
 				level: property.status,
 				name: property.title,
 				specificationUrl,
+				lastUpdated: await fetchSpecificationDate(specificationUrl),
 				relatedProperties: [
 					{
 						name: property.property,

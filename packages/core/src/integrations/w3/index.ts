@@ -6,4 +6,5 @@ export interface W3Specification {
 	name: string;
 	specificationUrl: string;
 	level: W3SpecificationLevel;
+	lastUpdated: Date | null;
 }
