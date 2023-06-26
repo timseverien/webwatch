@@ -28,7 +28,7 @@ export async function createProposalFromLink(
 
 	if (stage === 4) {
 		return {
-			type: 'PROPOSAL_FINISHED',
+			type: 'TC39_PROPOSAL_FINISHED',
 			name,
 			proposalUri: link.href,
 			specificationUri,
@@ -37,7 +37,7 @@ export async function createProposalFromLink(
 	}
 
 	return {
-		type: 'PROPOSAL_UNFINISHED',
+		type: 'TC39_PROPOSAL_UNFINISHED',
 		name,
 		proposalUri: link.href,
 		specificationUri,
