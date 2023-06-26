@@ -5,7 +5,7 @@ interface RelatedItem {
 	uri: string;
 }
 
-export interface CSSSpecification extends W3Specification {
+export interface CssSpecification extends W3Specification {
 	relatedDescriptors: RelatedItem[];
 	relatedProperties: RelatedItem[];
 }

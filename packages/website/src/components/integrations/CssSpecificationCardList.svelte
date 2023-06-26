@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Card from '../Card.svelte';
-	import type { CSSSpecification } from '@ww/core/src/integrations/w3/css';
+	import type { CssSpecification } from '@ww/core/src/integrations/w3/css';
 
-	export let proposals: CSSSpecification[];
+	export let proposals: CssSpecification[];
 
 	const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'long' });
 

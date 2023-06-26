@@ -1,6 +1,6 @@
 ---
 import type { TC39Proposal } from '@ww/core/src/integrations/tc39';
-import type { CSSSpecification } from '@ww/core/src/integrations/w3/css';
+import type { CssSpecification } from '@ww/core/src/integrations/w3/css';
 import specificationsCssData from '@ww/data/css.json';
 import proposalsEcma262Data from '@ww/data/ecma262.json';
 import proposalsEcma402Data from '@ww/data/ecma402.json';
@@ -10,7 +10,7 @@ import TC39ProposalCardList from '../components/integrations/TC39ProposalCardLis
 type Ecma262ProposalData = TC39Proposal[];
 type Ecma402ProposalData = TC39Proposal[];
 
-type CssSpecificationData = (Omit<CSSSpecification, 'lastUpdated'> & {
+type CssSpecificationData = (Omit<CssSpecification, 'lastUpdated'> & {
 	lastUpdated: string | null;
 })[];
 
@@ -19,7 +19,7 @@ const proposalsEcma402 = proposalsEcma402Data as Ecma402ProposalData;
 
 const specificationsCss = (
 	specificationsCssData as CssSpecificationData
-).map<CSSSpecification>((spec) => ({
+).map<CssSpecification>((spec) => ({
 	...spec,
 	lastUpdated: spec.lastUpdated ? new Date(Date.parse(spec.lastUpdated)) : null,
 }));

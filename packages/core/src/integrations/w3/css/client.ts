@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { W3SpecificationLevel } from '../index.js';
-import { CSSSpecification } from './index.js';
+import { CssSpecification } from './index.js';
 
 const URL_PROPERTIES = 'https://www.w3.org/Style/CSS/all-properties.en.json';
 const URL_DESCRIPTORS = 'https://www.w3.org/Style/CSS/all-descriptors.en.json';
@@ -48,7 +48,7 @@ function createSpecificationDateFetcher(): (
 	};
 }
 
-export async function getSpecifications(): Promise<CSSSpecification[]> {
+export async function getSpecifications(): Promise<CssSpecification[]> {
 	const fetchSpecificationDate = createSpecificationDateFetcher();
 
 	const [descriptors, properties] = await Promise.all([
@@ -56,7 +56,7 @@ export async function getSpecifications(): Promise<CSSSpecification[]> {
 		axios.get<PropertiesResponseBody>(URL_PROPERTIES).then((r) => r.data),
 	]);
 
-	const specsByUrl = new Map<string, CSSSpecification>();
+	const specsByUrl = new Map<string, CssSpecification>();
 
 	for (const descriptor of descriptors) {
 		const specificationUrl = getNormalizedSpecificationUrl(descriptor.URL);
