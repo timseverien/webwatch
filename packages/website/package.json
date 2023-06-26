@@ -9,7 +9,9 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/svelte": "^3.0.0",
     "astro": "^2.7.0",
-    "modern-css-reset": "^1.4.0"
+    "modern-css-reset": "^1.4.0",
+    "svelte": "^4.0.0"
   }
 }

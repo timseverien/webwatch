@@ -1,7 +1,7 @@
 ---
 import { getProposals as getEcma262Proposals } from '@ww/core/dist/integrations/tc39/ecma262';
 import { getProposals as getEcma402Proposals } from '@ww/core/dist/integrations/tc39/ecma402';
-import TC39ProposalCard from '../components/TC39ProposalCard.astro';
+import ProposalCardList from '../components/ProposalCardList.svelte';
 
 const proposalsEcma262 = await getEcma262Proposals();
 const proposalsEcma402 = await getEcma402Proposals();
@@ -16,30 +16,14 @@ const proposalsEcma402 = await getEcma402Proposals();
 		<h1>Webwatch (working title)</h1>
 
 		<h2>JavaScript/ECMA262 proposals</h2>
-		<ul class="proposal-list">
-			{
-				proposalsEcma262
-					.sort((a, b) => b.stage - a.stage)
-					.map((proposal) => (
-						<li>
-							<TC39ProposalCard proposal={proposal} />
-						</li>
-					))
-			}
-		</ul>
+		<ProposalCardList
+			proposals={proposalsEcma262.filter((p) => p.stage === 4)}
+		/>
 
 		<h2>JavaScript Intl/ECMA402 proposals</h2>
-		<ul class="proposal-list">
-			{
-				proposalsEcma402
-					.sort((a, b) => b.stage - a.stage)
-					.map((proposal) => (
-						<li>
-							<TC39ProposalCard proposal={proposal} />
-						</li>
-					))
-			}
-		</ul>
+		<ProposalCardList
+			proposals={proposalsEcma402.filter((p) => p.stage === 4)}
+		/>
 	</body>
 </html>
 
@@ -63,5 +47,35 @@ const proposalsEcma402 = await getEcma402Proposals();
 	code {
 		font-family: monospace, monospace;
 		font-size: inherit;
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	th {
+		text-align: start;
+	}
+
+	thead th {
+		color: #888;
+		font-weight: normal;
+	}
+
+	td,
+	th {
+		padding-inline: 0.5em;
+		padding-block: 0.25em;
+	}
+
+	tr:nth-child(even) > :is(td, th) {
+		background-color: #f8f8f8;
+	}
+
+	thead > tr > :is(td, th) {
+		position: sticky;
+		top: 0;
+		background-color: #fff;
 	}
 </style>
