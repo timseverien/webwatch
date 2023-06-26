@@ -44,8 +44,8 @@
 					{#if proposal.relatedProperties.length > 0}
 						<dt>Related properties</dt>
 						<dd>
-							<ul>
-								{#each proposal.relatedProperties as property}
+							<ul class="property-list">
+								{#each proposal.relatedProperties.sort( (a, b) => a.name.localeCompare(b.name), ) as property}
 									<li><a href={property.uri}>{property.name}</a></li>
 								{/each}
 							</ul>
@@ -55,7 +55,7 @@
 					{#if proposal.relatedDescriptors.length > 0}
 						<dt>Related properties</dt>
 						<dd>
-							<ul>
+							<ul class="property-list">
 								{#each proposal.relatedDescriptors as descriptor}
 									<li><a href={descriptor.uri}>{descriptor.name}</a></li>
 								{/each}
@@ -88,5 +88,15 @@
 		display: grid;
 		grid-template-columns: max-content 1fr;
 		gap: 0 0.5em;
+	}
+
+	.property-list {
+		display: flex;
+		flex-flow: row wrap;
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		gap: 0.25em 0.5em;
+		font-size: 0.75em;
 	}
 </style>
