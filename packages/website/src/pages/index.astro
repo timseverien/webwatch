@@ -1,10 +1,13 @@
 ---
-import { getProposals as getEcma262Proposals } from '@ww/core/dist/integrations/tc39/ecma262';
-import { getProposals as getEcma402Proposals } from '@ww/core/dist/integrations/tc39/ecma402';
-import ProposalCardList from '../components/ProposalCardList.svelte';
+import { getProposals as getEcma262Proposals } from '@ww/core/src/integrations/tc39/ecma262';
+import { getProposals as getEcma402Proposals } from '@ww/core/src/integrations/tc39/ecma402';
+import { getSpecifications as getCSSSpecifications } from '@ww/core/src/integrations/w3/css';
+import TC39ProposalCardList from '../components/integrations/TC39ProposalCardList.svelte';
+import CssSpecificationCardList from '../components/integrations/CssSpecificationCardList.svelte';
 
 const proposalsEcma262 = await getEcma262Proposals();
 const proposalsEcma402 = await getEcma402Proposals();
+const specificationsCSS = await getCSSSpecifications();
 ---
 
 <html lang="en">
@@ -16,14 +19,13 @@ const proposalsEcma402 = await getEcma402Proposals();
 		<h1>Webwatch (working title)</h1>
 
 		<h2>JavaScript/ECMA262 proposals</h2>
-		<ProposalCardList
-			proposals={proposalsEcma262.filter((p) => p.stage === 4)}
-		/>
+		<TC39ProposalCardList proposals={proposalsEcma262} />
 
 		<h2>JavaScript Intl/ECMA402 proposals</h2>
-		<ProposalCardList
-			proposals={proposalsEcma402.filter((p) => p.stage === 4)}
-		/>
+		<TC39ProposalCardList proposals={proposalsEcma402} />
+
+		<h2>CSS specifications</h2>
+		<CssSpecificationCardList proposals={specificationsCSS} />
 	</body>
 </html>
 

@@ -5,7 +5,7 @@ export type TC39ProposalStage =
 	| TC39ProposalFinishedStage;
 
 export interface TC39ProposalUnfinished {
-	type: 'TC39_PROPOSAL_UNFINISHED';
+	type: 'TC39_PROPOSAL';
 	name: string;
 	proposalUri: string;
 	specificationUri: string | null;
@@ -13,7 +13,7 @@ export interface TC39ProposalUnfinished {
 }
 
 export interface TC39ProposalFinished {
-	type: 'TC39_PROPOSAL_FINISHED';
+	type: 'TC39_PROPOSAL';
 	name: string;
 	proposalUri: string;
 	specificationUri: string;
