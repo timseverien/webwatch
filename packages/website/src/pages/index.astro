@@ -6,6 +6,7 @@ import proposalsEcma262Data from '@ww/data/ecma262.json';
 import proposalsEcma402Data from '@ww/data/ecma402.json';
 import CssSpecificationCardList from '../components/integrations/CssSpecificationCardList.svelte';
 import Tc39ProposalCardList from '../components/integrations/Tc39ProposalCardList.svelte';
+import DefaultLayout from '../layouts/Default.astro';
 
 type Ecma262ProposalData = Tc39Proposal[];
 type Ecma402ProposalData = Tc39Proposal[];
@@ -25,74 +26,25 @@ const specificationsCss = (
 }));
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-	</head>
-	<body>
-		<h1>Webwatch (working title)</h1>
+<DefaultLayout>
+	<h1>Webwatch (working title)</h1>
 
-		<h2>JavaScript/ECMA262 proposals</h2>
-		<Tc39ProposalCardList proposals={proposalsEcma262} />
+	<h2>JavaScript/ECMA262 proposals</h2>
+	<Tc39ProposalCardList proposals={proposalsEcma262} />
 
-		<h2>JavaScript Intl/ECMA402 proposals</h2>
-		<Tc39ProposalCardList proposals={proposalsEcma402} />
+	<h2>JavaScript Intl/ECMA402 proposals</h2>
+	<Tc39ProposalCardList proposals={proposalsEcma402} />
 
-		<h2>CSS specifications</h2>
-		<CssSpecificationCardList proposals={specificationsCss} />
-	</body>
-</html>
+	<h2>CSS specifications</h2>
+	<CssSpecificationCardList proposals={specificationsCss} />
+</DefaultLayout>
 
 <style>
-	@import 'modern-css-reset';
-
-	:root {
-		font-family: system-ui, sans-serif;
-	}
-
 	.proposal-list {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, 48ch);
 		gap: 1em;
 
 		list-style-type: none;
-	}
-</style>
-
-<style is:global>
-	code {
-		font-family: monospace, monospace;
-		font-size: inherit;
-	}
-
-	table {
-		border-collapse: collapse;
-		width: 100%;
-	}
-
-	th {
-		text-align: start;
-	}
-
-	thead th {
-		color: #888;
-		font-weight: normal;
-	}
-
-	td,
-	th {
-		padding-inline: 0.5em;
-		padding-block: 0.25em;
-	}
-
-	tr:nth-child(even) > :is(td, th) {
-		background-color: #f8f8f8;
-	}
-
-	thead > tr > :is(td, th) {
-		position: sticky;
-		top: 0;
-		background-color: #fff;
 	}
 </style>

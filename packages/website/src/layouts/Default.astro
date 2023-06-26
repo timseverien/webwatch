@@ -1,0 +1,52 @@
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	@import 'modern-css-reset';
+
+	:root {
+		font-family: system-ui, sans-serif;
+	}
+
+	code {
+		font-family: monospace, monospace;
+		font-size: inherit;
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	th {
+		text-align: start;
+	}
+
+	thead th {
+		color: #888;
+		font-weight: normal;
+	}
+
+	td,
+	th {
+		padding-inline: 0.5em;
+		padding-block: 0.25em;
+	}
+
+	tr:nth-child(even) > :is(td, th) {
+		background-color: #f8f8f8;
+	}
+
+	thead > tr > :is(td, th) {
+		position: sticky;
+		top: 0;
+		background-color: #fff;
+	}
+</style>
