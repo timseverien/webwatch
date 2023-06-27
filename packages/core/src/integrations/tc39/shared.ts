@@ -33,6 +33,8 @@ export async function createProposalFromLink(
 			proposalUri: link.href,
 			specificationUri,
 			stage,
+			// TODO: try to retrieve date
+			lastUpdated: new Date(),
 		};
 	}
 
@@ -42,6 +44,8 @@ export async function createProposalFromLink(
 		proposalUri: link.href,
 		specificationUri,
 		stage,
+		// TODO: try to retrieve date
+		lastUpdated: new Date(),
 	};
 }
 
@@ -64,7 +68,11 @@ export function getProposalLinksFromTable(
 }
 
 function getSpecificationUriFromProposalUri(proposalUri: string): string {
-	const url = new URL(proposalUri);
-	const pathName = url.pathname.replace(/^\/tc39\//, '');
-	return `https://tc39.es/${pathName}`;
+	if (/github.com\/tc39\//.test(proposalUri)) {
+		const url = new URL(proposalUri);
+		const pathName = url.pathname.replace(/^\/tc39\//, '');
+		return `https://tc39.es/${pathName}`;
+	}
+
+	return '';
 }

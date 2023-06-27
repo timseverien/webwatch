@@ -1,4 +1,4 @@
-import { getSpecifications } from './integrations/w3/css/client.js';
+import { getSpecifications } from './integrations/w3/index.js';
 
-const specs = await getSpecifications();
-console.log(specs);
+await getSpecifications();
+// console.log(specs);

@@ -1,42 +1,31 @@
 ---
-import type { Tc39Proposal } from '@ww/core/src/integrations/tc39';
-import type { CssSpecification } from '@ww/core/src/integrations/w3/css';
-import specificationsCssData from '@ww/data/css.json';
+import type { Tc39ProposalSerialized } from '@ww/core/src/integrations/tc39';
+import { deserialize as deserializeTc39Data } from '@ww/core/src/integrations/tc39';
+import type { W3SpecificationSerialized } from '@ww/core/src/integrations/w3';
+import { deserialize as deserializeW3Data } from '@ww/core/src/integrations/w3';
 import proposalsEcma262Data from '@ww/data/ecma262.json';
 import proposalsEcma402Data from '@ww/data/ecma402.json';
-import CssSpecificationCardList from '../components/integrations/CssSpecificationCardList.svelte';
-import Tc39ProposalCardList from '../components/integrations/Tc39ProposalCardList.svelte';
+import specificationsW3Data from '@ww/data/w3.json';
+import SpecificationCardList from '../components/integrations/SpecificationCardList.svelte';
 import DefaultLayout from '../layouts/Default.astro';
 
-type Ecma262ProposalData = Tc39Proposal[];
-type Ecma402ProposalData = Tc39Proposal[];
-
-type CssSpecificationData = (Omit<CssSpecification, 'lastUpdated'> & {
-	lastUpdated: string | null;
-})[];
-
-const proposalsEcma262 = proposalsEcma262Data as Ecma262ProposalData;
-const proposalsEcma402 = proposalsEcma402Data as Ecma402ProposalData;
-
-const specificationsCss = (
-	specificationsCssData as CssSpecificationData
-).map<CssSpecification>((spec) => ({
-	...spec,
-	lastUpdated: spec.lastUpdated ? new Date(Date.parse(spec.lastUpdated)) : null,
-}));
+const proposalsEcma262 = deserializeTc39Data(
+	proposalsEcma262Data as Tc39ProposalSerialized[],
+);
+const proposalsEcma402 = deserializeTc39Data(
+	proposalsEcma402Data as Tc39ProposalSerialized[],
+);
+const specificationsW3 = deserializeW3Data(
+	specificationsW3Data as W3SpecificationSerialized[],
+);
 ---
 
 <DefaultLayout>
 	<h1>Webwatch (working title)</h1>
 
-	<h2>JavaScript/ECMA262 proposals</h2>
-	<Tc39ProposalCardList proposals={proposalsEcma262} />
-
-	<h2>JavaScript Intl/ECMA402 proposals</h2>
-	<Tc39ProposalCardList proposals={proposalsEcma402} />
-
-	<h2>CSS specifications</h2>
-	<CssSpecificationCardList proposals={specificationsCss} />
+	<SpecificationCardList
+		ds={[proposalsEcma262, proposalsEcma402, specificationsW3].flat()}
+	/>
 </DefaultLayout>
 
 <style>
