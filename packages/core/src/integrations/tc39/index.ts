@@ -7,8 +7,8 @@ export type Tc39ProposalStage =
 export interface Tc39ProposalUnfinished {
 	type: 'TC39_PROPOSAL';
 	name: string;
-	proposalUri: string;
-	specificationUri: string | null;
+	proposalUrl: string;
+	specificationUrl: string | null;
 	stage: Tc39ProposalUnfinishedStage;
 	lastUpdated: Date | null;
 }
@@ -16,8 +16,8 @@ export interface Tc39ProposalUnfinished {
 export interface Tc39ProposalFinished {
 	type: 'TC39_PROPOSAL';
 	name: string;
-	proposalUri: string;
-	specificationUri: string;
+	proposalUrl: string;
+	specificationUrl: string;
 	stage: Tc39ProposalFinishedStage;
 	lastUpdated: Date;
 }
@@ -38,7 +38,7 @@ export function serialize(data: Tc39Proposal[]): Tc39ProposalSerialized[] {
 
 export function deserialize(data: Tc39ProposalSerialized[]): Tc39Proposal[] {
 	return data.map<Tc39Proposal>((d) => {
-		if (d?.specificationUri) {
+		if (d?.specificationUrl) {
 			return {
 				...d,
 				lastUpdated: d.lastUpdated ? new Date(Date.parse(d.lastUpdated)) : null,

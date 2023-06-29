@@ -51,17 +51,17 @@ export async function createProposalFromLink(
 	stage: Tc39ProposalStage,
 ): Promise<Tc39Proposal> {
 	const name = link.text;
-	const specificationUri = getSpecificationUriFromProposalUri(link.href);
-	const lastUpdated = specificationUri
-		? await getDateFromSpecificationUrl(specificationUri)
+	const specificationUrl = getSpecificationUrlFromProposalUrl(link.href);
+	const lastUpdated = specificationUrl
+		? await getDateFromSpecificationUrl(specificationUrl)
 		: null;
 
 	if (stage === 4) {
 		return {
 			type: 'TC39_PROPOSAL',
 			name,
-			proposalUri: link.href,
-			specificationUri: specificationUri!,
+			proposalUrl: link.href,
+			specificationUrl: specificationUrl!,
 			stage,
 			lastUpdated: lastUpdated!,
 		};
@@ -70,8 +70,8 @@ export async function createProposalFromLink(
 	return {
 		type: 'TC39_PROPOSAL',
 		name,
-		proposalUri: link.href,
-		specificationUri,
+		proposalUrl: link.href,
+		specificationUrl,
 		stage,
 		lastUpdated,
 	};
@@ -95,11 +95,11 @@ export function getProposalLinksFromTable(
 	return links;
 }
 
-function getSpecificationUriFromProposalUri(
-	proposalUri: string,
+function getSpecificationUrlFromProposalUrl(
+	proposalUrl: string,
 ): string | null {
-	if (/github.com\/tc39\//.test(proposalUri)) {
-		const url = new URL(proposalUri);
+	if (/github.com\/tc39\//.test(proposalUrl)) {
+		const url = new URL(proposalUrl);
 		const pathName = url.pathname.replace(/^\/tc39\//, '');
 		return `https://tc39.es/${pathName}`;
 	}
