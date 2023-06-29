@@ -19,7 +19,7 @@ export interface Tc39ProposalFinished {
 	proposalUri: string;
 	specificationUri: string;
 	stage: Tc39ProposalFinishedStage;
-	lastUpdated: Date | null;
+	lastUpdated: Date;
 }
 
 export type Tc39Proposal = Tc39ProposalUnfinished | Tc39ProposalFinished;

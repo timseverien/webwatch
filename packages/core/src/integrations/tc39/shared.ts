@@ -1,3 +1,7 @@
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import { parse } from 'date-fns';
+import { enUS as localeEnUS } from 'date-fns/locale';
 import { marked } from 'marked';
 import { isTokenLink } from '../../services/markdown.js';
 import {
@@ -8,6 +12,29 @@ import {
 	Tc39ProposalUnfinished,
 	Tc39ProposalUnfinishedStage,
 } from './index.js';
+
+async function getDateFromSpecificationUrl(url: string): Promise<Date | null> {
+	try {
+		const result = await axios.get(url);
+		const $ = cheerio.load(result.data);
+
+		const version = $('#spec-container .version').text();
+		if (!version) {
+			return null;
+		}
+
+		const dateString = version.substring(version.lastIndexOf('/') + 1).trim();
+		if (!dateString) {
+			return null;
+		}
+
+		return parse(dateString, 'MMMM d, yyyy', new Date(), {
+			locale: localeEnUS,
+		});
+	} catch {}
+
+	return null;
+}
 
 export async function createProposalFromLink(
 	link: marked.Tokens.Link,
@@ -25,16 +52,18 @@ export async function createProposalFromLink(
 ): Promise<Tc39Proposal> {
 	const name = link.text;
 	const specificationUri = getSpecificationUriFromProposalUri(link.href);
+	const lastUpdated = specificationUri
+		? await getDateFromSpecificationUrl(specificationUri)
+		: null;
 
 	if (stage === 4) {
 		return {
 			type: 'TC39_PROPOSAL',
 			name,
 			proposalUri: link.href,
-			specificationUri,
+			specificationUri: specificationUri!,
 			stage,
-			// TODO: try to retrieve date
-			lastUpdated: new Date(),
+			lastUpdated: lastUpdated!,
 		};
 	}
 
@@ -44,8 +73,7 @@ export async function createProposalFromLink(
 		proposalUri: link.href,
 		specificationUri,
 		stage,
-		// TODO: try to retrieve date
-		lastUpdated: new Date(),
+		lastUpdated,
 	};
 }
 
@@ -67,12 +95,14 @@ export function getProposalLinksFromTable(
 	return links;
 }
 
-function getSpecificationUriFromProposalUri(proposalUri: string): string {
+function getSpecificationUriFromProposalUri(
+	proposalUri: string,
+): string | null {
 	if (/github.com\/tc39\//.test(proposalUri)) {
 		const url = new URL(proposalUri);
 		const pathName = url.pathname.replace(/^\/tc39\//, '');
 		return `https://tc39.es/${pathName}`;
 	}
 
-	return '';
+	return null;
 }
