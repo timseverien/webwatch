@@ -1,7 +1,11 @@
 <script lang="ts">
 	import SpecificationName from '../SpecificationName.svelte';
 	import Card from '../Card.svelte';
-	import type { ProposalOrSpecification } from '../../data';
+	import {
+		isTc39Proposal,
+		isW3Specification,
+		type ProposalOrSpecification,
+	} from '../../data';
 	import { format } from 'date-fns';
 
 	export let ds: ProposalOrSpecification[];
@@ -30,12 +34,12 @@
 			<Card>
 				<h2 class="proposal-name"><SpecificationName name={d.name} /></h2>
 				<dl class="proposal-property-list">
-					{#if d.type === 'TC39_PROPOSAL'}
+					{#if isTc39Proposal(d)}
 						<dt>Stage</dt>
 						<dd>{d.stage}</dd>
 					{/if}
 
-					{#if d.type === 'CSS_SPECIFICATION' || d.type === 'W3_SPECIFICATION'}
+					{#if isW3Specification(d)}
 						<dt>Level</dt>
 						<dd>{d.level}</dd>
 					{/if}
@@ -48,6 +52,10 @@
 							</time>
 						</dd>
 					{/if}
+					<dt>Specification</dt>
+					<dd>
+						<a href={d.specificationUrl}>{d.specificationUrl}</a>
+					</dd>
 				</dl>
 			</Card>
 		</li>

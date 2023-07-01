@@ -56,7 +56,7 @@ export interface HtmlSpecification
 
 export interface JsonLdSpecification
 	extends Omit<W3GenericSpecification, 'type'> {
-	type: 'LSON_LD_SPECIFICATION';
+	type: 'JSON_LD_SPECIFICATION';
 }
 
 export interface SvgSpecification extends Omit<W3GenericSpecification, 'type'> {
@@ -93,6 +93,25 @@ export type W3Specification =
 	| WaiAriaSpecification
 	| WasmSpecification
 	| WebApiSpecification;
+
+export const W3_SPECIFICATION_TYPE_LABEL_MAP: {
+	[key in W3Specification['type']]: string;
+} = {
+	CSS_SPECIFICATION: 'CSS',
+	DOM_SPECIFICATION: 'DOM',
+	HTML_SPECIFICATION: 'HTML',
+	JSON_LD_SPECIFICATION: 'JSON+LD',
+	SVG_SPECIFICATION: 'SVG',
+	URI_SPECIFICATION: 'URI',
+	W3_SPECIFICATION: 'W3',
+	WAI_ARIA_SPECIFICATION: 'WAI ARIA',
+	WASM_SPECIFICATION: 'WASM',
+	WEB_API_SPECIFICATION: 'Web API',
+};
+
+export const W3_SPECIFICATION_TYPES = Object.keys(
+	W3_SPECIFICATION_TYPE_LABEL_MAP,
+) as W3Specification['type'][];
 
 export interface W3SpecificationSerialized
 	extends Omit<W3Specification, 'lastUpdated'> {
@@ -132,6 +151,18 @@ function getSpecificationTypeByDeliveryNames(
 		.filter((type) => type !== 'W3_SPECIFICATION');
 
 	return types[0] ?? 'W3_SPECIFICATION';
+}
+
+function parseLevel(status: string): W3SpecificationLevel {
+	if ((W3_SPECIFICATION_LEVELS as readonly string[]).includes(status)) {
+		return status as W3SpecificationLevel;
+	}
+
+	if (status === 'Proposal for a CSS module') {
+		return 'WD';
+	}
+
+	return 'WD';
 }
 
 function getSpecificationTypeByDeliveryName(
@@ -187,7 +218,7 @@ function parseResponseItem(item: SpecrefItem, key: string): W3Specification {
 			  )
 			: 'W3_SPECIFICATION',
 		lastUpdated: date,
-		level: 'CR',
+		level: parseLevel(item.status),
 		name,
 		specificationUrl: item.href,
 	};
@@ -234,6 +265,9 @@ export async function getSpecifications(): Promise<W3Specification[]> {
 				const [, item] = entry;
 				return typeof item !== 'string' && !isSpecrefResponseItemAlias(item);
 			})
+			// Get specifications published by W3C
+			// TODO: should we add more publishers? CSSWG? WHATWG?
+			// .filter(([, item]) => item.publisher === 'W3C')
 			.map<W3Specification>(([key, item]) => parseResponseItem(item, key))
 	);
 }
