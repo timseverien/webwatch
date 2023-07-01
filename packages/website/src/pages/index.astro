@@ -24,16 +24,10 @@ const specificationsW3 = deserializeW3Data(
 	<h1>Webwatch (working title)</h1>
 
 	<SpecificationCardList
-		ds={[proposalsEcma262, proposalsEcma402, specificationsW3].flat()}
+		ds={[
+			proposalsEcma262,
+			proposalsEcma402,
+			specificationsW3.filter((s) => s.type !== 'W3_SPECIFICATION'),
+		].flat()}
 	/>
 </DefaultLayout>
-
-<style>
-	.proposal-list {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, 48ch);
-		gap: 1em;
-
-		list-style-type: none;
-	}
-</style>
