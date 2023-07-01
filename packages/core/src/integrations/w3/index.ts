@@ -124,7 +124,19 @@ interface SpecrefItem {
 
 type SpecrefResponseItem = SpecrefAliasItem | SpecrefItem;
 
-function getSpecificationTypeByDelivery(name: string): W3Specification['type'] {
+function getSpecificationTypeByDeliveryNames(
+	names: string[],
+): W3Specification['type'] {
+	const types = names
+		.map((name) => getSpecificationTypeByDeliveryName(name))
+		.filter((type) => type !== 'W3_SPECIFICATION');
+
+	return types[0] ?? 'W3_SPECIFICATION';
+}
+
+function getSpecificationTypeByDeliveryName(
+	name: string,
+): W3Specification['type'] {
 	switch (name) {
 		case 'css':
 			return 'CSS_SPECIFICATION';
@@ -168,40 +180,16 @@ function parseResponseItem(item: SpecrefItem, key: string): W3Specification {
 		console.warn('Unable to parse date for item', item);
 	}
 
-	const baseInfo: Omit<W3GenericSpecification, 'type'> = {
+	return {
+		type: item.deliveredBy
+			? getSpecificationTypeByDeliveryNames(
+					item.deliveredBy.map((d) => d.shortname),
+			  )
+			: 'W3_SPECIFICATION',
 		lastUpdated: date,
 		level: 'CR',
 		name,
 		specificationUrl: item.href,
-	};
-
-	if (item.deliveredBy?.some((i) => i.shortname === 'css')) {
-		return {
-			type: 'CSS_SPECIFICATION',
-			...baseInfo,
-			// TODO: add related descriptors and properties
-		};
-	}
-
-	if (item.deliveredBy?.some((i) => i.shortname === 'dom')) {
-		return {
-			type: 'DOM_SPECIFICATION',
-			...baseInfo,
-			// TODO: add related descriptors and properties
-		};
-	}
-
-	if (item.deliveredBy?.some((i) => i.shortname === 'dom')) {
-		return {
-			type: 'DOM_SPECIFICATION',
-			...baseInfo,
-			// TODO: add related descriptors and properties
-		};
-	}
-
-	return {
-		type: 'W3_SPECIFICATION',
-		...baseInfo,
 	};
 }
 
