@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { parse, startOfDay, startOfMonth, startOfYear } from 'date-fns';
+import {
+	isAfter,
+	parse,
+	startOfDay,
+	startOfMonth,
+	startOfYear,
+} from 'date-fns';
 import localeEnUs from 'date-fns/locale/en-US';
 
 // https://www.w3.org/2005/10/Process-20051014/tr#maturity-levels
@@ -253,21 +259,66 @@ function parseDate(date: string): Date | null {
 }
 
 export async function getSpecifications(): Promise<W3Specification[]> {
+	const PERMITTED_PUBLISHERS = new Set([
+		'W3C Geospatial Incubator Group',
+		'W3C Maps for HTML Community Group',
+		'W3C Semantic Web Interest Group',
+		'W3C Web Bluetooth Community Group',
+		'W3C WoT Community Group',
+		'W3C',
+	]);
+
 	const response = await axios.get<{
 		[key: string]: SpecrefResponseItem | string;
 	}>('https://api.specref.org/bibrefs');
 
+	const specifications = Object.entries(response.data)
+		// Aliases refer to other items, so we can omit these
+		// Additionally, some items are strings (dirty API data?) — let’s omit these too
+		.filter((entry): entry is [string, SpecrefItem] => {
+			const [, item] = entry;
+			return typeof item !== 'string' && !isSpecrefResponseItemAlias(item);
+		})
+		// Select specs that W3C published
+		.filter(([, item]) => PERMITTED_PUBLISHERS.has(item.publisher));
+
+	const specificationsById = new Map<string, SpecrefItem>(
+		specifications.map(([, item]) => [item.id, item]),
+	);
+
 	return (
-		Object.entries(response.data)
-			// Aliases refer to other items, so we can omit these
-			// Additionally, some items are strings (dirty API data?) — let’s omit these too
-			.filter((entry): entry is [string, SpecrefItem] => {
-				const [, item] = entry;
-				return typeof item !== 'string' && !isSpecrefResponseItemAlias(item);
+		specifications
+			// Select specs without a revision if they’re newer than spec with revision numbers.
+			.filter(([, spec]) => {
+				const isSpecWithRevision = /-[0-9]{8}$/.test(spec.id);
+
+				if (isSpecWithRevision) {
+					const specNameWithoutRevision = spec.id.replace(/-[0-9]{8}$/, '');
+
+					// If no matching spec is found without revision, preserve this one with revision.
+					// TODO: should we preserve all revisions or filter out older ones?
+					if (!specificationsById.has(specNameWithoutRevision)) {
+						return true;
+					}
+
+					const specWithoutRevision = specificationsById.get(
+						specNameWithoutRevision,
+					)!;
+					const specDate = parseDate(spec.date);
+					const specWithoutRevisionDate = parseDate(specWithoutRevision.date);
+
+					// Either the spec with or without revision doesn’t have a date, so we can’t compare the
+					// two. Let’s preserve this one with revision just to be sure.
+					if (specDate === null || specWithoutRevisionDate === null) {
+						return true;
+					}
+
+					// We have a spec with and without a revision. If with revision is newer, let’s keep it.
+					return isAfter(specDate, specWithoutRevisionDate);
+				}
+
+				return true;
 			})
-			// Get specifications published by W3C
-			// TODO: should we add more publishers? CSSWG? WHATWG?
-			// .filter(([, item]) => item.publisher === 'W3C')
 			.map<W3Specification>(([key, item]) => parseResponseItem(item, key))
 	);
 }
