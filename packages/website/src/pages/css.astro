@@ -1,0 +1,32 @@
+---
+import type { W3SpecificationSerialized } from '@ww/core/src/integrations/w3';
+import {
+	deserialize as deserializeW3Data,
+	isLevelEqualOrGreaterThan,
+} from '@ww/core/src/integrations/w3';
+import specificationsW3Data from '@ww/data/w3.json';
+import SpecificationCardList from '../components/integrations/SpecificationCardList.svelte';
+import DefaultLayout from '../layouts/Default.astro';
+
+const specificationsCss = deserializeW3Data(
+	specificationsW3Data as W3SpecificationSerialized[],
+)
+	// Select CSS specifications
+	.filter((spec) => spec.type === 'CSS_SPECIFICATION')
+	// Select specifications that are proposed recommendations or later in level
+	.filter((spec) => isLevelEqualOrGreaterThan(spec.level, 'PR'));
+// Select specfications younger than 5 years
+// .filter(
+// 	(spec) =>
+// 		spec.lastUpdated &&
+// 		spec.lastUpdated >
+// 			sub(now, {
+// 				years: 5,
+// 			}),
+// );
+---
+
+<DefaultLayout>
+	<h1>CSS ({specificationsCss.length})</h1>
+	<SpecificationCardList ds={specificationsCss} />
+</DefaultLayout>
