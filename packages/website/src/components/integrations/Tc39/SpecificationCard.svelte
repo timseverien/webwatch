@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Tc39Proposal } from '@ww/core/src/integrations/tc39';
+	import type { Tc39Specification } from '@ww/core/src/integrations/tc39';
 	import { format } from 'date-fns';
 	import SpecificationCard from '../../SpecificationCard.svelte';
 
-	export let d: Tc39Proposal;
+	export let d: Tc39Specification;
 </script>
 
 <SpecificationCard name={d.name}>

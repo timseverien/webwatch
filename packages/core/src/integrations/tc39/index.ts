@@ -1,53 +1,59 @@
-export type Tc39ProposalUnfinishedStage = 0 | 1 | 2 | 3;
-export type Tc39ProposalFinishedStage = 4;
-export type Tc39ProposalStage =
-	| Tc39ProposalUnfinishedStage
-	| Tc39ProposalFinishedStage;
+export type Tc39SpecificationUnfinishedStage = 0 | 1 | 2 | 3;
+export type Tc39SpecificationFinishedStage = 4;
+export type Tc39SpecificationStage =
+	| Tc39SpecificationUnfinishedStage
+	| Tc39SpecificationFinishedStage;
 
-export interface Tc39ProposalUnfinished {
-	type: 'TC39_PROPOSAL';
+export interface Tc39SpecificationUnfinished {
+	type: 'TC39_SPECIFICATION';
 	name: string;
 	proposalUrl: string;
 	specificationUrl: string | null;
-	stage: Tc39ProposalUnfinishedStage;
+	stage: Tc39SpecificationUnfinishedStage;
 	lastUpdated: Date | null;
 }
 
-export interface Tc39ProposalFinished {
-	type: 'TC39_PROPOSAL';
+export interface Tc39SpecificationFinished {
+	type: 'TC39_SPECIFICATION';
 	name: string;
 	proposalUrl: string;
 	specificationUrl: string;
-	stage: Tc39ProposalFinishedStage;
+	stage: Tc39SpecificationFinishedStage;
 	lastUpdated: Date;
 }
 
-export type Tc39Proposal = Tc39ProposalUnfinished | Tc39ProposalFinished;
+export type Tc39Specification =
+	| Tc39SpecificationUnfinished
+	| Tc39SpecificationFinished;
 
-export interface Tc39ProposalSerialized
-	extends Omit<Tc39Proposal, 'lastUpdated'> {
+export interface Tc39SpecificationSerialized
+	extends Omit<Tc39Specification, 'lastUpdated'> {
 	lastUpdated: string | null;
 }
 
-export function serialize(data: Tc39Proposal[]): Tc39ProposalSerialized[] {
-	return data.map<Tc39ProposalSerialized>((d) => ({
+export function serialize(
+	data: Tc39Specification[],
+): Tc39SpecificationSerialized[] {
+	return data.map<Tc39SpecificationSerialized>((d) => ({
 		...d,
 		lastUpdated: d.lastUpdated ? d.lastUpdated.toISOString() : null,
 	}));
 }
 
-export function deserialize(data: Tc39ProposalSerialized[]): Tc39Proposal[] {
-	return data.map<Tc39Proposal>((d) => {
+export function deserialize(
+	data: Tc39SpecificationSerialized[],
+): Tc39Specification[] {
+	return data.map<Tc39Specification>((d) => {
 		if (d?.specificationUrl) {
 			return {
 				...d,
 				lastUpdated: d.lastUpdated ? new Date(Date.parse(d.lastUpdated)) : null,
-			} as Tc39ProposalUnfinished;
+			} as Tc39SpecificationUnfinished;
 		}
 
 		return {
 			...d,
 			lastUpdated: d.lastUpdated ? new Date(Date.parse(d.lastUpdated)) : null,
-		} as Tc39ProposalFinished;
+		} as Tc39SpecificationFinished;
 	});
 }

@@ -1,8 +1,8 @@
 export {
-	getProposals,
-	getStage0Proposals,
-	getStage1Proposals,
-	getStage2Proposals,
-	getStage3Proposals,
-	getStage4Proposals,
+	getSpecifications,
+	getStage0Specifications,
+	getStage1Specifications,
+	getStage2Specifications,
+	getStage3Specifications,
+	getStage4Specifications,
 } from './client.js';

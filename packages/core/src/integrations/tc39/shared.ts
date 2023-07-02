@@ -5,12 +5,12 @@ import { enUS as localeEnUS } from 'date-fns/locale';
 import { marked } from 'marked';
 import { isTokenLink } from '../../services/markdown.js';
 import {
-	Tc39Proposal,
-	Tc39ProposalFinished,
-	Tc39ProposalFinishedStage,
-	Tc39ProposalStage,
-	Tc39ProposalUnfinished,
-	Tc39ProposalUnfinishedStage,
+	Tc39Specification,
+	Tc39SpecificationFinished,
+	Tc39SpecificationFinishedStage,
+	Tc39SpecificationStage,
+	Tc39SpecificationUnfinished,
+	Tc39SpecificationUnfinishedStage,
 } from './index.js';
 
 async function getDateFromSpecificationUrl(url: string): Promise<Date | null> {
@@ -36,20 +36,20 @@ async function getDateFromSpecificationUrl(url: string): Promise<Date | null> {
 	return null;
 }
 
-export async function createProposalFromLink(
+export async function createSpecificationFromLink(
 	link: marked.Tokens.Link,
-	stage: Tc39ProposalUnfinishedStage,
-): Promise<Tc39ProposalUnfinished>;
+	stage: Tc39SpecificationUnfinishedStage,
+): Promise<Tc39SpecificationUnfinished>;
 
-export async function createProposalFromLink(
+export async function createSpecificationFromLink(
 	link: marked.Tokens.Link,
-	stage: Tc39ProposalFinishedStage,
-): Promise<Tc39ProposalFinished>;
+	stage: Tc39SpecificationFinishedStage,
+): Promise<Tc39SpecificationFinished>;
 
-export async function createProposalFromLink(
+export async function createSpecificationFromLink(
 	link: marked.Tokens.Link,
-	stage: Tc39ProposalStage,
-): Promise<Tc39Proposal> {
+	stage: Tc39SpecificationStage,
+): Promise<Tc39Specification> {
 	const name = link.text;
 	const specificationUrl = getSpecificationUrlFromProposalUrl(link.href);
 	const lastUpdated = specificationUrl
@@ -58,7 +58,7 @@ export async function createProposalFromLink(
 
 	if (stage === 4) {
 		return {
-			type: 'TC39_PROPOSAL',
+			type: 'TC39_SPECIFICATION',
 			name,
 			proposalUrl: link.href,
 			specificationUrl: specificationUrl!,
@@ -68,7 +68,7 @@ export async function createProposalFromLink(
 	}
 
 	return {
-		type: 'TC39_PROPOSAL',
+		type: 'TC39_SPECIFICATION',
 		name,
 		proposalUrl: link.href,
 		specificationUrl,

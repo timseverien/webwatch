@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {
-		isTc39Proposal,
+		isTc39Specification,
 		isW3Specification,
 		type Specification,
 	} from '../data';
@@ -30,7 +30,7 @@
 <ul class="container">
 	{#each dsSorted as d}
 		<li>
-			{#if isTc39Proposal(d)}
+			{#if isTc39Specification(d)}
 				<Tc39SpecificationCard {d} />
 			{:else if isW3Specification(d)}
 				<W3SpecificationCard {d} />
