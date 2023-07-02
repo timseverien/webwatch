@@ -13,7 +13,7 @@
     "packages/website"
   ],
   "devDependencies": {
-    "@types/node": "^20.3.1",
+    "@types/node": "^20.3.3",
     "vite-node": "^0.32.2"
   },
   "dependencies": {
