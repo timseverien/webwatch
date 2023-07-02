@@ -6,8 +6,8 @@ import { deserialize as deserializeW3Data } from '@ww/core/src/integrations/w3';
 import specificationsEcma262Data from '@ww/data/ecma262.json';
 import specificationsEcma402Data from '@ww/data/ecma402.json';
 import specificationsW3Data from '@ww/data/w3.json';
-import SpecificationCardList from '../components/SpecificationCardList.svelte';
 import DefaultLayout from '../layouts/Default.astro';
+import SpecificationOverview from '../components/SpecificationOverview.svelte';
 
 const specificationsEcma262 = deserializeTc39Data(
 	specificationsEcma262Data as Tc39SpecificationSerialized[],
@@ -23,7 +23,12 @@ const specificationsW3 = deserializeW3Data(
 <DefaultLayout>
 	<h1>Webwatch (working title)</h1>
 
-	<SpecificationCardList
-		ds={[specificationsEcma262, specificationsEcma402, specificationsW3].flat()}
+	<SpecificationOverview
+		specifications={[
+			specificationsEcma262,
+			specificationsEcma402,
+			specificationsW3,
+		].flat()}
+		client:only
 	/>
 </DefaultLayout>
