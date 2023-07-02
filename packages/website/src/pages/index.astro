@@ -2,25 +2,22 @@
 import type { Tc39ProposalSerialized } from '@ww/core/src/integrations/tc39';
 import { deserialize as deserializeTc39Data } from '@ww/core/src/integrations/tc39';
 import type { W3SpecificationSerialized } from '@ww/core/src/integrations/w3';
-import {
-	deserialize as deserializeW3Data,
-	isLevelEqualOrGreaterThan,
-} from '@ww/core/src/integrations/w3';
+import { deserialize as deserializeW3Data } from '@ww/core/src/integrations/w3';
 import proposalsEcma262Data from '@ww/data/ecma262.json';
 import proposalsEcma402Data from '@ww/data/ecma402.json';
 import specificationsW3Data from '@ww/data/w3.json';
-import SpecificationCardList from '../components/integrations/SpecificationCardList.svelte';
+import SpecificationCardList from '../components/SpecificationCardList.svelte';
 import DefaultLayout from '../layouts/Default.astro';
 
 const proposalsEcma262 = deserializeTc39Data(
 	proposalsEcma262Data as Tc39ProposalSerialized[],
-).filter(prop => prop.stage >= 3);
+);
 const proposalsEcma402 = deserializeTc39Data(
 	proposalsEcma402Data as Tc39ProposalSerialized[],
-).filter(prop => prop.stage >= 3);
+);
 const specificationsW3 = deserializeW3Data(
 	specificationsW3Data as W3SpecificationSerialized[],
-).filter((spec) => isLevelEqualOrGreaterThan(spec.level, 'PR'));
+);
 ---
 
 <DefaultLayout>
