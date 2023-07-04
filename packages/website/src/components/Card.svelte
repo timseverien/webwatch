@@ -1,5 +1,16 @@
+<script>
+	import Flow from './Flow.svelte';
+</script>
+
 <div class="container">
-	<slot />
+	<Flow>
+		<div>
+			<slot name="header" />
+		</div>
+		<div>
+			<slot />
+		</div>
+	</Flow>
 </div>
 
 <style>

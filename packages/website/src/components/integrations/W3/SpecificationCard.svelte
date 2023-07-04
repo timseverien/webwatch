@@ -1,12 +1,19 @@
 <script lang="ts">
-	import type { W3Specification } from '@ww/core/src/integrations/w3';
+	import {
+		W3_SPECIFICATION_TYPE_LABEL_MAP,
+		type W3Specification,
+	} from '@ww/core/src/integrations/w3';
 	import { format } from 'date-fns';
 	import SpecificationCard from '../../SpecificationCard.svelte';
 
 	export let d: W3Specification;
+	$: category =
+		d.type !== 'W3_SPECIFICATION'
+			? W3_SPECIFICATION_TYPE_LABEL_MAP[d.type]
+			: null;
 </script>
 
-<SpecificationCard name={d.name}>
+<SpecificationCard name={d.name} {category}>
 	<svelte:fragment slot="property-list">
 		<dt>Level</dt>
 		<dd>{d.level}</dd>
