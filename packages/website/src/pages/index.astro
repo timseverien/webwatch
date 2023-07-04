@@ -8,6 +8,7 @@ import specificationsEcma402Data from '@ww/data/ecma402.json';
 import specificationsW3Data from '@ww/data/w3.json';
 import DefaultLayout from '../layouts/Default.astro';
 import SpecificationOverview from '../components/SpecificationOverview.svelte';
+import Flow from '../components/Flow.svelte';
 
 const specificationsEcma262 = deserializeTc39Data(
 	specificationsEcma262Data as Tc39SpecificationSerialized[],
@@ -21,14 +22,15 @@ const specificationsW3 = deserializeW3Data(
 ---
 
 <DefaultLayout>
-	<h1>Webwatch (working title)</h1>
-
-	<SpecificationOverview
-		specifications={[
-			specificationsEcma262,
-			specificationsEcma402,
-			specificationsW3,
-		].flat()}
-		client:only
-	/>
+	<Flow>
+		<h1>Webwatch (working title)</h1>
+		<SpecificationOverview
+			specifications={[
+				specificationsEcma262,
+				specificationsEcma402,
+				specificationsW3,
+			].flat()}
+			client:only
+		/>
+	</Flow>
 </DefaultLayout>

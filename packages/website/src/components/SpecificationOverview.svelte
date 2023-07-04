@@ -98,7 +98,9 @@
 	</div>
 {/if}
 
-<SpecificationCardList ds={specificationsFiltered} />
+<div>
+	<SpecificationCardList ds={specificationsFiltered} />
+</div>
 
 <style>
 	.filters {
