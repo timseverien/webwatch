@@ -4,4 +4,4 @@
 	$: nameWithoutSymbols = name.replace(/`(.+?)`/g, '<code>$1</code>');
 </script>
 
-<span>{@html nameWithoutSymbols}</span>
+{@html nameWithoutSymbols}
