@@ -42,7 +42,7 @@
 <style>
 	.container {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, 48ch);
+		grid-template-columns: repeat(auto-fit, 60ch);
 		gap: 1em;
 
 		margin: 0;
