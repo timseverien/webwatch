@@ -100,7 +100,7 @@
 	// Filter preset props
 	export let lastUpdatedMin: Date = sub(TODAY, { years: 5 });
 	export let nameQuery: string = '';
-	export let stages: SpecificationStage[] = ['UPCOMING', 'COMPLETED'];
+	export let stages: SpecificationStage[] = ['COMPLETED'];
 	export let types: Specification['type'][] = [
 		'CSS_SPECIFICATION',
 		'DOM_SPECIFICATION',
