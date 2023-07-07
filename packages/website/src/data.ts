@@ -4,10 +4,26 @@ import {
 	type W3Specification,
 } from '@ww/core/src/integrations/w3';
 
-const SPECIFICATION_STAGES = ['IDEATION', 'UPCOMING', 'COMPLETED'] as const;
-
 export type Specification = Tc39Specification | W3Specification;
+
+const SPECIFICATION_STAGES = ['IDEATION', 'UPCOMING', 'COMPLETED'] as const;
 export type SpecificationStage = (typeof SPECIFICATION_STAGES)[number];
+
+export const TYPE_THEME_COLOR_MAP: {
+	[key in Specification['type']]: { foreground: string; background: string };
+} = {
+	CSS_SPECIFICATION: { background: '#274de3', foreground: 'white' },
+	DOM_SPECIFICATION: { background: 'black', foreground: 'white' },
+	HTML_SPECIFICATION: { background: '#e54c20', foreground: 'white' },
+	JSON_LD_SPECIFICATION: { background: '#0d479c', foreground: 'white' },
+	SVG_SPECIFICATION: { background: '#ff9a01', foreground: 'white' },
+	TC39_SPECIFICATION: { background: '#f7e018', foreground: 'black' },
+	URI_SPECIFICATION: { background: 'black', foreground: 'white' },
+	W3_SPECIFICATION: { background: '#005a9c', foreground: 'white' },
+	WAI_ARIA_SPECIFICATION: { background: '#005a9c', foreground: 'white' },
+	WASM_SPECIFICATION: { background: '#654ff0', foreground: 'white' },
+	WEB_API_SPECIFICATION: { background: 'black', foreground: 'white' },
+};
 
 export function isTc39Specification(
 	spec: Specification,
@@ -37,7 +53,7 @@ function getSpecificationStageFromW3Specification(
 	return 'IDEATION';
 }
 
-function getSpecificationStage(spec: Specification): SpecificationStage {
+export function getSpecificationStage(spec: Specification): SpecificationStage {
 	if (isTc39Specification(spec)) {
 		return getSpecificationStageFromTc39Specification(spec);
 	}

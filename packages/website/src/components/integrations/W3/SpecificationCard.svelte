@@ -13,7 +13,7 @@
 			: null;
 </script>
 
-<SpecificationCard name={d.name} {category}>
+<SpecificationCard type={d.type} name={d.name} {category}>
 	<svelte:fragment slot="property-list">
 		<dt>Level</dt>
 		<dd>{d.level}</dd>

@@ -6,7 +6,7 @@
 	export let d: Tc39Specification;
 </script>
 
-<SpecificationCard name={d.name} category="JavaScript">
+<SpecificationCard type={d.type} name={d.name} category="JavaScript">
 	<svelte:fragment slot="property-list">
 		<dt>Stage</dt>
 		<dd>{d.stage}</dd>
