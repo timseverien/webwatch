@@ -8,7 +8,7 @@
 	import Chip from '../Chip.svelte';
 
 	export let tag: SpecificationTag;
-	export let active: boolean = false;
+	export let active: boolean = true;
 
 	const dispatch = createEventDispatcher<{ click: void }>();
 
