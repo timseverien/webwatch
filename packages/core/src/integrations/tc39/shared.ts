@@ -7,8 +7,8 @@ import { isTokenLink } from '../../services/markdown.js';
 import {
 	Tc39Specification,
 	Tc39SpecificationFinished,
-	Tc39SpecificationFinishedStage,
 	Tc39SpecificationStage,
+	Tc39SpecificationTag,
 	Tc39SpecificationUnfinished,
 	Tc39SpecificationUnfinishedStage,
 } from './index.js';
@@ -38,17 +38,26 @@ async function getDateFromSpecificationUrl(url: string): Promise<Date | null> {
 
 export async function createSpecificationFromLink(
 	link: marked.Tokens.Link,
-	stage: Tc39SpecificationUnfinishedStage,
+	info: {
+		stage: Tc39SpecificationUnfinishedStage;
+		tags: Tc39SpecificationTag[];
+	},
 ): Promise<Tc39SpecificationUnfinished>;
 
 export async function createSpecificationFromLink(
 	link: marked.Tokens.Link,
-	stage: Tc39SpecificationFinishedStage,
+	info: {
+		stage: 4;
+		tags: Tc39SpecificationTag[];
+	},
 ): Promise<Tc39SpecificationFinished>;
 
 export async function createSpecificationFromLink(
 	link: marked.Tokens.Link,
-	stage: Tc39SpecificationStage,
+	info: {
+		stage: Tc39SpecificationStage;
+		tags: Tc39SpecificationTag[];
+	},
 ): Promise<Tc39Specification> {
 	const name = link.text;
 	const specificationUrl = getSpecificationUrlFromProposalUrl(link.href);
@@ -56,14 +65,15 @@ export async function createSpecificationFromLink(
 		? await getDateFromSpecificationUrl(specificationUrl)
 		: null;
 
-	if (stage === 4) {
+	if (info.stage === 4) {
 		return {
 			type: 'TC39_SPECIFICATION',
 			name,
 			proposalUrl: link.href,
 			specificationUrl: specificationUrl!,
-			stage,
+			stage: info.stage,
 			lastUpdated: lastUpdated!,
+			tags: info.tags,
 		};
 	}
 
@@ -72,8 +82,9 @@ export async function createSpecificationFromLink(
 		name,
 		proposalUrl: link.href,
 		specificationUrl,
-		stage,
+		stage: info.stage,
 		lastUpdated,
+		tags: info.tags,
 	};
 }
 

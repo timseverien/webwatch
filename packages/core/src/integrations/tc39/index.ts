@@ -4,6 +4,8 @@ export type Tc39SpecificationStage =
 	| Tc39SpecificationUnfinishedStage
 	| Tc39SpecificationFinishedStage;
 
+export type Tc39SpecificationTag = 'ECMA262' | 'ECMA402';
+
 export interface Tc39SpecificationUnfinished {
 	type: 'TC39_SPECIFICATION';
 	name: string;
@@ -11,6 +13,7 @@ export interface Tc39SpecificationUnfinished {
 	specificationUrl: string | null;
 	stage: Tc39SpecificationUnfinishedStage;
 	lastUpdated: Date | null;
+	tags: Tc39SpecificationTag[];
 }
 
 export interface Tc39SpecificationFinished {
@@ -20,6 +23,7 @@ export interface Tc39SpecificationFinished {
 	specificationUrl: string;
 	stage: Tc39SpecificationFinishedStage;
 	lastUpdated: Date;
+	tags: Tc39SpecificationTag[];
 }
 
 export type Tc39Specification =

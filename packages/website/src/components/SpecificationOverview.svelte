@@ -1,21 +1,20 @@
 <script lang="ts">
-	import {
-		W3_SPECIFICATION_TYPES,
-		W3_SPECIFICATION_TYPE_LABEL_MAP,
-	} from '@ww/core/src/integrations/w3';
 	import { isAfter, isEqual, startOfDay, sub } from 'date-fns';
 	import {
+		SPECIFICATION_TAG_LABEL_MAP,
 		getSpecificationStage,
 		type Specification,
 		type SpecificationStage,
+		type SpecificationTag,
 	} from '../data';
 	import Flow from './Flow.svelte';
 	import type { Option } from './InputChoice.svelte';
 	import InputChoiceMultiple from './InputChoiceMultiple.svelte';
 	import InputDate from './InputDate.svelte';
 	import SpecificationCardList from './SpecificationCardList.svelte';
+	import TagChip from './integrations/TagChip.svelte';
 
-	type FilterType = 'LAST_UPDATED' | 'NAME' | 'STAGE' | 'TYPE';
+	type FilterType = 'LAST_UPDATED' | 'NAME' | 'STAGE' | 'TAG';
 
 	function applyFilters(
 		specifications: Specification[],
@@ -23,14 +22,14 @@
 			lastUpdatedMin: Date | null;
 			name: string | null;
 			stages: SpecificationStage[];
-			types: Specification['type'][];
+			tags: SpecificationTag[];
 		},
 	) {
 		let specsFiltered = specifications;
 
-		if (filters.types.length > 0) {
+		if (filters.tags.length > 0) {
 			specsFiltered = specsFiltered.filter((spec) =>
-				filters.types.includes(spec.type),
+				spec.tags.some((tag) => filters.tags.includes(tag)),
 			);
 		}
 
@@ -65,35 +64,19 @@
 		{ text: 'Completed', value: 'COMPLETED' },
 	];
 
-	const TYPE_OPTIONS: Option<Specification['type']>[] = (
-		[
-			{ text: 'JavaScript', value: 'TC39_SPECIFICATION' },
-			...W3_SPECIFICATION_TYPES.map((value) => {
-				if (value === 'W3_SPECIFICATION') {
-					return {
-						text: 'Other',
-						value,
-					};
-				}
-
-				return {
-					text: W3_SPECIFICATION_TYPE_LABEL_MAP[value],
-					value,
-				};
-			}),
-		] as Option<Specification['type']>[]
-	).sort((a, b) => {
-		const aText = a.value !== 'W3_SPECIFICATION' ? a.text : 'ZZZ';
-		const bText = b.value !== 'W3_SPECIFICATION' ? b.text : 'ZZZ';
-		return aText.localeCompare(bText);
-	});
+	const TAG_OPTIONS: Option<SpecificationTag>[] = Object.entries(
+		SPECIFICATION_TAG_LABEL_MAP,
+	).map<Option<SpecificationTag>>(([value, text]) => ({
+		text,
+		value: value as SpecificationTag,
+	}));
 
 	// Data props
 	export let enabledFilters: FilterType[] = [
 		'LAST_UPDATED',
 		'NAME',
 		'STAGE',
-		'TYPE',
+		'TAG',
 	];
 	export let specifications: Specification[];
 
@@ -101,14 +84,15 @@
 	export let lastUpdatedMin: Date = sub(TODAY, { years: 5 });
 	export let nameQuery: string = '';
 	export let stages: SpecificationStage[] = ['COMPLETED'];
-	export let types: Specification['type'][] = [
-		'CSS_SPECIFICATION',
-		'DOM_SPECIFICATION',
-		'HTML_SPECIFICATION',
-		'SVG_SPECIFICATION',
-		'TC39_SPECIFICATION',
-		'WAI_ARIA_SPECIFICATION',
-		'WEB_API_SPECIFICATION',
+	export let tags: SpecificationTag[] = [
+		'Accessibility',
+		'CSS',
+		'DOM',
+		'ECMA262',
+		'ECMA402',
+		'HTML',
+		'Web API',
+		'Web Fonts',
 	];
 
 	$: specificationsFiltered = applyFilters(specifications, {
@@ -117,17 +101,36 @@
 			: null,
 		name: enabledFilters.includes('NAME') ? nameQuery : null,
 		stages: enabledFilters.includes('STAGE') ? stages : [],
-		types: enabledFilters.includes('TYPE') ? types : [],
+		tags: enabledFilters.includes('TAG') ? tags : [],
 	});
 </script>
 
 {#if enabledFilters.length > 0}
 	<div>
-		{#if enabledFilters.includes('TYPE')}
+		{#if enabledFilters.includes('TAG')}
 			<fieldset>
-				<legend>Category</legend>
+				<legend>Categories</legend>
 				<Flow direction="INLINE" size={0.25}>
-					<InputChoiceMultiple options={TYPE_OPTIONS} bind:value={types} />
+					{#each tags as tag}
+						<TagChip
+							{tag}
+							active={tags.includes(tag)}
+							on:click={() => {
+								tags = tags.filter((t) => t !== tag);
+							}}
+						/>
+					{/each}
+				</Flow>
+				<Flow direction="INLINE" size={0.25}>
+					{#each TAG_OPTIONS.map((o) => o.value).filter((tag) => !tags.includes(tag)) as tag}
+						<TagChip
+							{tag}
+							active={tags.includes(tag)}
+							on:click={() => {
+								tags = [...tags, tag];
+							}}
+						/>
+					{/each}
 				</Flow>
 			</fieldset>
 		{/if}
@@ -159,5 +162,5 @@
 {/if}
 
 <div>
-	<SpecificationCardList ds={specificationsFiltered} />
+	<SpecificationCardList specifications={specificationsFiltered} />
 </div>

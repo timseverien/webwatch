@@ -1,13 +1,3 @@
-import axios from 'axios';
-import {
-	isAfter,
-	parse,
-	startOfDay,
-	startOfMonth,
-	startOfYear,
-} from 'date-fns';
-import localeEnUs from 'date-fns/locale/en-US';
-
 // https://www.w3.org/2005/10/Process-20051014/tr#maturity-levels
 // This list is ordered
 const W3_SPECIFICATION_LEVELS = [
@@ -22,6 +12,27 @@ const W3_SPECIFICATION_LEVELS = [
 ] as const;
 
 export type W3SpecificationLevel = (typeof W3_SPECIFICATION_LEVELS)[number];
+
+export type W3SpecificationTag =
+	| 'Accessibility'
+	| 'Browser'
+	| 'CSS'
+	| 'Data'
+	| 'DOM'
+	| 'Digital Publishing'
+	| 'Graphics'
+	| 'HTML'
+	| 'HTTP'
+	| 'i18n'
+	| 'Media'
+	| 'Performance'
+	| 'Privacy'
+	| 'Protocol'
+	| 'Security'
+	| 'Web API'
+	| 'Web Fonts'
+	| 'WoT'
+	| 'XML';
 
 export function getLevelsEqualOrGreaterThan(
 	level: W3SpecificationLevel,
@@ -39,292 +50,24 @@ export function isLevelEqualOrGreaterThan(
 	return index1 >= index2;
 }
 
-export interface W3GenericSpecification {
+export interface W3Specification {
 	type: 'W3_SPECIFICATION';
 	name: string;
 	specificationUrl: string;
 	level: W3SpecificationLevel;
 	lastUpdated: Date | null;
+	tags: W3SpecificationTag[];
 }
-
-export interface CssSpecification extends Omit<W3GenericSpecification, 'type'> {
-	type: 'CSS_SPECIFICATION';
-}
-
-export interface DomSpecification extends Omit<W3GenericSpecification, 'type'> {
-	type: 'DOM_SPECIFICATION';
-}
-
-export interface HtmlSpecification
-	extends Omit<W3GenericSpecification, 'type'> {
-	type: 'HTML_SPECIFICATION';
-}
-
-export interface JsonLdSpecification
-	extends Omit<W3GenericSpecification, 'type'> {
-	type: 'JSON_LD_SPECIFICATION';
-}
-
-export interface SvgSpecification extends Omit<W3GenericSpecification, 'type'> {
-	type: 'SVG_SPECIFICATION';
-}
-
-export interface UriSpecification extends Omit<W3GenericSpecification, 'type'> {
-	type: 'URI_SPECIFICATION';
-}
-
-export interface WaiAriaSpecification
-	extends Omit<W3GenericSpecification, 'type'> {
-	type: 'WAI_ARIA_SPECIFICATION';
-}
-
-export interface WasmSpecification
-	extends Omit<W3GenericSpecification, 'type'> {
-	type: 'WASM_SPECIFICATION';
-}
-
-export interface WebApiSpecification
-	extends Omit<W3GenericSpecification, 'type'> {
-	type: 'WEB_API_SPECIFICATION';
-}
-
-export type W3Specification =
-	| W3GenericSpecification
-	| CssSpecification
-	| DomSpecification
-	| HtmlSpecification
-	| JsonLdSpecification
-	| SvgSpecification
-	| UriSpecification
-	| WaiAriaSpecification
-	| WasmSpecification
-	| WebApiSpecification;
-
-export const W3_SPECIFICATION_TYPE_LABEL_MAP: {
-	[key in W3Specification['type']]: string;
-} = {
-	CSS_SPECIFICATION: 'CSS',
-	DOM_SPECIFICATION: 'DOM',
-	HTML_SPECIFICATION: 'HTML',
-	JSON_LD_SPECIFICATION: 'JSON+LD',
-	SVG_SPECIFICATION: 'SVG',
-	URI_SPECIFICATION: 'URI',
-	W3_SPECIFICATION: 'W3',
-	WAI_ARIA_SPECIFICATION: 'WAI ARIA',
-	WASM_SPECIFICATION: 'WASM',
-	WEB_API_SPECIFICATION: 'Web API',
-};
-
-export const W3_SPECIFICATION_TYPES = Object.keys(
-	W3_SPECIFICATION_TYPE_LABEL_MAP,
-) as W3Specification['type'][];
 
 export interface W3SpecificationSerialized
 	extends Omit<W3Specification, 'lastUpdated'> {
 	lastUpdated: string | null;
 }
 
-interface SpecrefAliasItem {
-	id: string;
-	aliasOf: string;
-}
-
-interface SpecrefItem {
-	id: string;
-	title: string;
-	href: string;
-	date: string;
-	status: string;
-	authors: string[];
-	publisher: string;
-	edDraft?: string;
-	deliveredBy?: [
-		{
-			shortname: string;
-			url: string;
-		},
-	];
-	versions?: string[];
-}
-
-type SpecrefResponseItem = SpecrefAliasItem | SpecrefItem;
-
-function getSpecificationTypeByDeliveryNames(
-	names: string[],
-): W3Specification['type'] {
-	const types = names
-		.map((name) => getSpecificationTypeByDeliveryName(name))
-		.filter((type) => type !== 'W3_SPECIFICATION');
-
-	return types[0] ?? 'W3_SPECIFICATION';
-}
-
-function parseLevel(status: string): W3SpecificationLevel {
-	if ((W3_SPECIFICATION_LEVELS as readonly string[]).includes(status)) {
-		return status as W3SpecificationLevel;
-	}
-
-	if (status === 'Proposal for a CSS module') {
-		return 'WD';
-	}
-
-	return 'WD';
-}
-
-function getSpecificationTypeByDeliveryName(
-	name: string,
-): W3Specification['type'] {
-	switch (name) {
-		case 'css':
-			return 'CSS_SPECIFICATION';
-
-		case 'svg':
-			return 'SVG_SPECIFICATION';
-
-		case 'uri':
-			return 'URI_SPECIFICATION';
-
-		case 'wai_about_s_eo':
-		case 'wai_apa':
-		case 'wai_aria':
-		case 'wai_au':
-		case 'wai_er':
-		case 'wai_gl':
-		case 'wai_indieui':
-		case 'wai_pf':
-		case 'wai_rd':
-		case 'wai_ua':
-			return 'WAI_ARIA_SPECIFICATION';
-
-		case 'wasm':
-			return 'WASM_SPECIFICATION';
-
-		case 'webapi':
-		case 'webcrypto':
-		case 'webrtc':
-		case 'webtransport':
-			return 'WEB_API_SPECIFICATION';
-	}
-
-	return 'W3_SPECIFICATION';
-}
-
-function parseResponseItem(item: SpecrefItem, key: string): W3Specification {
-	const date = parseDate(item.date);
-	const name = item.title ?? key;
-
-	if (item.date && !date) {
-		console.warn('Unable to parse date for item', item);
-	}
-
-	return {
-		type: item.deliveredBy
-			? getSpecificationTypeByDeliveryNames(
-					item.deliveredBy.map((d) => d.shortname),
-			  )
-			: 'W3_SPECIFICATION',
-		lastUpdated: date,
-		level: parseLevel(item.status),
-		name,
-		specificationUrl: item.href,
-	};
-}
-
-function isSpecrefResponseItemAlias(item: any): item is SpecrefAliasItem {
-	return !!item.aliasOf;
-}
-
-function parseDate(date: string): Date | null {
-	const today = startOfDay(new Date());
-
-	if (/^[0-9]{4}[0-9]{2}[0-9]{2}$/.test(date)) {
-		return parse(date, 'yyyyMMdd', today, { locale: localeEnUs });
-	}
-	if (/^[0-9]{1,2}\s+[a-z]+\s+[0-9]{4}$/i.test(date)) {
-		return parse(date, 'd LLLL yyyy', today, { locale: localeEnUs });
-	}
-	if (/^[a-z]+\s+[0-9]{4}$/i.test(date)) {
-		return parse(date, 'd LLLL yyyy', startOfMonth(today), {
-			locale: localeEnUs,
-		});
-	}
-	// Some specifications only have a year specified, so just set the date to the beginning of that year
-	if (/^[0-9]{4}$/.test(date)) {
-		return parse(date, 'yyyy', startOfYear(today), {
-			locale: localeEnUs,
-		});
-	}
-
-	return null;
-}
-
-export async function getSpecifications(): Promise<W3Specification[]> {
-	const PERMITTED_PUBLISHERS = new Set([
-		'W3C Geospatial Incubator Group',
-		'W3C Maps for HTML Community Group',
-		'W3C Semantic Web Interest Group',
-		'W3C Web Bluetooth Community Group',
-		'W3C WoT Community Group',
-		'W3C',
-	]);
-
-	const response = await axios.get<{
-		[key: string]: SpecrefResponseItem | string;
-	}>('https://api.specref.org/bibrefs');
-
-	const specifications = Object.entries(response.data)
-		// Aliases refer to other items, so we can omit these
-		// Additionally, some items are strings (dirty API data?) — let’s omit these too
-		.filter((entry): entry is [string, SpecrefItem] => {
-			const [, item] = entry;
-			return typeof item !== 'string' && !isSpecrefResponseItemAlias(item);
-		})
-		// Select specs that W3C published
-		.filter(([, item]) => PERMITTED_PUBLISHERS.has(item.publisher));
-
-	const specificationsById = new Map<string, SpecrefItem>(
-		specifications.map(([, item]) => [item.id, item]),
-	);
-
-	return (
-		specifications
-			// Select specs without a revision if they’re newer than spec with revision numbers.
-			.filter(([, spec]) => {
-				const isSpecWithRevision = /-[0-9]{8}$/.test(spec.id);
-
-				if (isSpecWithRevision) {
-					const specNameWithoutRevision = spec.id.replace(/-[0-9]{8}$/, '');
-
-					// If no matching spec is found without revision, preserve this one with revision.
-					// TODO: should we preserve all revisions or filter out older ones?
-					if (!specificationsById.has(specNameWithoutRevision)) {
-						return true;
-					}
-
-					const specWithoutRevision = specificationsById.get(
-						specNameWithoutRevision,
-					)!;
-					const specDate = parseDate(spec.date);
-					const specWithoutRevisionDate = parseDate(specWithoutRevision.date);
-
-					// Either the spec with or without revision doesn’t have a date, so we can’t compare the
-					// two. Let’s preserve this one with revision just to be sure.
-					if (specDate === null || specWithoutRevisionDate === null) {
-						return true;
-					}
-
-					// We have a spec with and without a revision. If with revision is newer, let’s keep it.
-					return isAfter(specDate, specWithoutRevisionDate);
-				}
-
-				return true;
-			})
-			.map<W3Specification>(([key, item]) => parseResponseItem(item, key))
-	);
-}
+export { getSpecifications } from './client.js';
 
 export function serialize(
-	data: W3GenericSpecification[],
+	data: W3Specification[],
 ): W3SpecificationSerialized[] {
 	return data.map<W3SpecificationSerialized>((d) => ({
 		...d,

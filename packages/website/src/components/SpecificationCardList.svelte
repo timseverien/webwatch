@@ -1,19 +1,15 @@
 <script lang="ts">
-	import {
-		isTc39Specification,
-		isW3Specification,
-		type Specification,
-	} from '../data';
+	import type { Specification } from '../data';
 	import Tc39SpecificationCard from './integrations/Tc39/SpecificationCard.svelte';
 	import W3SpecificationCard from './integrations/W3/SpecificationCard.svelte';
 
-	export let ds: Specification[];
+	export let specifications: Specification[];
 
 	function getStringWithoutSymbols(str: string) {
 		return str.replace(/[^a-z0-9]*/i, '');
 	}
 
-	$: dsSorted = ds.sort((a, b) => {
+	$: specificationsSorted = specifications.sort((a, b) => {
 		const timeA = a.lastUpdated?.getTime() ?? 0;
 		const timeB = b.lastUpdated?.getTime() ?? 0;
 
@@ -28,12 +24,12 @@
 </script>
 
 <ul class="container">
-	{#each dsSorted as d}
+	{#each specificationsSorted as spec}
 		<li>
-			{#if isTc39Specification(d)}
-				<Tc39SpecificationCard {d} />
-			{:else if isW3Specification(d)}
-				<W3SpecificationCard {d} />
+			{#if spec.type === 'TC39_SPECIFICATION'}
+				<Tc39SpecificationCard specification={spec} />
+			{:else if spec.type === 'W3_SPECIFICATION'}
+				<W3SpecificationCard specification={spec} />
 			{/if}
 		</li>
 	{/each}

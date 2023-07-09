@@ -3,25 +3,27 @@
 	import { format } from 'date-fns';
 	import SpecificationCard from '../../SpecificationCard.svelte';
 
-	export let d: Tc39Specification;
+	export let specification: Tc39Specification;
 </script>
 
-<SpecificationCard type={d.type} name={d.name} category="JavaScript">
+<SpecificationCard name={specification.name} tags={specification.tags}>
 	<svelte:fragment slot="property-list">
 		<dt>Stage</dt>
-		<dd>{d.stage}</dd>
+		<dd>{specification.stage}</dd>
 
-		{#if d.lastUpdated}
+		{#if specification.lastUpdated}
 			<dt>Last updated</dt>
 			<dd>
-				<time datetime={d.lastUpdated.toISOString()}>
-					{format(d.lastUpdated, 'PP')}
+				<time datetime={specification.lastUpdated.toISOString()}>
+					{format(specification.lastUpdated, 'PP')}
 				</time>
 			</dd>
 		{/if}
 		<dt>Specification</dt>
 		<dd>
-			<a href={d.specificationUrl}>{d.specificationUrl}</a>
+			<a href={specification.specificationUrl}
+				>{specification.specificationUrl}</a
+			>
 		</dd>
 	</svelte:fragment>
 </SpecificationCard>

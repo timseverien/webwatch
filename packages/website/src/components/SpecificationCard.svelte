@@ -1,35 +1,31 @@
 <script lang="ts">
-	import { TYPE_THEME_COLOR_MAP, type Specification } from '../data';
+	import type { SpecificationTag } from '../data';
 	import Card from './Card.svelte';
-	import Chip from './Chip.svelte';
 	import Flow from './Flow.svelte';
 	import SpecificationName from './SpecificationName.svelte';
+	import TagChip from './integrations/TagChip.svelte';
 
 	export let name: string;
-	export let type: Specification['type'];
-	export let category: string | null = null;
-
-	$: chipColor = TYPE_THEME_COLOR_MAP[type];
+	export let tags: SpecificationTag[];
 </script>
 
 <Card>
 	<svelte:fragment slot="header">
-		<Flow direction="INLINE" justify="SPACE-BETWEEN">
-			<h2 class="specification-name">
-				<SpecificationName {name} />
-			</h2>
-			{#if category}
-				<Chip
-					colorBackground={chipColor.background}
-					colorForeground={chipColor.foreground}>{category}</Chip
-				>
-			{/if}
-		</Flow>
+		<h2 class="specification-name">
+			<SpecificationName {name} />
+		</h2>
 	</svelte:fragment>
 
-	<dl class="specification-property-list">
-		<slot name="property-list" />
-	</dl>
+	<Flow>
+		<dl class="specification-property-list">
+			<slot name="property-list" />
+		</dl>
+		<Flow direction="INLINE" size={0.5}>
+			{#each tags as tag}
+				<TagChip {tag} />
+			{/each}
+		</Flow>
+	</Flow>
 </Card>
 
 <style>

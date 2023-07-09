@@ -7,12 +7,15 @@ import {
 import {
 	Tc39Specification,
 	Tc39SpecificationFinished,
+	Tc39SpecificationTag,
 	Tc39SpecificationUnfinished,
 } from '../index.js';
 import {
 	createSpecificationFromLink,
 	getProposalLinksFromTable,
 } from '../shared.js';
+
+const SPECIFICATION_TAGS: Tc39SpecificationTag[] = ['ECMA262'];
 
 const client = axios.create({
 	baseURL: 'https://raw.githubusercontent.com/tc39/proposals/main',
@@ -27,7 +30,12 @@ export async function getStage0Specifications(): Promise<
 	const results: Tc39SpecificationUnfinished[] = [];
 
 	for (const link of getProposalLinksFromTable(tables)) {
-		results.push(await createSpecificationFromLink(link, 0));
+		results.push(
+			await createSpecificationFromLink(link, {
+				stage: 0,
+				tags: SPECIFICATION_TAGS,
+			}),
+		);
 	}
 
 	return results;
@@ -42,7 +50,12 @@ export async function getStage1Specifications(): Promise<
 	const results: Tc39SpecificationUnfinished[] = [];
 
 	for (const link of getProposalLinksFromTable(tables)) {
-		results.push(await createSpecificationFromLink(link, 1));
+		results.push(
+			await createSpecificationFromLink(link, {
+				stage: 1,
+				tags: SPECIFICATION_TAGS,
+			}),
+		);
 	}
 
 	return results;
@@ -57,7 +70,12 @@ export async function getStage2Specifications(): Promise<
 	const results: Tc39SpecificationUnfinished[] = [];
 
 	for (const link of getProposalLinksFromTable(tables)) {
-		results.push(await createSpecificationFromLink(link, 2));
+		results.push(
+			await createSpecificationFromLink(link, {
+				stage: 2,
+				tags: SPECIFICATION_TAGS,
+			}),
+		);
 	}
 
 	return results;
@@ -70,7 +88,12 @@ export async function getStage3Specifications(): Promise<Tc39Specification[]> {
 	const results: Tc39SpecificationUnfinished[] = [];
 
 	for (const link of getProposalLinksFromTable(tables)) {
-		results.push(await createSpecificationFromLink(link, 3));
+		results.push(
+			await createSpecificationFromLink(link, {
+				stage: 3,
+				tags: SPECIFICATION_TAGS,
+			}),
+		);
 	}
 
 	return results;
@@ -85,7 +108,10 @@ export async function getStage4Specifications(): Promise<
 
 	return Promise.all(
 		getProposalLinksFromTable(tables).map((link) =>
-			createSpecificationFromLink(link, 4),
+			createSpecificationFromLink(link, {
+				stage: 4,
+				tags: SPECIFICATION_TAGS,
+			}),
 		),
 	);
 }
