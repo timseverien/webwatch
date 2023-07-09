@@ -39,34 +39,6 @@ export const SPECIFICATION_TAG_LABEL_MAP: {
 const SPECIFICATION_STAGES = ['IDEATION', 'UPCOMING', 'COMPLETED'] as const;
 export type SpecificationStage = (typeof SPECIFICATION_STAGES)[number];
 
-export function getThemeColorMapFromTag(tag: SpecificationTag): {
-	foreground: string;
-	background: string;
-} {
-	switch (tag) {
-		case 'Accessibility':
-			return { background: '#005a9c', foreground: 'white' };
-		case 'CSS':
-			return { background: '#274de3', foreground: 'white' };
-		case 'DOM':
-			return { background: 'black', foreground: 'white' };
-		case 'ECMA262':
-			return { background: '#f7e018', foreground: 'black' };
-		case 'ECMA402':
-			return { background: '#f27b10', foreground: 'black' };
-		case 'HTML':
-			return { background: '#e54c20', foreground: 'white' };
-		case 'HTTP':
-			return { background: '#015a9d', foreground: 'white' };
-		case 'WoT':
-			return { background: '#005a9c', foreground: 'white' };
-		case 'XML':
-			return { background: '#015faf', foreground: 'white' };
-	}
-
-	return { background: 'black', foreground: 'white' };
-}
-
 export function getLabelFromTag(tag: SpecificationTag): string {
 	switch (tag) {
 		case 'ECMA262':
