@@ -9,10 +9,10 @@
 	import { format } from 'date-fns';
 
 	export let name: string;
-	export let tags: SpecificationTag[];
-	export let level: Tc39SpecificationStage | W3SpecificationLevel;
 	export let lastUpdated: Date | null;
+	export let maturity: Tc39SpecificationStage | W3SpecificationLevel;
 	export let specificationUrl: string | null;
+	export let tags: SpecificationTag[];
 </script>
 
 <Card>
@@ -24,7 +24,7 @@
 
 	<dl class="specification-property-list">
 		<dt>Level</dt>
-		<dd>{level}</dd>
+		<dd>{maturity}</dd>
 
 		{#if lastUpdated}
 			<dt>Last updated</dt>

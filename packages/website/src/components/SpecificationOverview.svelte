@@ -94,7 +94,10 @@
 		lastUpdatedMin: enabledFilters.includes('LAST_UPDATED')
 			? lastUpdatedMin
 			: null,
-		name: enabledFilters.includes('NAME') ? nameQuery : null,
+		name:
+			enabledFilters.includes('NAME') && nameQuery.length > 0
+				? nameQuery
+				: null,
 		stages: enabledFilters.includes('STAGE') ? stages : [],
 		tags: enabledFilters.includes('TAG') ? tags : [],
 	});

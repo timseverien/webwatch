@@ -21,7 +21,7 @@ const client = axios.create({
 	baseURL: 'https://raw.githubusercontent.com/tc39/proposals/main',
 });
 
-export async function getStage0Specifications(): Promise<
+async function getStage0Specifications(): Promise<
 	Tc39SpecificationUnfinished[]
 > {
 	const response = await client.get<string>('/stage-0-proposals.md');
@@ -41,7 +41,7 @@ export async function getStage0Specifications(): Promise<
 	return results;
 }
 
-export async function getStage1Specifications(): Promise<
+async function getStage1Specifications(): Promise<
 	Tc39SpecificationUnfinished[]
 > {
 	const response = await client.get<string>('/stage-1-proposals.md');
@@ -61,7 +61,7 @@ export async function getStage1Specifications(): Promise<
 	return results;
 }
 
-export async function getStage2Specifications(): Promise<
+async function getStage2Specifications(): Promise<
 	Tc39SpecificationUnfinished[]
 > {
 	const response = await client.get<string>('/README.md');
@@ -81,7 +81,7 @@ export async function getStage2Specifications(): Promise<
 	return results;
 }
 
-export async function getStage3Specifications(): Promise<Tc39Specification[]> {
+async function getStage3Specifications(): Promise<Tc39Specification[]> {
 	const response = await client.get<string>('/README.md');
 	const content = selectByHeader(getTokens(response.data), 'Stage 3');
 	const tables = selectTables(content);
@@ -99,9 +99,7 @@ export async function getStage3Specifications(): Promise<Tc39Specification[]> {
 	return results;
 }
 
-export async function getStage4Specifications(): Promise<
-	Tc39SpecificationFinished[]
-> {
+async function getStage4Specifications(): Promise<Tc39SpecificationFinished[]> {
 	const response = await client.get<string>('/finished-proposals.md');
 	const content = getTokens(response.data);
 	const tables = selectTables(content);

@@ -69,22 +69,22 @@ export async function createSpecificationFromLink(
 		return {
 			type: 'TC39_SPECIFICATION',
 			name,
-			proposalUrl: link.href,
 			specificationUrl: specificationUrl!,
-			stage: info.stage,
+			maturity: info.stage,
 			lastUpdated: lastUpdated!,
 			tags: info.tags,
+			links: [],
 		};
 	}
 
 	return {
 		type: 'TC39_SPECIFICATION',
 		name,
-		proposalUrl: link.href,
 		specificationUrl,
-		stage: info.stage,
+		maturity: info.stage,
 		lastUpdated,
 		tags: info.tags,
+		links: [],
 	};
 }
 

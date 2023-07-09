@@ -36,14 +36,13 @@ export const SPECIFICATION_TAG_LABEL_MAP: {
 	XML: 'XML',
 };
 
-const SPECIFICATION_STAGES = ['IDEATION', 'UPCOMING', 'COMPLETED'] as const;
+const SPECIFICATION_STAGES = ['UPCOMING', 'COMPLETED'] as const;
 export type SpecificationStage = (typeof SPECIFICATION_STAGES)[number];
 
 export const SPECIFICATION_STAGE_LABEL_MAP: {
 	[stage in SpecificationStage]: string;
 } = {
 	COMPLETED: 'Completed',
-	IDEATION: 'Ideation',
 	UPCOMING: 'Upcoming',
 };
 
@@ -63,17 +62,15 @@ export function getLabelFromTag(tag: SpecificationTag): string {
 function getSpecificationStageFromTc39Specification(
 	spec: Tc39Specification,
 ): SpecificationStage {
-	if (spec.stage === 4) return 'COMPLETED';
-	if (spec.stage === 3) return 'UPCOMING';
-	return 'IDEATION';
+	if (spec.maturity === 4) return 'COMPLETED';
+	return 'UPCOMING';
 }
 
 function getSpecificationStageFromW3Specification(
 	spec: W3Specification,
 ): SpecificationStage {
-	if (spec.level === 'REC') return 'COMPLETED';
-	if (spec.level === 'PR') return 'UPCOMING';
-	return 'IDEATION';
+	if (spec.maturity === 'REC') return 'COMPLETED';
+	return 'UPCOMING';
 }
 
 export function getSpecificationStage(spec: Specification): SpecificationStage {

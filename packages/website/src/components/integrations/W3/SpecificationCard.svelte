@@ -8,7 +8,7 @@
 <SpecificationCard
 	name={specification.name}
 	tags={specification.tags}
-	level={specification.level}
+	maturity={specification.maturity}
 	lastUpdated={specification.lastUpdated}
 	specificationUrl={specification.specificationUrl}
 />

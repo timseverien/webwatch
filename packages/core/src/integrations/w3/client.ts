@@ -2,7 +2,7 @@ import axios from 'axios';
 import { load } from 'cheerio';
 import { parse, startOfDay, startOfMonth, startOfYear } from 'date-fns';
 import { enUS as localeEnUs } from 'date-fns/locale';
-import {
+import type {
 	W3Specification,
 	W3SpecificationLevel,
 	W3SpecificationTag,
@@ -94,12 +94,13 @@ export async function getSpecifications(): Promise<W3Specification[]> {
 					specs.push({
 						type: 'W3_SPECIFICATION',
 						name,
-						level: level,
+						maturity: level,
 						specificationUrl: specUrl,
 						lastUpdated: dateString
 							? parse(dateString, 'yyyy-MM-dd', new Date(0))
 							: null,
 						tags: tags as W3SpecificationTag[],
+						links: [],
 					});
 				});
 		},
