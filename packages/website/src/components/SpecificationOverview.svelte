@@ -6,13 +6,14 @@
 		type Specification,
 		type SpecificationStage,
 		type SpecificationTag,
+		SPECIFICATION_STAGE_LABEL_MAP,
 	} from '../data';
 	import Flow from './Flow.svelte';
-	import type { Option } from './InputChoice.svelte';
-	import InputChoiceMultiple from './InputChoiceMultiple.svelte';
+	import InputChoiceMultipleSlotted from './InputChoiceMultipleSlotted.svelte';
 	import InputDate from './InputDate.svelte';
 	import SpecificationCardList from './SpecificationCardList.svelte';
 	import TagChip from './integrations/TagChip.svelte';
+	import Chip from './Chip.svelte';
 
 	type FilterType = 'LAST_UPDATED' | 'NAME' | 'STAGE' | 'TAG';
 
@@ -59,17 +60,11 @@
 
 	const TODAY = startOfDay(new Date());
 
-	const STAGE_OPTIONS: Option<SpecificationStage>[] = [
-		{ text: 'Upcoming', value: 'UPCOMING' },
-		{ text: 'Completed', value: 'COMPLETED' },
-	];
+	const STAGE_OPTIONS: SpecificationStage[] = ['UPCOMING', 'COMPLETED'];
 
-	const TAG_OPTIONS: Option<SpecificationTag>[] = Object.entries(
+	const TAG_OPTIONS: SpecificationTag[] = Object.keys(
 		SPECIFICATION_TAG_LABEL_MAP,
-	).map<Option<SpecificationTag>>(([value, text]) => ({
-		text,
-		value: value as SpecificationTag,
-	}));
+	) as SpecificationTag[];
 
 	// Data props
 	export let enabledFilters: FilterType[] = [
@@ -103,6 +98,15 @@
 		stages: enabledFilters.includes('STAGE') ? stages : [],
 		tags: enabledFilters.includes('TAG') ? tags : [],
 	});
+
+	$: tagOptionsSorted = Array.from(TAG_OPTIONS).sort((a, b) => {
+		const aLabel = SPECIFICATION_TAG_LABEL_MAP[a];
+		const bLabel = SPECIFICATION_TAG_LABEL_MAP[b];
+		// Non-visible labels solely for prioritizing selected tags
+		const aLabelVirtual = tags.includes(a) ? `@${aLabel}` : aLabel;
+		const bLabelVirtual = tags.includes(b) ? `@${bLabel}` : bLabel;
+		return aLabelVirtual.localeCompare(bLabelVirtual);
+	});
 </script>
 
 {#if enabledFilters.length > 0}
@@ -110,29 +114,15 @@
 		{#if enabledFilters.includes('TAG')}
 			<fieldset>
 				<legend>Categories</legend>
-				<Flow direction="INLINE" size={0.25}>
-					{#each tags as tag}
-						<TagChip
-							{tag}
-							active={tags.includes(tag)}
-							element="button"
-							on:click={() => {
-								tags = tags.filter((t) => t !== tag);
-							}}
-						/>
-					{/each}
-				</Flow>
-				<Flow direction="INLINE" size={0.25}>
-					{#each TAG_OPTIONS.map((o) => o.value).filter((tag) => !tags.includes(tag)) as tag}
-						<TagChip
-							{tag}
-							active={tags.includes(tag)}
-							element="button"
-							on:click={() => {
-								tags = [...tags, tag];
-							}}
-						/>
-					{/each}
+				<Flow direction="INLINE" size={0.5}>
+					<InputChoiceMultipleSlotted
+						bind:value={tags}
+						options={tagOptionsSorted}
+						let:option
+						let:isSelected
+					>
+						<TagChip tag={option} active={isSelected} />
+					</InputChoiceMultipleSlotted>
 				</Flow>
 			</fieldset>
 		{/if}
@@ -155,8 +145,20 @@
 		{#if enabledFilters.includes('STAGE')}
 			<fieldset>
 				<legend>Stage</legend>
-				<Flow size={0.5} direction="INLINE">
-					<InputChoiceMultiple options={STAGE_OPTIONS} bind:value={stages} />
+				<Flow direction="INLINE" size={0.5}>
+					<InputChoiceMultipleSlotted
+						bind:value={stages}
+						options={STAGE_OPTIONS}
+						let:option
+						let:isSelected
+					>
+						<Chip
+							colorBackground={isSelected ? 'black' : undefined}
+							colorForeground={isSelected ? 'white' : undefined}
+						>
+							{SPECIFICATION_STAGE_LABEL_MAP[option]}
+						</Chip>
+					</InputChoiceMultipleSlotted>
 				</Flow>
 			</fieldset>
 		{/if}

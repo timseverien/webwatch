@@ -39,6 +39,14 @@ export const SPECIFICATION_TAG_LABEL_MAP: {
 const SPECIFICATION_STAGES = ['IDEATION', 'UPCOMING', 'COMPLETED'] as const;
 export type SpecificationStage = (typeof SPECIFICATION_STAGES)[number];
 
+export const SPECIFICATION_STAGE_LABEL_MAP: {
+	[stage in SpecificationStage]: string;
+} = {
+	COMPLETED: 'Completed',
+	IDEATION: 'Ideation',
+	UPCOMING: 'Upcoming',
+};
+
 export function getLabelFromTag(tag: SpecificationTag): string {
 	switch (tag) {
 		case 'ECMA262':
