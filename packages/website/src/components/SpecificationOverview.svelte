@@ -115,6 +115,7 @@
 						<TagChip
 							{tag}
 							active={tags.includes(tag)}
+							element="button"
 							on:click={() => {
 								tags = tags.filter((t) => t !== tag);
 							}}
@@ -126,6 +127,7 @@
 						<TagChip
 							{tag}
 							active={tags.includes(tag)}
+							element="button"
 							on:click={() => {
 								tags = [...tags, tag];
 							}}

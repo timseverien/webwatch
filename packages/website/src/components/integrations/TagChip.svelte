@@ -25,8 +25,9 @@
 		foreground: 'currentColor',
 	};
 
-	export let tag: SpecificationTag;
 	export let active: boolean = true;
+	export let element: 'button' | 'div' = 'div';
+	export let tag: SpecificationTag;
 
 	const dispatch = createEventDispatcher<{ click: void }>();
 
@@ -35,7 +36,7 @@
 </script>
 
 <Chip
-	element="button"
+	{element}
 	colorBackground={theme.background}
 	colorForeground={theme.foreground}
 	on:click={() => dispatch('click')}
