@@ -7,8 +7,7 @@
     "lib": "dist"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "vite-node ./src/index"
+    "build": "tsc"
   },
   "dependencies": {
     "assert-never": "^1.2.1",

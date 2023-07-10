@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { load } from 'cheerio';
-import { parse, startOfDay, startOfMonth, startOfYear } from 'date-fns';
-import { enUS as localeEnUs } from 'date-fns/locale';
+import { parse } from 'date-fns';
 import type {
 	W3Specification,
 	W3SpecificationLevel,
@@ -27,34 +26,10 @@ function getSpecificationLevelFromMaturityText(
 	return null;
 }
 
-function parseDate(date: string): Date | null {
-	const today = startOfDay(new Date());
-
-	if (/^[0-9]{4}[0-9]{2}[0-9]{2}$/.test(date)) {
-		return parse(date, 'yyyyMMdd', today, { locale: localeEnUs });
-	}
-	if (/^[0-9]{1,2}\s+[a-z]+\s+[0-9]{4}$/i.test(date)) {
-		return parse(date, 'd LLLL yyyy', today, { locale: localeEnUs });
-	}
-	if (/^[a-z]+\s+[0-9]{4}$/i.test(date)) {
-		return parse(date, 'd LLLL yyyy', startOfMonth(today), {
-			locale: localeEnUs,
-		});
-	}
-	// Some specifications only have a year specified, so just set the date to the beginning of that year
-	if (/^[0-9]{4}$/.test(date)) {
-		return parse(date, 'yyyy', startOfYear(today), {
-			locale: localeEnUs,
-		});
-	}
-
-	return null;
-}
-
 export async function getSpecifications(): Promise<W3Specification[]> {
 	const response = await client.get<string>('/TR/', {
 		params: {
-			'status[]': ['a', 'b', 'c'],
+			'status[]': ['draftStandard', 'candidateStandard', 'standard'],
 		},
 	});
 

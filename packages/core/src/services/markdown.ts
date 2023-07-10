@@ -6,13 +6,6 @@ export function getTokens(markdown: string): marked.TokensList {
 	});
 }
 
-export function iterate(
-	tokens: marked.TokensList,
-	handler: (token: marked.Token) => void,
-): void {
-	console.log(tokens);
-}
-
 export function isTokenHeading(
 	token: marked.Token,
 ): token is marked.Tokens.Heading {
