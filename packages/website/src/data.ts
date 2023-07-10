@@ -83,14 +83,3 @@ export function getSpecificationStage(spec: Specification): SpecificationStage {
 			throw new Error('Unknown specification type');
 	}
 }
-
-export function isSpecificationInEqualOrLaterStage(
-	spec: Specification,
-	stage: SpecificationStage,
-): boolean {
-	const specStage = getSpecificationStage(spec);
-	return (
-		SPECIFICATION_STAGES.indexOf(specStage) >=
-		SPECIFICATION_STAGES.indexOf(stage)
-	);
-}
