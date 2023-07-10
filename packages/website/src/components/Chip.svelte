@@ -1,14 +1,18 @@
 <script lang="ts">
-	export let colorBackground: string = 'white';
-	export let colorForeground: string = 'black';
+	import type { ColorTheme } from '../types/theme';
+
+	export let color: ColorTheme = 'default';
+
+	$: background = `var(--color-${color})`;
+	$: foreground = `var(--color-text-on-${color})`;
 </script>
 
 <!-- Line disabled because it can be a button -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	class="container mdc-elevation--z1"
-	style:--color-background={colorBackground}
-	style:--color-foreground={colorForeground}
+	style:--color-background={background}
+	style:--color-foreground={foreground}
 >
 	<slot />
 </div>

@@ -14,6 +14,7 @@
 	import SpecificationCardList from './SpecificationCardList.svelte';
 	import TagChip from './integrations/TagChip.svelte';
 	import Chip from './Chip.svelte';
+	import TextContent from './TextContent.svelte';
 
 	type FilterType = 'LAST_UPDATED' | 'NAME' | 'STAGE' | 'TAG';
 
@@ -112,61 +113,62 @@
 	});
 </script>
 
-{#if enabledFilters.length > 0}
-	<div>
-		{#if enabledFilters.includes('TAG')}
-			<fieldset>
-				<legend>Categories</legend>
-				<Flow direction="INLINE" size={0.5}>
-					<InputChoiceMultipleSlotted
-						bind:value={tags}
-						options={tagOptionsSorted}
-						let:option
-						let:isSelected
-					>
-						<TagChip tag={option} active={isSelected} />
-					</InputChoiceMultipleSlotted>
-				</Flow>
-			</fieldset>
-		{/if}
-	</div>
-	<Flow direction="INLINE">
-		{#if enabledFilters.includes('NAME')}
+<TextContent size="wide">
+	<Flow>
+		{#if enabledFilters.length > 0}
 			<div>
-				<label for="filter-name">Name</label>
-				<input type="search" bind:value={nameQuery} id="filter-name" />
+				{#if enabledFilters.includes('TAG')}
+					<fieldset>
+						<legend>Categories</legend>
+						<Flow direction="INLINE" size={0.5}>
+							<InputChoiceMultipleSlotted
+								bind:value={tags}
+								options={tagOptionsSorted}
+								let:option
+								let:isSelected
+							>
+								<TagChip tag={option} active={isSelected} />
+							</InputChoiceMultipleSlotted>
+						</Flow>
+					</fieldset>
+				{/if}
 			</div>
-		{/if}
+			<Flow direction="INLINE">
+				{#if enabledFilters.includes('NAME')}
+					<div>
+						<label for="filter-name">Name</label>
+						<input type="search" bind:value={nameQuery} id="filter-name" />
+					</div>
+				{/if}
 
-		{#if enabledFilters.includes('LAST_UPDATED')}
-			<div>
-				<label for="filter-last-updated">Last updated</label>
-				<InputDate bind:value={lastUpdatedMin} id="filter-last-updated" />
-			</div>
-		{/if}
+				{#if enabledFilters.includes('LAST_UPDATED')}
+					<div>
+						<label for="filter-last-updated">Last updated</label>
+						<InputDate bind:value={lastUpdatedMin} id="filter-last-updated" />
+					</div>
+				{/if}
 
-		{#if enabledFilters.includes('STAGE')}
-			<fieldset>
-				<legend>Stage</legend>
-				<Flow direction="INLINE" size={0.5}>
-					<InputChoiceMultipleSlotted
-						bind:value={stages}
-						options={STAGE_OPTIONS}
-						let:option
-						let:isSelected
-					>
-						<Chip
-							colorBackground={isSelected ? 'black' : undefined}
-							colorForeground={isSelected ? 'white' : undefined}
-						>
-							{SPECIFICATION_STAGE_LABEL_MAP[option]}
-						</Chip>
-					</InputChoiceMultipleSlotted>
-				</Flow>
-			</fieldset>
+				{#if enabledFilters.includes('STAGE')}
+					<fieldset>
+						<legend>Stage</legend>
+						<Flow direction="INLINE" size={0.5}>
+							<InputChoiceMultipleSlotted
+								bind:value={stages}
+								options={STAGE_OPTIONS}
+								let:option
+								let:isSelected
+							>
+								<Chip color={isSelected ? 'primary' : undefined}>
+									{SPECIFICATION_STAGE_LABEL_MAP[option]}
+								</Chip>
+							</InputChoiceMultipleSlotted>
+						</Flow>
+					</fieldset>
+				{/if}
+			</Flow>
 		{/if}
 	</Flow>
-{/if}
+</TextContent>
 
 <div>
 	<SpecificationCardList specifications={specificationsFiltered} />
