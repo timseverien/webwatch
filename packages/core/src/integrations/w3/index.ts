@@ -7,17 +7,17 @@ import { getSpecifications } from './client.js';
 
 // This list is ordered
 // See: https://www.w3.org/2005/10/Process-20051014/tr#maturity-levels
-export const W3_SPECIFICATION_LEVELS = [
-	// Working Draft
-	'WD',
-	// Candidate Recommendation
-	'CR',
-	// Proposed Recommendation
-	'PR',
-	// W3C Recommendation
-	'REC',
-] as const;
+export const W3_SPECIFICATION_LEVELS = ['WD', 'CR', 'PR', 'REC'] as const;
 export type W3SpecificationLevel = (typeof W3_SPECIFICATION_LEVELS)[number];
+
+export const W3_SPECIFICATION_LEVEL_LABEL_MAP: {
+	[level in W3SpecificationLevel]: string;
+} = {
+	CR: 'Candidate Recommendation',
+	PR: 'Proposed Recommendation',
+	REC: 'Recommendation',
+	WD: 'Working Draft',
+};
 
 export type W3SpecificationTag =
 	| 'Accessibility'

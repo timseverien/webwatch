@@ -1,0 +1,40 @@
+---
+import type { Tc39SpecificationSerialized } from '@ww/core/src/integrations/tc39';
+import {
+	ECMA262_INTEGRATION,
+	ECMA402_INTEGRATION,
+} from '@ww/core/src/integrations/tc39';
+import type { W3SpecificationSerialized } from '@ww/core/src/integrations/w3';
+import { W3_INTEGRATION } from '@ww/core/src/integrations/w3';
+import specificationsEcma262Data from '@ww/data/ecma262.json';
+import specificationsEcma402Data from '@ww/data/ecma402.json';
+import specificationsW3Data from '@ww/data/w3.json';
+import DefaultLayout from '../../layouts/Default.astro';
+import SpecificationOverview from '../../components/SpecificationOverview.svelte';
+import Flow from '../../components/Flow.svelte';
+
+const specificationsEcma262 = ECMA262_INTEGRATION.deserialize(
+	specificationsEcma262Data as Tc39SpecificationSerialized[],
+);
+const specificationsEcma402 = ECMA402_INTEGRATION.deserialize(
+	specificationsEcma402Data as Tc39SpecificationSerialized[],
+);
+const specificationsW3 = W3_INTEGRATION.deserialize(
+	specificationsW3Data as W3SpecificationSerialized[],
+);
+---
+
+<DefaultLayout>
+	<Flow>
+		<h1>Specifications for UI Engineers</h1>
+		<SpecificationOverview
+			tags={['DOM', 'ECMA262', 'ECMA402', 'HTML', 'Web API']}
+			specifications={[
+				specificationsEcma262,
+				specificationsEcma402,
+				specificationsW3,
+			].flat()}
+			client:only
+		/>
+	</Flow>
+</DefaultLayout>

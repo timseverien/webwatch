@@ -2,6 +2,7 @@
 	import type { ColorTheme } from '../types/theme';
 
 	export let color: ColorTheme = 'default';
+	export let elevation: number = 1;
 
 	$: background = `var(--color-${color})`;
 	$: foreground = `var(--color-text-on-${color})`;
@@ -9,8 +10,9 @@
 
 <!-- Line disabled because it can be a button -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div
-	class="container mdc-elevation--z1"
+	class={`container mdc-elevation--z${elevation} mdc-elevation-transition`}
 	style:--color-background={background}
 	style:--color-foreground={foreground}
 >

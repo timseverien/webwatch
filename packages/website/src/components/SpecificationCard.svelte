@@ -10,7 +10,7 @@
 
 	export let name: string;
 	export let lastUpdated: Date | null;
-	export let maturity: Tc39SpecificationStage | W3SpecificationLevel;
+	export let maturity: string;
 	export let specificationUrl: string | null;
 	export let tags: SpecificationTag[];
 </script>

@@ -92,15 +92,10 @@
 	];
 
 	$: specificationsFiltered = applyFilters(specifications, {
-		lastUpdatedMin: enabledFilters.includes('LAST_UPDATED')
-			? lastUpdatedMin
-			: null,
-		name:
-			enabledFilters.includes('NAME') && nameQuery.length > 0
-				? nameQuery
-				: null,
-		stages: enabledFilters.includes('STAGE') ? stages : [],
-		tags: enabledFilters.includes('TAG') ? tags : [],
+		lastUpdatedMin: lastUpdatedMin,
+		name: nameQuery.length > 0 ? nameQuery : null,
+		stages: stages,
+		tags: tags,
 	});
 
 	$: tagOptionsSorted = Array.from(TAG_OPTIONS).sort((a, b) => {
