@@ -4,8 +4,8 @@
 	export let color: ColorTheme = 'default';
 	export let elevation: number = 1;
 
-	$: background = `var(--color-${color})`;
-	$: foreground = `var(--color-text-on-${color})`;
+	$: background = `var(--color-${color ?? 'default'})`;
+	$: foreground = `var(--color-text-on-${color ?? 'default'})`;
 </script>
 
 <!-- Line disabled because it can be a button -->
