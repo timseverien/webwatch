@@ -1,1 +1,1 @@
-export type ColorTheme = 'default' | 'primary';
+export type ColorTheme = 'primary' | 'surface-dimmed' | 'surface';

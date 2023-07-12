@@ -1,12 +1,10 @@
 <script lang="ts">
-	import type { W3SpecificationLevel } from '@ww/core/src/integrations/w3';
+	import { format } from 'date-fns';
 	import type { SpecificationTag } from '../data';
 	import Card from './Card.svelte';
 	import Flow from './Flow.svelte';
 	import SpecificationName from './SpecificationName.svelte';
-	import TagChip from './integrations/TagChip.svelte';
-	import type { Tc39SpecificationStage } from '@ww/core/src/integrations/tc39';
-	import { format } from 'date-fns';
+	import TagChipStatic from './integrations/TagChipStatic.svelte';
 
 	export let name: string;
 	export let lastUpdated: Date | null;
@@ -15,7 +13,7 @@
 	export let tags: SpecificationTag[];
 </script>
 
-<Card>
+<Card color="surface">
 	<svelte:fragment slot="header">
 		<h2 class="specification-name">
 			<SpecificationName {name} />
@@ -46,7 +44,7 @@
 	<svelte:fragment slot="footer">
 		<Flow direction="INLINE" size={0.5}>
 			{#each tags as tag}
-				<TagChip {tag} />
+				<TagChipStatic {tag} />
 			{/each}
 		</Flow>
 	</svelte:fragment>
@@ -64,6 +62,6 @@
 	}
 
 	.specification-property-list dt {
-		color: #888;
+		color: var(--theme-on-surface-faded);
 	}
 </style>

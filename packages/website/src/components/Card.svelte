@@ -1,8 +1,18 @@
-<script>
+<script lang="ts">
+	import type { ColorTheme } from '../types/theme';
 	import Flow from './Flow.svelte';
+
+	export let color: ColorTheme = 'surface';
+
+	$: background = `var(--theme-${color ?? 'surface'})`;
+	$: foreground = `var(--theme-on-${color ?? 'surface'})`;
 </script>
 
-<div class="container mdc-elevation--z1">
+<div
+	class="container mdc-elevation--z1"
+	style:--color-background={background}
+	style:--color-foreground={foreground}
+>
 	<Flow>
 		{#if $$slots.header}
 			<div>
@@ -24,8 +34,11 @@
 
 <style>
 	.container {
-		background-color: #fff;
-		border-radius: 0.25em;
 		padding: 1em;
+
+		background-color: var(--color-background);
+		border-radius: 0.25em;
+
+		color: var(--color-foreground);
 	}
 </style>

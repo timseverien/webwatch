@@ -8,7 +8,7 @@
 <SpecificationCard
 	name={specification.name}
 	tags={specification.tags}
-	maturity={specification.maturity}
+	maturity={specification.maturity.toString()}
 	lastUpdated={specification.lastUpdated}
 	specificationUrl={specification.specificationUrl}
 />

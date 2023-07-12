@@ -5,11 +5,13 @@
     "build": "vitest run && npm run build --workspaces --if-present",
     "dev": "npm run dev --workspaces --if-present",
     "test": "vitest run && npm run test --workspaces --if-present",
+    "tokens": "npm run run --workspace=@ww/token-generator",
     "update:data": "npm run build --workspace=@ww/data"
   },
   "workspaces": [
     "packages/core",
     "packages/data",
+    "packages/token-generator",
     "packages/website"
   ],
   "devDependencies": {

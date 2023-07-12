@@ -1,0 +1,6 @@
+{
+  "name": "@ww/token-generator",
+  "scripts": {
+    "run": "vite-node src/index.ts"
+  }
+}
