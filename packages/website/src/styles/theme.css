@@ -1,0 +1,26 @@
+body {
+	--theme-font-body: system-ui, sans-serif;
+
+	--theme-body: #f8f8f8;
+	--theme-on-body: var(--palette-neutral-10);
+
+	--theme-primary: var(--palette-primary-50);
+	--theme-on-primary: var(--palette-neutral-100);
+
+	--theme-surface: var(--palette-neutral-100);
+	--theme-on-surface: var(--palette-neutral-0);
+	--theme-on-surface-faded: var(--palette-neutral-50);
+	--theme-surface-dimmed: var(--palette-neutral-50);
+	--theme-on-surface-dimmed: var(--palette-neutral-100);
+}
+
+body.theme--dark {
+	--theme-body: var(--palette-neutral-10);
+	--theme-on-body: var(--palette-neutral-100);
+
+	--theme-surface: var(--palette-neutral-15);
+	--theme-on-surface: var(--palette-neutral-100);
+	--theme-on-surface-faded: var(--palette-neutral-60);
+	--theme-surface-dimmed: var(--palette-neutral-40);
+	--theme-on-surface-dimmed: var(--palette-neutral-100);
+}

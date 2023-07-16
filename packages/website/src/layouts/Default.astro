@@ -11,57 +11,9 @@
 <style is:global>
 	@import 'modern-css-reset';
 	@import '@material/elevation/dist/mdc.elevation.min.css';
-
-	/* PALETTE */
-	:root {
-		--palette-neutral-0: hsl(216, 5%, 0%);
-		--palette-neutral-10: hsl(216, 5%, 10%);
-		--palette-neutral-15: hsl(216, 5%, 15%);
-		--palette-neutral-20: hsl(216, 5%, 20%);
-		--palette-neutral-30: hsl(216, 5%, 30%);
-		--palette-neutral-40: hsl(216, 5%, 40%);
-		--palette-neutral-50: hsl(216, 5%, 50%);
-		--palette-neutral-60: hsl(216, 5%, 60%);
-		--palette-neutral-70: hsl(216, 5%, 70%);
-		--palette-neutral-80: hsl(216, 5%, 80%);
-		--palette-neutral-90: hsl(216, 5%, 90%);
-		--palette-neutral-100: hsl(216, 5%, 100%);
-		--palette-primary-10: hsl(216, 78%, 10%);
-		--palette-primary-20: hsl(216, 78%, 20%);
-		--palette-primary-30: hsl(216, 78%, 30%);
-		--palette-primary-40: hsl(216, 78%, 40%);
-		--palette-primary-50: hsl(216, 78%, 50%);
-		--palette-primary-60: hsl(216, 78%, 60%);
-		--palette-primary-70: hsl(216, 78%, 70%);
-		--palette-primary-80: hsl(216, 78%, 80%);
-		--palette-primary-90: hsl(216, 78%, 90%);
-		--palette-secondary-10: hsl(319, 78%, 10%);
-		--palette-secondary-20: hsl(319, 78%, 20%);
-		--palette-secondary-30: hsl(319, 78%, 30%);
-		--palette-secondary-40: hsl(319, 78%, 40%);
-		--palette-secondary-50: hsl(319, 78%, 50%);
-		--palette-secondary-60: hsl(319, 78%, 60%);
-		--palette-secondary-70: hsl(319, 78%, 70%);
-		--palette-secondary-80: hsl(319, 78%, 80%);
-		--palette-secondary-90: hsl(319, 78%, 90%);
-	}
-
-	/* THEME */
-	:root {
-		--theme-font-body: system-ui, sans-serif;
-
-		--theme-body: #f8f8f8;
-		--theme-on-body: var(--palette-neutral-10);
-
-		--theme-primary: var(--palette-primary-50);
-		--theme-on-primary: var(--palette-neutral-100);
-
-		--theme-surface: var(--palette-neutral-100);
-		--theme-on-surface: var(--palette-neutral-0);
-		--theme-on-surface-faded: var(--palette-neutral-50);
-		--theme-surface-dimmed: var(--palette-neutral-50);
-		--theme-on-surface-dimmed: var(--palette-neutral-100);
-	}
+	@import '../styles/palette.css';
+	@import '../styles/spacing.css';
+	@import '../styles/theme.css';
 
 	:root {
 		box-sizing: border-box;
@@ -76,17 +28,6 @@
 		color: var(--theme-on-body);
 		font-family: var(--theme-font-body);
 		padding: 1em;
-	}
-
-	body.theme--dark {
-		--theme-body: var(--palette-neutral-10);
-		--theme-on-body: var(--palette-neutral-100);
-
-		--theme-surface: var(--palette-neutral-15);
-		--theme-on-surface: var(--palette-neutral-100);
-		--theme-on-surface-faded: var(--palette-neutral-60);
-		--theme-surface-dimmed: var(--palette-neutral-40);
-		--theme-on-surface-dimmed: var(--palette-neutral-100);
 	}
 
 	input {
