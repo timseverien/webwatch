@@ -110,24 +110,27 @@
 
 <TextContent size="wide">
 	<Flow>
-		{#if enabledFilters.length > 0}
-			<div>
+		<fieldset>
+			<legend>Categories</legend>
+			<Flow direction="INLINE" size={0.5}>
 				{#if enabledFilters.includes('TAG')}
-					<fieldset>
-						<legend>Categories</legend>
-						<Flow direction="INLINE" size={0.5}>
-							<InputChoiceMultipleSlotted
-								bind:value={tags}
-								options={tagOptionsSorted}
-								let:option
-								let:isSelected
-							>
-								<TagChip tag={option} active={isSelected} />
-							</InputChoiceMultipleSlotted>
-						</Flow>
-					</fieldset>
+					<InputChoiceMultipleSlotted
+						bind:value={tags}
+						options={tagOptionsSorted}
+						let:option
+						let:isSelected
+					>
+						<TagChip tag={option} active={isSelected} />
+					</InputChoiceMultipleSlotted>
+				{:else}
+					{#each tags as tag}
+						<TagChip {tag} active={true} />
+					{/each}
 				{/if}
-			</div>
+			</Flow>
+		</fieldset>
+
+		{#if enabledFilters.includes('NAME') || enabledFilters.includes('LAST_UPDATED') || enabledFilters.includes('STAGE')}
 			<Flow direction="INLINE">
 				{#if enabledFilters.includes('NAME')}
 					<div>

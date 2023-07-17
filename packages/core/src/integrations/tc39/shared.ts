@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { parse } from 'date-fns';
-import { enUS as localeEnUS } from 'date-fns/locale';
+import localeEnUS from 'date-fns/locale/en-US/index.js';
 import { marked } from 'marked';
 import { isTokenLink } from '../../services/markdown.js';
 import {

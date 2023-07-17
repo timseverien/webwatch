@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { load } from 'cheerio';
 import { parse } from 'date-fns';
-import type {
-	W3Specification,
-	W3SpecificationLevel,
-	W3SpecificationTag,
+import {
+	W3_SPECIFICATION_TAGS,
+	type W3Specification,
+	type W3SpecificationLevel,
+	type W3SpecificationTag,
 } from './index.js';
 
 const client = axios.create({
@@ -74,7 +75,9 @@ export async function getSpecifications(): Promise<W3Specification[]> {
 						lastUpdated: dateString
 							? parse(dateString, 'yyyy-MM-dd', new Date(0))
 							: null,
-						tags: tags as W3SpecificationTag[],
+						tags: tags.filter((tag): tag is W3SpecificationTag =>
+							(W3_SPECIFICATION_TAGS as readonly string[]).includes(tag),
+						),
 						links: [],
 					});
 				});

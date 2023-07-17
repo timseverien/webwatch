@@ -1,11 +1,21 @@
-import type {
-	Tc39Specification,
-	Tc39SpecificationTag,
+import {
+	ECMA262_INTEGRATION,
+	ECMA402_INTEGRATION,
+	TC39_SPECIFICATION_TAG_LABEL_MAP,
+	Tc39SpecificationSerialized,
+	type Tc39Specification,
+	type Tc39SpecificationTag,
 } from '@ww/core/src/integrations/tc39';
-import type {
-	W3Specification,
-	W3SpecificationTag,
+import {
+	W3SpecificationSerialized,
+	W3_INTEGRATION,
+	W3_SPECIFICATION_TAG_LABEL_MAP,
+	type W3Specification,
+	type W3SpecificationTag,
 } from '@ww/core/src/integrations/w3';
+import specificationsEcma262Data from '@ww/data/ecma262.json';
+import specificationsEcma402Data from '@ww/data/ecma402.json';
+import specificationsW3Data from '@ww/data/w3.json';
 
 export type Specification = Tc39Specification | W3Specification;
 export type SpecificationTag = Tc39SpecificationTag | W3SpecificationTag;
@@ -13,27 +23,8 @@ export type SpecificationTag = Tc39SpecificationTag | W3SpecificationTag;
 export const SPECIFICATION_TAG_LABEL_MAP: {
 	[tag in SpecificationTag]: string;
 } = {
-	Accessibility: 'Accessibility',
-	Browser: 'Browser',
-	CSS: 'CSS',
-	Data: 'Data',
-	'Digital Publishing': 'Digital publishing',
-	DOM: 'DOM',
-	Graphics: 'Graphics',
-	HTML: 'HTML',
-	HTTP: 'HTTP',
-	i18n: 'Internationalization',
-	ECMA402: 'JavaScript internationalization API',
-	ECMA262: 'JavaScript',
-	Media: 'Media',
-	Performance: 'Performance',
-	Privacy: 'Privacy',
-	Protocol: 'Protocol',
-	Security: 'Security',
-	'Web API': 'Web API',
-	'Web Fonts': 'Web fonts',
-	WoT: 'Web of Things',
-	XML: 'XML',
+	...W3_SPECIFICATION_TAG_LABEL_MAP,
+	...TC39_SPECIFICATION_TAG_LABEL_MAP,
 };
 
 const SPECIFICATION_STAGES = ['UPCOMING', 'COMPLETED'] as const;
@@ -46,17 +37,31 @@ export const SPECIFICATION_STAGE_LABEL_MAP: {
 	UPCOMING: 'Upcoming',
 };
 
-export function getLabelFromTag(tag: SpecificationTag): string {
-	switch (tag) {
-		case 'ECMA262':
-			return 'JavaScript';
-		case 'ECMA402':
-			return 'JavaScript Intl API';
-		case 'WoT':
-			return 'Web of Things';
-		default:
-			return tag;
+export function getSpecifications(): Specification[] {
+	return [
+		...ECMA262_INTEGRATION.deserialize(
+			specificationsEcma262Data as Tc39SpecificationSerialized[],
+		),
+		...ECMA402_INTEGRATION.deserialize(
+			specificationsEcma402Data as Tc39SpecificationSerialized[],
+		),
+		...W3_INTEGRATION.deserialize(
+			specificationsW3Data as W3SpecificationSerialized[],
+		),
+	];
+}
+
+export function getSpecificationTags(): SpecificationTag[] {
+	const specifications = getSpecifications();
+	const tags: SpecificationTag[] = [];
+
+	for (const spec of specifications) {
+		for (const tag of spec.tags) {
+			tags.push(tag);
+		}
 	}
+
+	return tags;
 }
 
 function getSpecificationStageFromTc39Specification(

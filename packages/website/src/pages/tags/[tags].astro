@@ -1,0 +1,55 @@
+---
+import Flow from '../../components/Flow.svelte';
+import SpecificationOverview from '../../components/SpecificationOverview.svelte';
+import {
+	SPECIFICATION_TAG_LABEL_MAP,
+	SpecificationTag,
+	getSpecificationTags,
+	getSpecifications,
+} from '../../data';
+import DefaultLayout from '../../layouts/Default.astro';
+import { getPowerSet } from '@ww/core/src/utils/set';
+
+function serializeTagList(tags: SpecificationTag[]): string {
+	return Array.from(tags)
+		.sort((a, b) => a.localeCompare(b))
+		.join(',');
+}
+
+function deserializeTagList(tags: string): SpecificationTag[] {
+	return tags
+		.split(',')
+		.filter((tag): tag is SpecificationTag =>
+			Object.keys(SPECIFICATION_TAG_LABEL_MAP).includes(tag),
+		);
+}
+
+export function getStaticPaths() {
+	const tags = getSpecificationTags();
+
+	return Array.from(getPowerSet(tags)).map((tags) => ({
+		params: { tags: serializeTagList(tags) },
+	}));
+}
+
+const { tags } = Astro.params as {
+	tags: string;
+};
+
+const tagsParsed = deserializeTagList(tags);
+---
+
+<DefaultLayout>
+	<Flow>
+		<h1>Specifications tagged “{tagsParsed}”</h1>
+		<SpecificationOverview
+			enabledFilters={['LAST_UPDATED', 'NAME', 'STAGE']}
+			specifications={getSpecifications().filter((spec) =>
+				tagsParsed.some((tag) =>
+					(spec.tags as SpecificationTag[]).includes(tag),
+				),
+			)}
+			client:only
+		/>
+	</Flow>
+</DefaultLayout>

@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { getLabelFromTag, type SpecificationTag } from '../../data';
+	import {
+		SPECIFICATION_TAG_LABEL_MAP,
+		type SpecificationTag,
+	} from '../../data';
 	import Chip from '../Chip.svelte';
 
 	export let elevation: number = 1;
 	export let tag: SpecificationTag;
 
-	$: label = getLabelFromTag(tag);
+	$: label = SPECIFICATION_TAG_LABEL_MAP[tag];
 </script>
 
 <Chip color="surface-dimmed" {elevation}>

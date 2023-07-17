@@ -12,7 +12,17 @@ export type Tc39SpecificationStage =
 	| Tc39SpecificationUnfinishedStage
 	| Tc39SpecificationFinishedStage;
 
-export type Tc39SpecificationTag = 'ECMA262' | 'ECMA402';
+export const TC39_SPECIFICATION_TAG_LABEL_MAP = {
+	ECMA402: 'JavaScript internationalization API',
+	ECMA262: 'JavaScript',
+};
+
+export type Tc39SpecificationTag =
+	keyof typeof TC39_SPECIFICATION_TAG_LABEL_MAP;
+
+export const TC39_SPECIFICATION_TAGS = Object.keys(
+	TC39_SPECIFICATION_TAG_LABEL_MAP,
+) as Tc39SpecificationTag[];
 
 export type Tc39SpecificationUnfinished = Specification<
 	'TC39_SPECIFICATION',
