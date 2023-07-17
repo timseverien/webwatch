@@ -2,34 +2,31 @@
 import Flow from '../../components/Flow.svelte';
 import SpecificationOverview from '../../components/SpecificationOverview.svelte';
 import {
-	SPECIFICATION_TAG_LABEL_MAP,
 	SpecificationTag,
-	getSpecificationTags,
 	getSpecifications,
+	SPECIFICATION_TAG_LABEL_MAP,
 } from '../../data';
 import DefaultLayout from '../../layouts/Default.astro';
 import { getPowerSet } from '@ww/core/src/utils/set';
-
-function serializeTagList(tags: SpecificationTag[]): string {
-	return Array.from(tags)
-		.sort((a, b) => a.localeCompare(b))
-		.join(',');
-}
-
-function deserializeTagList(tags: string): SpecificationTag[] {
-	return tags
-		.split(',')
-		.filter((tag): tag is SpecificationTag =>
-			Object.keys(SPECIFICATION_TAG_LABEL_MAP).includes(tag),
-		);
-}
+import { deserializeTagList, serializeTagList } from '../../tags';
 
 export function getStaticPaths() {
-	const tags = getSpecificationTags();
+	const tags: SpecificationTag[] = [
+		'Accessibility',
+		'Browser',
+		'CSS',
+		'DOM',
+		'ECMA262',
+		'ECMA402',
+		'HTML',
+		'Web API',
+	];
 
-	return Array.from(getPowerSet(tags)).map((tags) => ({
-		params: { tags: serializeTagList(tags) },
-	}));
+	return Array.from(getPowerSet(tags))
+		.filter((tags) => tags.length > 0)
+		.map((tags) => ({
+			params: { tags: serializeTagList(tags) },
+		}));
 }
 
 const { tags } = Astro.params as {
@@ -37,11 +34,20 @@ const { tags } = Astro.params as {
 };
 
 const tagsParsed = deserializeTagList(tags);
+const listFormatter = new Intl.ListFormat('en', {
+	type: 'disjunction',
+});
 ---
 
 <DefaultLayout>
 	<Flow>
-		<h1>Specifications tagged “{tagsParsed}”</h1>
+		<h1>
+			Specifications tagged {
+				listFormatter.format(
+					tagsParsed.map((tag) => SPECIFICATION_TAG_LABEL_MAP[tag]),
+				)
+			}
+		</h1>
 		<SpecificationOverview
 			enabledFilters={['LAST_UPDATED', 'NAME', 'STAGE']}
 			specifications={getSpecifications().filter((spec) =>
