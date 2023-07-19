@@ -23,26 +23,20 @@
 	});
 </script>
 
-<ul class="container">
+<div class="container">
 	{#each specificationsSorted as spec}
-		<li>
-			{#if spec.type === 'TC39_SPECIFICATION'}
-				<Tc39SpecificationCard specification={spec} />
-			{:else if spec.type === 'W3_SPECIFICATION'}
-				<W3SpecificationCard specification={spec} />
-			{/if}
-		</li>
+		{#if spec.type === 'TC39_SPECIFICATION'}
+			<Tc39SpecificationCard specification={spec} />
+		{:else if spec.type === 'W3_SPECIFICATION'}
+			<W3SpecificationCard specification={spec} />
+		{/if}
 	{/each}
-</ul>
+</div>
 
 <style>
 	.container {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, 60ch);
+		grid-template-columns: repeat(auto-fill, 50ch);
 		gap: 1em;
-
-		margin: 0;
-		padding: 0;
-		list-style-type: none;
 	}
 </style>

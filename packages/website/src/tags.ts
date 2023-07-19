@@ -9,8 +9,15 @@ const SLUG_TAG_MAP = new Map(
 	getSpecificationTags().map((tag) => [getTagSlug(tag), tag]),
 );
 
-function getTagSlug(tag: SpecificationTag): string {
+export function getTagSlug(tag: SpecificationTag): string {
 	return slugify(tag).toLowerCase();
+}
+
+export function getTagBySlug(slug: string): SpecificationTag {
+	if (!SLUG_TAG_MAP.has(slug)) {
+		throw new Error(`Slug ${slug} cannot be resolved to a Specification Tag`);
+	}
+	return SLUG_TAG_MAP.get(slug)!;
 }
 
 export function serializeTagList(tags: SpecificationTag[]): string {

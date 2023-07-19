@@ -30,7 +30,7 @@
 		gap: var(--flow-spacing, 1em);
 	}
 	.flow--direction-block {
-		flex-flow: column wrap;
+		flex-direction: column;
 	}
 	.flow--direction-inline {
 		flex-flow: row wrap;

@@ -15,6 +15,8 @@
 	import TagChip from './integrations/TagChip.svelte';
 	import Chip from './Chip.svelte';
 	import TextContent from './TextContent.svelte';
+	import Button from './Button.svelte';
+	import CenteredMessage from './CenteredMessage.svelte';
 
 	type FilterType = 'LAST_UPDATED' | 'NAME' | 'STAGE' | 'TAG';
 
@@ -50,7 +52,7 @@
 			);
 		}
 
-		if (filters.stages) {
+		if (filters.stages.length > 0) {
 			specsFiltered = specsFiltered.filter((spec) =>
 				filters.stages?.includes(getSpecificationStage(spec)),
 			);
@@ -67,20 +69,10 @@
 		SPECIFICATION_TAG_LABEL_MAP,
 	) as SpecificationTag[];
 
-	// Data props
-	export let enabledFilters: FilterType[] = [
-		'LAST_UPDATED',
-		'NAME',
-		'STAGE',
-		'TAG',
-	];
-	export let specifications: Specification[];
-
-	// Filter preset props
-	export let lastUpdatedMin: Date = sub(TODAY, { years: 5 });
-	export let nameQuery: string = '';
-	export let stages: SpecificationStage[] = ['COMPLETED'];
-	export let tags: SpecificationTag[] = [
+	const FILTER_LAST_UPDATED_DEFAULT_VALUE = sub(TODAY, { years: 5 });
+	const FILTER_NAME_DEFAULT_VALUE = '';
+	const FILTER_STAGE_DEFAULT_VALUE: SpecificationStage[] = ['COMPLETED'];
+	const FILTER_TAGS_DEFAULT_VALUE: SpecificationTag[] = [
 		'Accessibility',
 		'CSS',
 		'DOM',
@@ -91,11 +83,38 @@
 		'Web Fonts',
 	];
 
+	// Data props
+	export let enabledFilters: FilterType[] = [
+		'LAST_UPDATED',
+		'NAME',
+		'STAGE',
+		'TAG',
+	];
+	export let specifications: Specification[];
+
+	// Filter preset props
+	export let lastUpdatedMin: Date = FILTER_LAST_UPDATED_DEFAULT_VALUE;
+	export let nameQuery: string = FILTER_NAME_DEFAULT_VALUE;
+	export let stages: SpecificationStage[] = FILTER_STAGE_DEFAULT_VALUE;
+	export let tags: SpecificationTag[] = FILTER_TAGS_DEFAULT_VALUE;
+
+	function resetFilters() {
+		lastUpdatedMin = FILTER_LAST_UPDATED_DEFAULT_VALUE;
+		nameQuery = FILTER_NAME_DEFAULT_VALUE;
+		stages = FILTER_STAGE_DEFAULT_VALUE;
+		tags = FILTER_TAGS_DEFAULT_VALUE;
+	}
+
 	$: specificationsFiltered = applyFilters(specifications, {
-		lastUpdatedMin: lastUpdatedMin,
-		name: nameQuery.length > 0 ? nameQuery : null,
-		stages: stages,
-		tags: tags,
+		lastUpdatedMin: enabledFilters.includes('LAST_UPDATED')
+			? lastUpdatedMin
+			: new Date(0),
+		name:
+			enabledFilters.includes('NAME') && nameQuery.length > 0
+				? nameQuery
+				: null,
+		stages: enabledFilters.includes('STAGE') ? stages : [],
+		tags: enabledFilters.includes('TAG') ? tags : [],
 	});
 
 	$: tagOptionsSorted = Array.from(TAG_OPTIONS).sort((a, b) => {
@@ -110,25 +129,27 @@
 
 <TextContent size="wide">
 	<Flow>
-		<fieldset>
-			<legend>Categories</legend>
-			<Flow direction="INLINE" size={0.5}>
-				{#if enabledFilters.includes('TAG')}
-					<InputChoiceMultipleSlotted
-						bind:value={tags}
-						options={tagOptionsSorted}
-						let:option
-						let:isSelected
-					>
-						<TagChip tag={option} active={isSelected} />
-					</InputChoiceMultipleSlotted>
-				{:else}
-					{#each tags as tag}
-						<TagChip {tag} active={true} />
-					{/each}
-				{/if}
-			</Flow>
-		</fieldset>
+		{#if enabledFilters.includes('TAG')}
+			<fieldset>
+				<legend>Categories</legend>
+				<Flow direction="INLINE" size={0.5}>
+					{#if enabledFilters.includes('TAG')}
+						<InputChoiceMultipleSlotted
+							bind:value={tags}
+							options={tagOptionsSorted}
+							let:option
+							let:isSelected
+						>
+							<TagChip tag={option} active={isSelected} />
+						</InputChoiceMultipleSlotted>
+					{:else}
+						{#each tags as tag}
+							<TagChip {tag} active={true} />
+						{/each}
+					{/if}
+				</Flow>
+			</fieldset>
+		{/if}
 
 		{#if enabledFilters.includes('NAME') || enabledFilters.includes('LAST_UPDATED') || enabledFilters.includes('STAGE')}
 			<Flow direction="INLINE">
@@ -169,5 +190,17 @@
 </TextContent>
 
 <div>
-	<SpecificationCardList specifications={specificationsFiltered} />
+	{#if specificationsFiltered.length > 0}
+		<SpecificationCardList specifications={specificationsFiltered} />
+	{:else}
+		<CenteredMessage>
+			<Flow>
+				<h2>No results</h2>
+				<p>The currently configured filters doesn’t match any specification.</p>
+				<div>
+					<Button on:click={() => resetFilters()}>Reset filters</Button>
+				</div>
+			</Flow>
+		</CenteredMessage>
+	{/if}
 </div>

@@ -27,6 +27,10 @@ export const SPECIFICATION_TAG_LABEL_MAP: {
 	...TC39_SPECIFICATION_TAG_LABEL_MAP,
 };
 
+export const SPECIFICATION_TAGS = Object.keys(
+	SPECIFICATION_TAG_LABEL_MAP,
+) as SpecificationTag[];
+
 const SPECIFICATION_STAGES = ['UPCOMING', 'COMPLETED'] as const;
 export type SpecificationStage = (typeof SPECIFICATION_STAGES)[number];
 

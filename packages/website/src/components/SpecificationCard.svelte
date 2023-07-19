@@ -36,7 +36,9 @@
 		{#if specificationUrl}
 			<dt>Specification</dt>
 			<dd>
-				<a href={specificationUrl} target="_blank">{specificationUrl}</a>
+				<a href={specificationUrl} target="_blank"
+					>{specificationUrl.replace(/https?:\/\/(www.)?/, '')}</a
+				>
 			</dd>
 		{/if}
 	</dl>

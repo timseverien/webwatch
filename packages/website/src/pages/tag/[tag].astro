@@ -1,0 +1,39 @@
+---
+import Flow from '../../components/Flow.svelte';
+import SpecificationOverview from '../../components/SpecificationOverview.svelte';
+import {
+  SPECIFICATION_TAGS,
+  SPECIFICATION_TAG_LABEL_MAP,
+  SpecificationTag,
+  getSpecifications,
+} from '../../data';
+import DefaultLayout from '../../layouts/Default.astro';
+import { getTagBySlug, getTagSlug } from '../../tags';
+
+export function getStaticPaths() {
+  return SPECIFICATION_TAGS.map((tag) => ({
+    params: { tag: getTagSlug(tag) },
+  }));
+}
+
+const { tag: tagSlug } = Astro.params as {
+  tag: string;
+};
+
+const tag = getTagBySlug(tagSlug);
+---
+
+<DefaultLayout>
+  <Flow>
+    <h1>
+      Specifications tagged “{SPECIFICATION_TAG_LABEL_MAP[tag]}”
+    </h1>
+    <SpecificationOverview
+      enabledFilters={['LAST_UPDATED', 'NAME', 'STAGE']}
+      specifications={getSpecifications().filter((spec) =>
+        (spec.tags as SpecificationTag[]).includes(tag),
+      )}
+      client:only
+    />
+  </Flow>
+</DefaultLayout>

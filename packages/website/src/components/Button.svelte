@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { ColorTheme } from '../types/theme';
 
 	export let element: 'a' | 'button' = 'button';
+	export let color: ColorTheme = 'primary';
 	export let variant: 'default' | 'text' = 'default';
 
 	const dispatch = createEventDispatcher<{ click: void }>();
@@ -13,6 +15,8 @@
 	this={element}
 	class="button"
 	class:button--text={variant === 'text'}
+	style:--button-foreground={`var(--theme-on-${color})`}
+	style:--button-background={`var(--theme-${color})`}
 	on:click={() => dispatch('click')}
 >
 	<slot />
@@ -20,8 +24,6 @@
 
 <style>
 	.button {
-		--button-background: #ccc;
-		--button-foreground: currentColor;
 		--button-padding-block: 0.25em;
 		--button-padding-inline: 0.5em;
 
@@ -38,6 +40,7 @@
 
 	.button--text {
 		--button-background: transparent;
+		--button-foreground: inherit;
 		--button-padding-block: 0;
 		--button-padding-inline: 0;
 
