@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Specification } from '../data';
+	import type { SpecificationWithId } from '../data';
 	import Tc39SpecificationCard from './integrations/Tc39/SpecificationCard.svelte';
 	import W3SpecificationCard from './integrations/W3/SpecificationCard.svelte';
 
-	export let specifications: Specification[];
+	export let specifications: SpecificationWithId[];
 
 	function getStringWithoutSymbols(str: string) {
 		return str.replace(/[^a-z0-9]*/i, '');

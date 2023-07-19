@@ -3,11 +3,13 @@ import Flow from '../components/Flow.svelte';
 import SpecificationOverview from '../components/SpecificationOverview.svelte';
 import { getSpecifications } from '../data';
 import DefaultLayout from '../layouts/Default.astro';
+
+const specs = await getSpecifications();
 ---
 
 <DefaultLayout>
-	<Flow>
-		<h1>Webwatch (working title)</h1>
-		<SpecificationOverview specifications={getSpecifications()} client:only />
-	</Flow>
+  <Flow>
+    <h1>Webwatch (working title)</h1>
+    <SpecificationOverview specifications={specs} client:only />
+  </Flow>
 </DefaultLayout>

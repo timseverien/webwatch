@@ -6,7 +6,7 @@ import {
 } from './data';
 
 const SLUG_TAG_MAP = new Map(
-	getSpecificationTags().map((tag) => [getTagSlug(tag), tag]),
+	(await getSpecificationTags()).map((tag) => [getTagSlug(tag), tag]),
 );
 
 export function getTagSlug(tag: SpecificationTag): string {

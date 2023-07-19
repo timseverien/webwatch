@@ -1,27 +1,27 @@
 <script lang="ts">
 	import { isAfter, isEqual, startOfDay, sub } from 'date-fns';
 	import {
+		SPECIFICATION_STAGE_LABEL_MAP,
 		SPECIFICATION_TAG_LABEL_MAP,
 		getSpecificationStage,
-		type Specification,
 		type SpecificationStage,
 		type SpecificationTag,
-		SPECIFICATION_STAGE_LABEL_MAP,
+		type SpecificationWithId,
 	} from '../data';
+	import Button from './Button.svelte';
+	import CenteredMessage from './CenteredMessage.svelte';
+	import Chip from './Chip.svelte';
 	import Flow from './Flow.svelte';
 	import InputChoiceMultipleSlotted from './InputChoiceMultipleSlotted.svelte';
 	import InputDate from './InputDate.svelte';
 	import SpecificationCardList from './SpecificationCardList.svelte';
-	import TagChip from './integrations/TagChip.svelte';
-	import Chip from './Chip.svelte';
 	import TextContent from './TextContent.svelte';
-	import Button from './Button.svelte';
-	import CenteredMessage from './CenteredMessage.svelte';
+	import TagChip from './integrations/TagChip.svelte';
 
 	type FilterType = 'LAST_UPDATED' | 'NAME' | 'STAGE' | 'TAG';
 
 	function applyFilters(
-		specifications: Specification[],
+		specifications: SpecificationWithId[],
 		filters: {
 			lastUpdatedMin: Date | null;
 			name: string | null;
@@ -90,7 +90,7 @@
 		'STAGE',
 		'TAG',
 	];
-	export let specifications: Specification[];
+	export let specifications: SpecificationWithId[];
 
 	// Filter preset props
 	export let lastUpdatedMin: Date = FILTER_LAST_UPDATED_DEFAULT_VALUE;

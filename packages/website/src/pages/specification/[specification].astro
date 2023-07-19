@@ -1,0 +1,51 @@
+---
+import { getHumanReadableUrl } from '@ww/core/src/utils/url';
+import Flow from '../../components/Flow.svelte';
+import SpecificationPropertyList from '../../components/SpecificationPropertyList.svelte';
+import { Specification, getSpecifications } from '../../data';
+import DefaultLayout from '../../layouts/Default.astro';
+
+export async function getStaticPaths() {
+  const specs = await getSpecifications();
+
+  return specs.map((specification) => {
+    return {
+      params: { specification: specification.id },
+      props: { specification },
+    };
+  });
+}
+
+const { specification } = Astro.props as { specification: Specification };
+---
+
+<DefaultLayout>
+  <div class="container">
+    <Flow>
+      <h1>{specification.name}</h1>
+      <SpecificationPropertyList {specification} />
+    </Flow>
+
+    <div>
+      <ul>
+        {
+          specification.links.map((link) => (
+            <li>
+              <a href={link.url} target="_blank">
+                {getHumanReadableUrl(link.url)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</DefaultLayout>
+
+<style>
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-m);
+  }
+</style>

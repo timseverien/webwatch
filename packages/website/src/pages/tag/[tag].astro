@@ -21,6 +21,7 @@ const { tag: tagSlug } = Astro.params as {
 };
 
 const tag = getTagBySlug(tagSlug);
+const specs = await getSpecifications();
 ---
 
 <DefaultLayout>
@@ -30,7 +31,7 @@ const tag = getTagBySlug(tagSlug);
     </h1>
     <SpecificationOverview
       enabledFilters={['LAST_UPDATED', 'NAME', 'STAGE']}
-      specifications={getSpecifications().filter((spec) =>
+      specifications={specs.filter((spec) =>
         (spec.tags as SpecificationTag[]).includes(tag),
       )}
       client:only

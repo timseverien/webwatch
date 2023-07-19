@@ -3,15 +3,17 @@ import Flow from '../../components/Flow.svelte';
 import SpecificationOverview from '../../components/SpecificationOverview.svelte';
 import { getSpecifications } from '../../data';
 import DefaultLayout from '../../layouts/Default.astro';
+
+const specs = await getSpecifications();
 ---
 
 <DefaultLayout>
-	<Flow>
-		<h1>Specifications for UI Engineers</h1>
-		<SpecificationOverview
-			tags={['DOM', 'ECMA262', 'ECMA402', 'HTML', 'Web API']}
-			specifications={getSpecifications()}
-			client:only
-		/>
-	</Flow>
+  <Flow>
+    <h1>Specifications for UI Engineers</h1>
+    <SpecificationOverview
+      tags={['DOM', 'ECMA262', 'ECMA402', 'HTML', 'Web API']}
+      specifications={specs}
+      client:only
+    />
+  </Flow>
 </DefaultLayout>

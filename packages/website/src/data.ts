@@ -16,9 +16,14 @@ import {
 import specificationsEcma262Data from '@ww/data/ecma262.json';
 import specificationsEcma402Data from '@ww/data/ecma402.json';
 import specificationsW3Data from '@ww/data/w3.json';
+import crypto from 'node:crypto';
 
 export type Specification = Tc39Specification | W3Specification;
 export type SpecificationTag = Tc39SpecificationTag | W3SpecificationTag;
+
+export type SpecificationWithId<T extends Specification = Specification> = T & {
+	id: string;
+};
 
 export const SPECIFICATION_TAG_LABEL_MAP: {
 	[tag in SpecificationTag]: string;
@@ -41,22 +46,29 @@ export const SPECIFICATION_STAGE_LABEL_MAP: {
 	UPCOMING: 'Upcoming',
 };
 
-export function getSpecifications(): Specification[] {
-	return [
-		...ECMA262_INTEGRATION.deserialize(
-			specificationsEcma262Data as Tc39SpecificationSerialized[],
-		),
-		...ECMA402_INTEGRATION.deserialize(
-			specificationsEcma402Data as Tc39SpecificationSerialized[],
-		),
-		...W3_INTEGRATION.deserialize(
-			specificationsW3Data as W3SpecificationSerialized[],
-		),
-	];
+export async function getSpecifications(): Promise<
+	SpecificationWithId<Specification>[]
+> {
+	return Promise.all(
+		[
+			...ECMA262_INTEGRATION.deserialize(
+				specificationsEcma262Data as Tc39SpecificationSerialized[],
+			),
+			...ECMA402_INTEGRATION.deserialize(
+				specificationsEcma402Data as Tc39SpecificationSerialized[],
+			),
+			...W3_INTEGRATION.deserialize(
+				specificationsW3Data as W3SpecificationSerialized[],
+			),
+		].map<Promise<SpecificationWithId>>(async (spec) => ({
+			id: await getSpecificationId(spec),
+			...spec,
+		})),
+	);
 }
 
-export function getSpecificationTags(): SpecificationTag[] {
-	const specifications = getSpecifications();
+export async function getSpecificationTags(): Promise<SpecificationTag[]> {
+	const specifications = await getSpecifications();
 	const tags: SpecificationTag[] = [];
 
 	for (const spec of specifications) {
@@ -91,4 +103,21 @@ export function getSpecificationStage(spec: Specification): SpecificationStage {
 		default:
 			throw new Error('Unknown specification type');
 	}
+}
+
+export async function getSpecificationId(spec: Specification): Promise<string> {
+	const encoder = new TextEncoder();
+
+	const result = await crypto.webcrypto.subtle.digest(
+		'SHA-1',
+		encoder.encode(spec.specificationUrl),
+	);
+
+	return Array.from(new Uint8Array(result))
+		.map((n) => n.toString(16))
+		.join('');
+}
+
+export function getSpecificationPath(spec: SpecificationWithId): string {
+	return `/specification/${spec.id}`;
 }

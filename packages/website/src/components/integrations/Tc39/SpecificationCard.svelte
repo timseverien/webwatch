@@ -1,14 +1,9 @@
 <script lang="ts">
 	import type { Tc39Specification } from '@ww/core/src/integrations/tc39';
 	import SpecificationCard from '../../SpecificationCard.svelte';
+	import type { SpecificationWithId } from '../../../data';
 
-	export let specification: Tc39Specification;
+	export let specification: SpecificationWithId<Tc39Specification>;
 </script>
 
-<SpecificationCard
-	name={specification.name}
-	tags={specification.tags}
-	maturity={specification.maturity.toString()}
-	lastUpdated={specification.lastUpdated}
-	specificationUrl={specification.specificationUrl}
-/>
+<SpecificationCard {specification} />

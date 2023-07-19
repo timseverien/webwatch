@@ -7,7 +7,7 @@ export type Specification<
 > = {
 	type: TypeType;
 	name: string;
-	specificationUrl: string | null;
+	specificationUrl: string;
 	lastUpdated: Date | null;
 	maturity: MaturityType;
 	tags: TagType[];
