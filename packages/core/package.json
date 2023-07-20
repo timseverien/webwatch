@@ -13,7 +13,7 @@
   "dependencies": {
     "assert-never": "^1.2.1",
     "axios": "^1.4.0",
-    "caniuse-db": "^1.0.30001507",
+    "caniuse-db": "^1.0.30001517",
     "cheerio": "^1.0.0-rc.12",
     "marked": "^5.1.0",
     "rss-parser": "^3.13.0"

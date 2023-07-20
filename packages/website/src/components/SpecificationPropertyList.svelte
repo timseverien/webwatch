@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { format } from 'date-fns';
-	import type { Specification } from '../data';
 	import { getHumanReadableUrl } from '@ww/core/src/utils/url';
+	import type { Specification } from '@ww/core/src/integrations/specifications';
 
 	export let specification: Specification;
 </script>
@@ -24,6 +24,11 @@
 		<a href={specification.specificationUrl} target="_blank">
 			{getHumanReadableUrl(specification.specificationUrl)}
 		</a>
+	</dd>
+
+	<dt>Links</dt>
+	<dd>
+		{specification.links.length}
 	</dd>
 </dl>
 
