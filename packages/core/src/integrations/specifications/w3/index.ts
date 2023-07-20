@@ -2,7 +2,7 @@ import type {
 	Specification,
 	SpecificationIntegration,
 	SpecificationSerialized,
-} from '../index.js';
+} from '../../index.js';
 import { getSpecifications } from './client.js';
 
 // This list is ordered

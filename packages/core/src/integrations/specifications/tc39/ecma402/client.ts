@@ -3,7 +3,7 @@ import {
 	getTokens,
 	selectByHeader,
 	selectTables,
-} from '../../../services/markdown.js';
+} from '../../../../services/markdown.js';
 import {
 	Tc39Specification,
 	Tc39SpecificationFinished,

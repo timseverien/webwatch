@@ -1,8 +1,8 @@
 import {
 	ECMA262_INTEGRATION,
 	ECMA402_INTEGRATION,
-} from '@ww/core/src/integrations/tc39';
-import { W3_INTEGRATION } from '@ww/core/src/integrations/w3';
+} from '@ww/core/src/integrations/specifications/tc39';
+import { W3_INTEGRATION } from '@ww/core/src/integrations/specifications/w3';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 
