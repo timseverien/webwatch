@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { SpecificationSerialized } from '../../index.js';
+import { SpecificationSerialized } from '../index.js';
 import { W3Specification, W3_INTEGRATION } from './index.js';
 
 describe(W3_INTEGRATION.serialize.name, () => {

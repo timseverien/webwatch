@@ -1,4 +1,4 @@
-import type { Link } from '../links.js';
+import type { Link } from '../links/index.js';
 
 export type Specification<
 	TypeType extends string = string,
