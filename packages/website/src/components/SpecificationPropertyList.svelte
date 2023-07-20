@@ -25,11 +25,6 @@
 			{getHumanReadableUrl(specification.specificationUrl)}
 		</a>
 	</dd>
-
-	<dt>Links</dt>
-	<dd>
-		{specification.links.length}
-	</dd>
 </dl>
 
 <style>
