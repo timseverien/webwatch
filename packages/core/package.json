@@ -7,14 +7,16 @@
     "lib": "dist"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "run": "vite-node src/index.ts"
   },
   "dependencies": {
     "assert-never": "^1.2.1",
     "axios": "^1.4.0",
     "caniuse-db": "^1.0.30001507",
     "cheerio": "^1.0.0-rc.12",
-    "marked": "^5.1.0"
+    "marked": "^5.1.0",
+    "rss-parser": "^3.13.0"
   },
   "devDependencies": {
     "@types/marked": "^5.0.0"

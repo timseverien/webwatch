@@ -1,5 +1,5 @@
 import type {
-	Specification,
+	GenericSpecification,
 	SpecificationIntegration,
 	SpecificationSerialized,
 } from '../index.js';
@@ -47,7 +47,7 @@ export const W3_SPECIFICATION_TAGS = Object.keys(
 	W3_SPECIFICATION_TAG_LABEL_MAP,
 ) as W3SpecificationTag[];
 
-export type W3Specification = Specification<
+export type W3Specification = GenericSpecification<
 	'W3_SPECIFICATION',
 	W3SpecificationLevel,
 	W3SpecificationTag

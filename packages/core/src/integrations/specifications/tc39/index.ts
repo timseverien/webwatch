@@ -1,5 +1,5 @@
 import type {
-	Specification,
+	GenericSpecification,
 	SpecificationIntegration,
 	SpecificationSerialized,
 } from '../index.js';
@@ -24,13 +24,13 @@ export const TC39_SPECIFICATION_TAGS = Object.keys(
 	TC39_SPECIFICATION_TAG_LABEL_MAP,
 ) as Tc39SpecificationTag[];
 
-export type Tc39SpecificationUnfinished = Specification<
+export type Tc39SpecificationUnfinished = GenericSpecification<
 	'TC39_SPECIFICATION',
 	Tc39SpecificationUnfinishedStage,
 	Tc39SpecificationTag
 >;
 
-export type Tc39SpecificationFinished = Specification<
+export type Tc39SpecificationFinished = GenericSpecification<
 	'TC39_SPECIFICATION',
 	Tc39SpecificationFinishedStage,
 	Tc39SpecificationTag

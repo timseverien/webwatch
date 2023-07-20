@@ -11,6 +11,7 @@ describe(W3_INTEGRATION.serialize.name, () => {
 				links: [
 					{
 						type: 'CAN_I_USE',
+						title: 'Can I Use',
 						url: 'https://caniuse.com/spec',
 					},
 				],
@@ -25,6 +26,7 @@ describe(W3_INTEGRATION.serialize.name, () => {
 				links: [
 					{
 						type: 'CAN_I_USE',
+						title: 'Can I Use',
 						url: 'https://caniuse.com/spec',
 					},
 				],
@@ -49,6 +51,7 @@ describe(W3_INTEGRATION.deserialize.name, () => {
 				links: [
 					{
 						type: 'CAN_I_USE',
+						title: 'Can I Use',
 						url: 'https://caniuse.com/spec',
 					},
 				],
@@ -63,6 +66,7 @@ describe(W3_INTEGRATION.deserialize.name, () => {
 				links: [
 					{
 						type: 'CAN_I_USE',
+						title: 'Can I Use',
 						url: 'https://caniuse.com/spec',
 					},
 				],

@@ -1,12 +1,11 @@
 ---
-import type { Link } from '@ww/core/src/links';
 import { getHumanReadableUrl } from '@ww/core/src/utils/url';
 import Flow from '../../components/Flow.svelte';
+import SpecificationName from '../../components/SpecificationName.svelte';
 import SpecificationPropertyList from '../../components/SpecificationPropertyList.svelte';
-import { type SpecificationWithId, getSpecificationsWithId } from '../../data';
+import { getSpecificationsWithId, type SpecificationWithId } from '../../data';
 import DefaultLayout from '../../layouts/Default.astro';
 import { ROUTES } from '../../routes';
-import SpecificationName from '../../components/SpecificationName.svelte';
 
 export async function getStaticPaths() {
   const specs = await getSpecificationsWithId();
@@ -28,10 +27,6 @@ export async function getStaticPaths() {
 
 const { specification } = Astro.props as { specification: SpecificationWithId };
 
-const LINK_TYPE_LABEL_MAP: { [key in Link['type']]: string } = {
-  CAN_I_USE: 'Can I Use',
-};
-
 const canonicalUrl = new URL(
   ROUTES.specification.getPath(specification),
   Astro.url,
@@ -51,7 +46,7 @@ const canonicalUrl = new URL(
           specification.links.map((link) => (
             <li>
               <div>
-                <b>{LINK_TYPE_LABEL_MAP[link.type]}</b>
+                <b>{link.title}</b>
               </div>
               <a href={link.url} target="_blank">
                 {getHumanReadableUrl(link.url)}

@@ -106,11 +106,24 @@ export function getProposalLinksFromTable(
 	return links;
 }
 
-function getSpecificationUrlFromProposalUrl(proposalUrl: string): string {
+export function getProposalUrlFromSpecificationUrl(
+	specificationUrl: string,
+): string {
+	if (/https:\/\/tc39.es\//.test(specificationUrl)) {
+		const url = new URL(specificationUrl);
+		return 'https://github.com/tc39' + url.pathname;
+	}
+
+	return specificationUrl;
+}
+
+export function getSpecificationUrlFromProposalUrl(
+	proposalUrl: string,
+): string {
 	if (/github.com\/tc39\//.test(proposalUrl)) {
 		const url = new URL(proposalUrl);
-		const pathName = url.pathname.replace(/^\/tc39\//, '');
-		return `https://tc39.es/${pathName}`;
+		const pathName = url.pathname.replace(/^\/tc39\//, '/');
+		return 'https://tc39.es' + pathName;
 	}
 
 	return proposalUrl;

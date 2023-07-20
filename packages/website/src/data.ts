@@ -1,3 +1,4 @@
+import type { Specification } from '@ww/core/src/integrations/specifications';
 import {
 	ECMA262_INTEGRATION,
 	ECMA402_INTEGRATION,
@@ -18,7 +19,6 @@ import specificationsEcma402Data from '@ww/data/ecma402.json';
 import specificationsW3Data from '@ww/data/w3.json';
 import crypto from 'node:crypto';
 
-export type Specification = Tc39Specification | W3Specification;
 export type SpecificationTag = Tc39SpecificationTag | W3SpecificationTag;
 
 export type SpecificationWithId<T extends Specification = Specification> = T & {
