@@ -1,115 +1,122 @@
+---
+const { canonicalUrl = Astro.url } = Astro.props as {
+  canonicalUrl?: string;
+};
+---
+
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="canonical" href={canonicalUrl} />
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 
 <style is:global>
-	@import 'modern-css-reset';
-	@import '@material/elevation/dist/mdc.elevation.min.css';
-	@import '../styles/palette.css';
-	@import '../styles/spacing.css';
-	@import '../styles/theme.css';
+  @import 'modern-css-reset';
+  @import '@material/elevation/dist/mdc.elevation.min.css';
+  @import '../styles/palette.css';
+  @import '../styles/spacing.css';
+  @import '../styles/theme.css';
 
-	:root {
-		box-sizing: border-box;
-	}
+  :root {
+    box-sizing: border-box;
+  }
 
-	* {
-		box-sizing: inherit;
-	}
+  * {
+    box-sizing: inherit;
+  }
 
-	body {
-		background-color: var(--theme-body);
-		color: var(--theme-on-body);
-		font-family: var(--theme-font-body);
-		padding: 1em;
-	}
+  body {
+    background-color: var(--theme-body);
+    color: var(--theme-on-body);
+    font-family: var(--theme-font-body);
+    padding: 1em;
+  }
 
-	input {
-		height: 2rem;
-		padding-inline: 0;
+  input {
+    height: 2rem;
+    padding-inline: 0;
 
-		accent-color: var(--theme-primary);
-		background-color: transparent;
-		border: 0;
-		border-bottom: 0.0625em solid var(--palette-neutral-50);
+    accent-color: var(--theme-primary);
+    background-color: transparent;
+    border: 0;
+    border-bottom: 0.0625em solid var(--palette-neutral-50);
 
-		color: var(--theme-on-surface);
-		line-height: 2rem;
-	}
+    color: var(--theme-on-surface);
+    line-height: 2rem;
+  }
 
-	a {
-		color: currentColor;
-	}
+  a {
+    color: currentColor;
+  }
 
-	a:hover {
-		color: var(--theme-primary);
-	}
+  a:hover {
+    color: var(--theme-primary);
+  }
 
-	code {
-		font-family: monospace, monospace;
-		font-size: inherit;
-	}
+  code {
+    font-family: monospace, monospace;
+    font-size: inherit;
+  }
 
-	fieldset {
-		border: 0;
-		padding: 0;
-		margin: 0;
-	}
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
 
-	label,
-	legend {
-		display: block;
-		color: var(--theme-on-surface-faded);
-		font-size: 0.75rem;
-	}
+  label,
+  legend {
+    display: block;
+    color: var(--theme-on-surface-faded);
+    font-size: 0.75rem;
+  }
 
-	fieldset label {
-		font-weight: normal;
-		color: inherit;
-	}
+  fieldset label {
+    font-weight: normal;
+    color: inherit;
+  }
 
-	table {
-		border-collapse: collapse;
-		width: 100%;
-	}
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
 
-	th {
-		text-align: start;
-	}
+  th {
+    text-align: start;
+  }
 
-	thead th {
-		color: var(--theme-on-surface-faded);
-		font-weight: normal;
-	}
+  thead th {
+    color: var(--theme-on-surface-faded);
+    font-weight: normal;
+  }
 
-	td,
-	th {
-		padding-inline: 0.5em;
-		padding-block: 0.25em;
-	}
+  td,
+  th {
+    padding-inline: 0.5em;
+    padding-block: 0.25em;
+  }
 
-	tr:nth-child(even) > :is(td, th) {
-		background-color: var(--palette-neutral-90);
-	}
+  tr:nth-child(even) > :is(td, th) {
+    background-color: var(--palette-neutral-90);
+  }
 
-	thead > tr > :is(td, th) {
-		position: sticky;
-		top: 0;
-		background-color: var(--palette-neutral-100);
-	}
+  thead > tr > :is(td, th) {
+    position: sticky;
+    top: 0;
+    background-color: var(--palette-neutral-100);
+  }
 
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		line-height: 1;
-	}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1;
+  }
 </style>

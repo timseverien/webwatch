@@ -23,6 +23,7 @@ export type SpecificationTag = Tc39SpecificationTag | W3SpecificationTag;
 
 export type SpecificationWithId<T extends Specification = Specification> = T & {
 	id: string;
+	truncatedId: string;
 };
 
 export const SPECIFICATION_TAG_LABEL_MAP: {
@@ -46,29 +47,64 @@ export const SPECIFICATION_STAGE_LABEL_MAP: {
 	UPCOMING: 'Upcoming',
 };
 
-export async function getSpecifications(): Promise<
-	SpecificationWithId<Specification>[]
-> {
-	return Promise.all(
-		[
-			...ECMA262_INTEGRATION.deserialize(
-				specificationsEcma262Data as Tc39SpecificationSerialized[],
-			),
-			...ECMA402_INTEGRATION.deserialize(
-				specificationsEcma402Data as Tc39SpecificationSerialized[],
-			),
-			...W3_INTEGRATION.deserialize(
-				specificationsW3Data as W3SpecificationSerialized[],
-			),
-		].map<Promise<SpecificationWithId>>(async (spec) => ({
-			id: await getSpecificationId(spec),
-			...spec,
-		})),
-	);
+function getSpecifications(): Specification[] {
+	return [
+		...ECMA262_INTEGRATION.deserialize(
+			specificationsEcma262Data as Tc39SpecificationSerialized[],
+		),
+		...ECMA402_INTEGRATION.deserialize(
+			specificationsEcma402Data as Tc39SpecificationSerialized[],
+		),
+		...W3_INTEGRATION.deserialize(
+			specificationsW3Data as W3SpecificationSerialized[],
+		),
+	];
 }
 
-export async function getSpecificationTags(): Promise<SpecificationTag[]> {
-	const specifications = await getSpecifications();
+export async function getSpecificationsWithId(): Promise<
+	SpecificationWithId<Specification>[]
+> {
+	const specs = await Promise.all(
+		getSpecifications().map<Promise<SpecificationWithId>>(async (spec) => {
+			const id = await getSpecificationId(spec);
+			return {
+				...spec,
+				id,
+				truncatedId: id,
+			};
+		}),
+	);
+
+	const specIdMap = getSpecificationTruncatedIdMap(specs);
+
+	return specs.map((spec) => ({
+		...spec,
+		truncatedId: specIdMap.get(spec)!,
+	}));
+}
+
+function getSpecificationTruncatedIdMap<T extends Specification>(
+	specifications: SpecificationWithId<T>[],
+): Map<SpecificationWithId<T>, string> {
+	const uniqueIds = new Set(specifications.map((s) => s.id));
+
+	// Find the shortest truncated ID length
+	for (let i = 2; i < 64; i += 2) {
+		const specsById = new Map(
+			specifications.map((spec) => [spec, spec.id.substring(0, i)]),
+		);
+
+		const uniqueTruncatedIds = new Set(specsById.values());
+		if (uniqueTruncatedIds.size === uniqueIds.size) {
+			return specsById;
+		}
+	}
+
+	throw new Error('SPECIFICATIONS_HAVE_DUPLICATE_IDS');
+}
+
+export function getSpecificationTags(): SpecificationTag[] {
+	const specifications = getSpecifications();
 	const tags: SpecificationTag[] = [];
 
 	for (const spec of specifications) {
@@ -109,15 +145,11 @@ export async function getSpecificationId(spec: Specification): Promise<string> {
 	const encoder = new TextEncoder();
 
 	const result = await crypto.webcrypto.subtle.digest(
-		'SHA-1',
+		'SHA-256',
 		encoder.encode(spec.specificationUrl),
 	);
 
 	return Array.from(new Uint8Array(result))
 		.map((n) => n.toString(16))
 		.join('');
-}
-
-export function getSpecificationPath(spec: SpecificationWithId): string {
-	return `/specification/${spec.id}`;
 }

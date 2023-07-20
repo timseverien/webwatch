@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { ColorTheme } from '../types/theme';
 	import Flow from './Flow.svelte';
+
+	const dispatcher = createEventDispatcher<{ click: MouseEvent }>();
 
 	export let color: ColorTheme = 'surface';
 
@@ -8,10 +11,14 @@
 	$: foreground = `var(--theme-on-${color ?? 'surface'})`;
 </script>
 
+<!-- This click handler is to handle primary links in this card -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	class="container mdc-elevation--z1"
 	style:--color-background={background}
 	style:--color-foreground={foreground}
+	on:click={(event) => dispatcher('click', event)}
 >
 	<Flow>
 		{#if $$slots.header}

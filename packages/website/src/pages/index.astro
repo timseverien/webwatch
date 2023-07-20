@@ -1,10 +1,10 @@
 ---
 import Flow from '../components/Flow.svelte';
 import SpecificationOverview from '../components/SpecificationOverview.svelte';
-import { getSpecifications } from '../data';
+import { getSpecificationsWithId } from '../data';
 import DefaultLayout from '../layouts/Default.astro';
 
-const specs = await getSpecifications();
+const specs = await getSpecificationsWithId();
 ---
 
 <DefaultLayout>

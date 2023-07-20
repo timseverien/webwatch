@@ -1,0 +1,73 @@
+---
+import type { Link } from '@ww/core/src/links';
+import { getHumanReadableUrl } from '@ww/core/src/utils/url';
+import Flow from '../../components/Flow.svelte';
+import SpecificationPropertyList from '../../components/SpecificationPropertyList.svelte';
+import { type SpecificationWithId, getSpecificationsWithId } from '../../data';
+import DefaultLayout from '../../layouts/Default.astro';
+import { ROUTES } from '../../routes';
+import SpecificationName from '../../components/SpecificationName.svelte';
+
+export async function getStaticPaths() {
+  const specs = await getSpecificationsWithId();
+
+  return specs
+    .map((specification) => [
+      {
+        params: ROUTES.specification.getParameters(specification),
+        props: { specification },
+      },
+      {
+        params:
+          ROUTES.specificationWithTruncatedId.getParameters(specification),
+        props: { specification },
+      },
+    ])
+    .flat();
+}
+
+const { specification } = Astro.props as { specification: SpecificationWithId };
+
+const LINK_TYPE_LABEL_MAP: { [key in Link['type']]: string } = {
+  CAN_I_USE: 'Can I Use',
+};
+
+const canonicalUrl = new URL(
+  ROUTES.specification.getPath(specification),
+  Astro.url,
+).toString();
+---
+
+<DefaultLayout canonicalUrl={canonicalUrl}>
+  <div class="container">
+    <Flow>
+      <h1><SpecificationName name={specification.name} /></h1>
+      <SpecificationPropertyList {specification} />
+    </Flow>
+
+    <div>
+      <ul>
+        {
+          specification.links.map((link) => (
+            <li>
+              <div>
+                <b>{LINK_TYPE_LABEL_MAP[link.type]}</b>
+              </div>
+              <a href={link.url} target="_blank">
+                {getHumanReadableUrl(link.url)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</DefaultLayout>
+
+<style>
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-m);
+  }
+</style>

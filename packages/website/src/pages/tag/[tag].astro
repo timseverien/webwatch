@@ -5,7 +5,7 @@ import {
   SPECIFICATION_TAGS,
   SPECIFICATION_TAG_LABEL_MAP,
   SpecificationTag,
-  getSpecifications,
+  getSpecificationsWithId,
 } from '../../data';
 import DefaultLayout from '../../layouts/Default.astro';
 import { getTagBySlug, getTagSlug } from '../../tags';
@@ -21,7 +21,7 @@ const { tag: tagSlug } = Astro.params as {
 };
 
 const tag = getTagBySlug(tagSlug);
-const specs = await getSpecifications();
+const specs = await getSpecificationsWithId();
 ---
 
 <DefaultLayout>
