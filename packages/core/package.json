@@ -1,5 +1,5 @@
 {
-  "name": "@ww/core",
+  "name": "@spectakel/core",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { format } from 'date-fns';
-	import { getHumanReadableUrl } from '@ww/core/src/utils/url';
-	import type { Specification } from '@ww/core/src/integrations/specifications';
+	import { getHumanReadableUrl } from '@spectakel/core/src/utils/url';
+	import type { Specification } from '@spectakel/core/src/integrations/specifications';
 
 	export let specification: Specification;
 </script>

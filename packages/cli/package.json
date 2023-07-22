@@ -1,0 +1,17 @@
+{
+  "name": "@spectakel/cli",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "spectakel": "./dist/cli.cjs"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "bin-links": "^4.0.2"
+  },
+  "devDependencies": {
+    "vite": "^4.4.6"
+  }
+}

@@ -1,4 +1,4 @@
-import type { Specification } from '@ww/core/src/integrations/specifications';
+import type { Specification } from '@spectakel/core/src/integrations/specifications';
 import {
 	ECMA262_INTEGRATION,
 	ECMA402_INTEGRATION,
@@ -6,17 +6,17 @@ import {
 	Tc39SpecificationSerialized,
 	type Tc39Specification,
 	type Tc39SpecificationTag,
-} from '@ww/core/src/integrations/specifications/tc39';
+} from '@spectakel/core/src/integrations/specifications/tc39';
 import {
 	W3SpecificationSerialized,
 	W3_INTEGRATION,
 	W3_SPECIFICATION_TAG_LABEL_MAP,
 	type W3Specification,
 	type W3SpecificationTag,
-} from '@ww/core/src/integrations/specifications/w3';
-import specificationsEcma262Data from '@ww/data/ecma262.json';
-import specificationsEcma402Data from '@ww/data/ecma402.json';
-import specificationsW3Data from '@ww/data/w3.json';
+} from '@spectakel/core/src/integrations/specifications/w3';
+import specificationsEcma262Data from '@spectakel/data/ecma262.json';
+import specificationsEcma402Data from '@spectakel/data/ecma402.json';
+import specificationsW3Data from '@spectakel/data/w3.json';
 import crypto from 'node:crypto';
 
 export type SpecificationTag = Tc39SpecificationTag | W3SpecificationTag;

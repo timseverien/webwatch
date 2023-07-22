@@ -1,5 +1,5 @@
 {
-  "name": "@ww/website",
+  "name": "@spectakel/website",
   "type": "module",
   "scripts": {
     "dev": "astro dev",

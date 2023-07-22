@@ -1,0 +1,16 @@
+{
+  "name": "@spectakel/infrastructure",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "supabase start",
+    "stop": "supabase stop",
+    "db:create-migration": "supabase db diff --use-migra",
+    "db:generate-types": "supabase gen types typescript"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.26.0",
+    "firebase": "^10.1.0",
+    "firebase-admin": "^11.10.1"
+  }
+}

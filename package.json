@@ -3,20 +3,31 @@
   "type": "module",
   "scripts": {
     "build": "vitest run && npm run build --workspaces --if-present",
-    "build:website": "vitest run && npm run build --workspace=@ww/website",
-    "dev": "npm run dev --workspaces --if-present",
+    "build:website": "vitest run && npm run build --workspace=@spectakel/website",
+    "dev": "run-p dev:* services:start",
+    "dev:website": "npm run dev --workspace=@spectakel/website",
     "test": "vitest run && npm run test --workspaces --if-present",
-    "tokens": "npm run run --workspace=@ww/token-generator",
-    "update:data": "npm run build --workspace=@ww/data"
+    "tokens": "npm run run --workspace=@spectakel/token-generator",
+    "update:data": "npm run build --workspace=@spectakel/data",
+    "db:create-migration": "npm run db:create-migration --workspace=@spectakel/infrastructure",
+    "db:generate-types": "npm run db:generate-types --workspace=@spectakel/infrastructure",
+    "services:start": "npm run start --workspace=@spectakel/infrastructure",
+    "services:stop": "npm run stop --workspace=@spectakel/infrastructure",
+    "setup": "vite-node packages/cli/src/index.ts -- setup"
   },
   "workspaces": [
+    "packages/cli",
     "packages/core",
     "packages/data",
+    "packages/infrastructure",
     "packages/token-generator",
     "packages/website"
   ],
   "devDependencies": {
     "@types/node": "^20.3.3",
+    "npm-run-all": "^4.1.5",
+    "supabase": "^1.77.9",
+    "vite": "^4.4.6",
     "vite-node": "^0.32.2",
     "vitest": "^0.33.0"
   },

@@ -1,5 +1,5 @@
 {
-  "name": "@ww/data",
+  "name": "@spectakel/data",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",

@@ -1,6 +1,6 @@
-import { Specification } from '../specifications/index.js';
-import { INTEGRATION_2ALITY } from './2ality/index.js';
-import { INTEGRATION_CAN_I_USE } from './caniuse/index.js';
+import { INTEGRATION_2ALITY } from '../integrations/links/2ality/index.js';
+import { INTEGRATION_CAN_I_USE } from '../integrations/links/caniuse/index.js';
+import { Specification } from '../specification/index.js';
 
 export type LinkBlog = {
 	type: 'BLOG';

@@ -1,7 +1,7 @@
 import type { Item } from 'rss-parser';
-import { Specification } from '../../specifications/index.js';
+import type { LinkBlog, LinkIntegration } from '../../../link/index.js';
+import { Specification } from '../../../specification/index.js';
 import { getProposalUrlFromSpecificationUrl } from '../../specifications/tc39/shared.js';
-import type { LinkBlog, LinkIntegration } from '../index.js';
 import { createBlogIntegration } from '../shared.js';
 
 async function isRssItemAboutSpecification(

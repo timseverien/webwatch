@@ -2,7 +2,7 @@ import type {
 	GenericSpecification,
 	SpecificationIntegration,
 	SpecificationSerialized,
-} from '../index.js';
+} from '../../../specification/index.js';
 import { getSpecifications } from './client.js';
 
 // This list is ordered

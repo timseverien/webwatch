@@ -1,6 +1,6 @@
-import type { LinkAboutSpecification } from '../links/index.js';
-import { Tc39Specification } from './tc39/index.js';
-import { W3Specification } from './w3/index.js';
+import { Tc39Specification } from '../integrations/specifications/tc39/index.js';
+import { W3Specification } from '../integrations/specifications/w3/index.js';
+import type { LinkAboutSpecification } from '../link/index.js';
 
 export type GenericSpecification<
 	TypeType extends string = string,
@@ -17,6 +17,8 @@ export type GenericSpecification<
 };
 
 export type Specification = W3Specification | Tc39Specification;
+export type SpecificationMaturity = Specification['maturity'];
+export type SpecificationTag = Specification['tags'][number];
 
 export type SpecificationSerialized<T extends Specification> = Omit<
 	T,
@@ -32,3 +34,10 @@ export interface SpecificationIntegration<
 	deserialize(data: SpecificationSerialized<T>[]): T[];
 	serialize(data: T[]): SpecificationSerialized<T>[];
 }
+
+export type SpecificationFilter = {
+	lastUpdatedMin: Date | null;
+	name: string | null;
+	stages: SpecificationMaturity[];
+	tags: SpecificationTag[];
+};

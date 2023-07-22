@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Tc39Specification } from '@ww/core/src/integrations/tc39';
+	import type { Tc39Specification } from '@spectakel/core/src/integrations/tc39';
 	import SpecificationCard from '../../SpecificationCard.svelte';
 	import type { SpecificationWithId } from '../../../data';
 

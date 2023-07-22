@@ -1,6 +1,6 @@
 import Parser, { Item } from 'rss-parser';
-import { Specification } from '../specifications/index.js';
-import { LinkBlog, LinkIntegration } from './index.js';
+import { LinkBlog, LinkIntegration } from '../../link/index.js';
+import { Specification } from '../../specification/index.js';
 
 export async function parseRssFeed(feedUrl: string) {
 	const parser = new Parser();

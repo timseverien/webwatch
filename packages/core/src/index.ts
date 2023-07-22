@@ -1,5 +1,5 @@
 import { INTEGRATION_2ALITY } from './integrations/links/2ality/index.js';
-import { Specification } from './integrations/specifications/index.js';
+import { Specification } from './specification/index.js';
 
 const spec: Specification = {
 	type: 'TC39_SPECIFICATION',

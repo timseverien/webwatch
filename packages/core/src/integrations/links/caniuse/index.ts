@@ -1,6 +1,9 @@
 import data from 'caniuse-db/fulldata-json/data-2.0.json';
-import { Specification } from '../../specifications/index.js';
-import type { LinkAboutSpecification, LinkIntegration } from '../index.js';
+import type {
+	LinkAboutSpecification,
+	LinkIntegration,
+} from '../../../link/index.js';
+import { Specification } from '../../../specification/index.js';
 
 export const INTEGRATION_CAN_I_USE: LinkIntegration<LinkAboutSpecification> = {
 	async getLinksBySpecification(

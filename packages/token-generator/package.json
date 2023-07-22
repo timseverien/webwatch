@@ -1,5 +1,5 @@
 {
-  "name": "@ww/token-generator",
+  "name": "@spectakel/token-generator",
   "scripts": {
     "run": "vite-node src/index.ts"
   }
