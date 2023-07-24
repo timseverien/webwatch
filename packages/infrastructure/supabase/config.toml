@@ -2,8 +2,8 @@ project_id = "infrastructure"
 
 [api]
 port = 54321
-schemas = ["public"]
-extra_search_path = []
+schemas = ["public", "storage"]
+extra_search_path = ["public", "extensions"]
 max_rows = 1000
 
 [db]

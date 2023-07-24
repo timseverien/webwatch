@@ -1,66 +1,49 @@
-import { Tc39Specification } from '../../integrations/specifications/tc39/index.js';
-import {
-	Specification,
-	SpecificationFilter,
-} from '../../specification/index.js';
-import { db } from './index.js';
+import type { DatabaseClient } from '@spectakel/infrastructure/src/database';
 
-class SpecificationSerializationError extends Error {
-	constructor(name: string, public readonly specificationType: string) {
-		super(name);
-	}
+export function getSpecifications(client: DatabaseClient) {
+	client.from;
 }
 
-type SpecificationSerialized = Omit<Specification, 'lastUpdated'> & {
-	lastUpdated: string | null;
-};
+// class SpecificationSerializationError extends Error {
+// 	constructor(name: string, public readonly specificationType: string) {
+// 		super(name);
+// 	}
+// }
 
-export function getSpecificationDocument(specificationId: string) {
-	return db.specifications.doc(specificationId).get();
-}
+// type SpecificationSerialized = Omit<Specification, 'lastUpdated'> & {
+// 	lastUpdated: string | null;
+// };
 
-export async function getSpecifications(filter: SpecificationFilter) {
-	const specificationsQuery = await db.specifications
-		.withConverter<Specification>({
-			fromFirestore: (doc) =>
-				deserializeSpecification(doc.data() as SpecificationSerialized),
-			toFirestore: serializeSpecification,
-		})
-		.get();
+// export async function getSpecifications(filter: SpecificationFilter) {
+// 	return (await client.from('specifications').select()).data;
+// }
 
-	return specificationsQuery.docs();
+// function serializeSpecification(spec: Specification): SpecificationSerialized {
+// 	return {
+// 		...spec,
+// 		lastUpdated: spec.lastUpdated?.toISOString() ?? null,
+// 	};
+// }
 
-	// return specificationsQuery.docs.map((d) =>
-	// 	toDoc<Specification>(d, 'specifications'),
-	// );
-}
+// function deserializeSpecification(
+// 	spec: SpecificationSerialized,
+// ): Specification {
+// 	switch (spec.type) {
+// 		case 'TC39_SPECIFICATION':
+// 			return {
+// 				...spec,
+// 				lastUpdated: spec.lastUpdated
+// 					? new Date(Date.parse(spec.lastUpdated))
+// 					: null,
+// 			} as Tc39Specification;
+// 		case 'W3_SPECIFICATION':
+// 			return {
+// 				...spec,
+// 				lastUpdated: spec.lastUpdated
+// 					? new Date(Date.parse(spec.lastUpdated))
+// 					: null,
+// 			} as Tc39Specification;
+// 	}
 
-function serializeSpecification(spec: Specification): SpecificationSerialized {
-	return {
-		...spec,
-		lastUpdated: spec.lastUpdated?.toISOString() ?? null,
-	};
-}
-
-function deserializeSpecification(
-	spec: SpecificationSerialized,
-): Specification {
-	switch (spec.type) {
-		case 'TC39_SPECIFICATION':
-			return {
-				...spec,
-				lastUpdated: spec.lastUpdated
-					? new Date(Date.parse(spec.lastUpdated))
-					: null,
-			} as Tc39Specification;
-		case 'W3_SPECIFICATION':
-			return {
-				...spec,
-				lastUpdated: spec.lastUpdated
-					? new Date(Date.parse(spec.lastUpdated))
-					: null,
-			} as Tc39Specification;
-	}
-
-	throw new Error('SPECIFICATION_SERIALIZATION_UNKNOWN_TYPE');
-}
+// 	throw new Error('SPECIFICATION_SERIALIZATION_UNKNOWN_TYPE');
+// }

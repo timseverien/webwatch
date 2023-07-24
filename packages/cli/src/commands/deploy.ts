@@ -1,12 +1,12 @@
 import { CommandContext } from '../index.js';
 import { spawnAsync } from '../lib/spawn.js';
 
-export default async (context: CommandContext) => {
+export async function deploy(context: CommandContext) {
 	try {
-		console.log('Preparing CLI');
-		await spawnAsync('npm', ['run', 'build'], { cwd: context.rootDirectory });
+		context.output.announce('Building project');
+		await spawnAsync('npm', ['run', 'build'], { cwd: context.directory });
 	} catch (error) {
 		console.error(error);
 		process.exit(1);
 	}
-};
+}

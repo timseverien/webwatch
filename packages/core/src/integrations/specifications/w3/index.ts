@@ -57,6 +57,7 @@ export type W3SpecificationSerialized =
 	SpecificationSerialized<W3Specification>;
 
 export const W3_INTEGRATION: SpecificationIntegration<W3Specification> = {
+	name: 'W3',
 	getSpecifications,
 
 	serialize(data) {

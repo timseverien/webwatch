@@ -4,7 +4,7 @@ export async function spawnAsync(
 	command: string,
 	args: string[],
 	options: SpawnOptionsWithoutStdio = {},
-) {
+): Promise<string> {
 	const p = spawn(command, args, options);
 	return new Promise((resolve, reject) => {
 		let stdout = '';

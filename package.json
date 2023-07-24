@@ -4,11 +4,11 @@
   "scripts": {
     "build": "vitest run && npm run build --workspaces --if-present",
     "build:website": "vitest run && npm run build --workspace=@spectakel/website",
+    "cli": "vite-node packages/cli/src/index.ts",
     "dev": "run-p dev:* services:start",
     "dev:website": "npm run dev --workspace=@spectakel/website",
     "test": "vitest run && npm run test --workspaces --if-present",
     "tokens": "npm run run --workspace=@spectakel/token-generator",
-    "update:data": "npm run build --workspace=@spectakel/data",
     "db:create-migration": "npm run db:create-migration --workspace=@spectakel/infrastructure",
     "db:generate-types": "npm run db:generate-types --workspace=@spectakel/infrastructure",
     "services:start": "npm run start --workspace=@spectakel/infrastructure",
@@ -18,7 +18,6 @@
   "workspaces": [
     "packages/cli",
     "packages/core",
-    "packages/data",
     "packages/infrastructure",
     "packages/token-generator",
     "packages/website"
@@ -33,6 +32,7 @@
   },
   "dependencies": {
     "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
     "slugify": "^1.6.6"
   }
 }

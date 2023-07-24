@@ -1,5 +1,12 @@
-import { Tc39Specification } from '../integrations/specifications/tc39/index.js';
-import { W3Specification } from '../integrations/specifications/w3/index.js';
+import {
+	ECMA262_INTEGRATION,
+	ECMA402_INTEGRATION,
+	Tc39Specification,
+} from '../integrations/specifications/tc39/index.js';
+import {
+	W3Specification,
+	W3_INTEGRATION,
+} from '../integrations/specifications/w3/index.js';
 import type { LinkAboutSpecification } from '../link/index.js';
 
 export type GenericSpecification<
@@ -30,6 +37,7 @@ export type SpecificationSerialized<T extends Specification> = Omit<
 export interface SpecificationIntegration<
 	T extends Specification = Specification,
 > {
+	name: string;
 	getSpecifications(): Promise<T[]>;
 	deserialize(data: SpecificationSerialized<T>[]): T[];
 	serialize(data: T[]): SpecificationSerialized<T>[];
@@ -41,3 +49,9 @@ export type SpecificationFilter = {
 	stages: SpecificationMaturity[];
 	tags: SpecificationTag[];
 };
+
+export const SPECIFICATION_INTEGRATIONS = [
+	ECMA262_INTEGRATION,
+	ECMA402_INTEGRATION,
+	W3_INTEGRATION,
+];

@@ -13,4 +13,9 @@ export default defineConfig({
 			external: [...builtinModules, ...builtinModules.map((m) => `node:${m}`)],
 		},
 	},
+	resolve: {
+		// Added 'node' for chalk
+		// See: https://vitejs.dev/config/shared-options.html#resolve-conditions
+		conditions: ['import', 'module', 'node', 'default'],
+	},
 });

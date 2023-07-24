@@ -71,6 +71,7 @@ const serialize: SpecificationIntegration<Tc39Specification>['serialize'] = (
 
 export const ECMA262_INTEGRATION: SpecificationIntegration<Tc39Specification> =
 	{
+		name: 'ECMA262',
 		getSpecifications: getEcma262Specifications,
 		serialize,
 		deserialize,
@@ -78,6 +79,7 @@ export const ECMA262_INTEGRATION: SpecificationIntegration<Tc39Specification> =
 
 export const ECMA402_INTEGRATION: SpecificationIntegration<Tc39Specification> =
 	{
+		name: 'ECMA402',
 		getSpecifications: getEcma402Specifications,
 		serialize,
 		deserialize,
