@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SpecificationLinkSource {
+  id      String              @id @default(uuid()) @db.Uuid
+  url     String              @unique
+  feedUrl String?
+  link    SpecificationLink[]
+}
+
+model SpecificationLink {
+  id       String                  @id @default(uuid()) @db.Uuid
+  name     String
+  url      String                  @unique
+  source   SpecificationLinkSource @relation(fields: [sourceId], references: [id])
+  sourceId String                  @db.Uuid
+
+  specification   Specification? @relation(fields: [specificationId], references: [id])
+  specificationId String?        @db.Uuid
+}
+
+enum SpecificationStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model SpecificationElement {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  url  String @unique // Proposal URL
+
+  version   SpecificationVersion @relation(fields: [versionId], references: [id])
+  versionId String               @db.Uuid
+}
+
+model SpecificationPublisher {
+  id             String          @id @default(uuid()) @db.Uuid
+  key            String          @unique
+  name           String
+  url            String          @unique // Homepage of publisher
+  specifications Specification[]
+}
+
+model SpecificationVersion {
+  id           String                 @id @default(uuid()) @db.Uuid
+  name         String
+  status       SpecificationStatus
+  url          String                 @unique // Specification URL of a specific version
+  revisionDate DateTime
+  publishDate  DateTime?
+  elements     SpecificationElement[]
+
+  specification   Specification? @relation(fields: [specificationId], references: [id])
+  specificationId String?        @db.Uuid
+}
+
+model Specification {
+  id              String                 @id @default(uuid()) @db.Uuid
+  name            String
+  alternativeName String?
+  url             String                 @unique // Specification URL of latest version
+  publisher       SpecificationPublisher @relation(fields: [publisherId], references: [id])
+  publisherId     String                 @db.Uuid
+  updateDate      DateTime // Last scraping date
+  tags            String[]
+  versions        SpecificationVersion[]
+  links           SpecificationLink[]
+}

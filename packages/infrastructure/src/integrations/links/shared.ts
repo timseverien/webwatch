@@ -1,25 +1,32 @@
+import { Specification } from '@spectakel/core/src/specification/index.js';
 import Parser, { Item } from 'rss-parser';
-import { LinkBlog, LinkIntegration } from '../../link/index.js';
-import { Specification } from '../../specification/index.js';
+import { SpecificationLinkVirtual } from '../../database/specification.js';
+
+export type LinkIntegration = {
+	getLinksBySpecification(
+		specification: Specification,
+	): Promise<SpecificationLinkVirtual[]>;
+};
 
 export async function parseRssFeed(feedUrl: string) {
 	const parser = new Parser();
 	return parser.parseURL(feedUrl);
 }
 
-export function createBlogIntegration(
+export function createLinkIntegrationFromFeed(
+	sourceUrl: string,
 	feedUrl: string,
 	isRssItemAboutSpecification: (
 		specification: Specification,
 		item: Item,
 	) => Promise<boolean> | boolean,
-): LinkIntegration<LinkBlog> {
+): LinkIntegration {
 	return {
 		async getLinksBySpecification(
 			specification: Specification,
-		): Promise<LinkBlog[]> {
+		): Promise<SpecificationLinkVirtual[]> {
 			const feed = await parseRssFeed(feedUrl);
-			const links: LinkBlog[] = [];
+			const links: SpecificationLinkVirtual[] = [];
 
 			for (const item of feed.items) {
 				if (!(await isRssItemAboutSpecification(specification, item))) {
@@ -35,10 +42,12 @@ export function createBlogIntegration(
 				}
 
 				links.push({
-					type: 'BLOG',
-					publishDate: new Date(item.isoDate ?? 0),
-					title: item.title,
+					name: item.title,
 					url: item.link,
+					source: {
+						url: sourceUrl,
+						feedUrl: feedUrl,
+					},
 				});
 			}
 

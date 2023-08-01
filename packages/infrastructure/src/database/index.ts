@@ -1,21 +1,8 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
-import type { Database } from './.supabase-types.js';
 
-export type DatabaseClient = SupabaseClient<Database>;
+export type DatabaseClient = PrismaClient;
 
-export function getClient(
-	url: string = process.env.SUPABASE_URL!,
-	key: string = process.env.SUPABASE_KEY!,
-): DatabaseClient {
-	return createClient<Database>(url, key, {
-		db: {
-			schema: 'public',
-		},
-		auth: {
-			autoRefreshToken: false,
-			persistSession: false,
-			detectSessionInUrl: false,
-		},
-	});
+export function createClient(): DatabaseClient {
+	return new PrismaClient();
 }

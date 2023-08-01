@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import { parse } from 'date-fns';
 import localeEnUS from 'date-fns/locale/en-US/index.js';
 import { marked } from 'marked';
-import { isTokenLink } from '../../../services/markdown.js';
+import { isTokenLink } from '../../../../../core/src/services/markdown.js';
 import {
 	Tc39Specification,
 	Tc39SpecificationFinished,

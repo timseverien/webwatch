@@ -1,19 +1,24 @@
 #!/usr/bin/env node
 // @ts-ignore
+import {
+	DatabaseClient,
+	createClient,
+} from '@spectakel/infrastructure/src/database/index.js';
 import chalk from 'chalk';
 import { program } from 'commander';
 import * as path from 'node:path';
-import { generateMigration } from './commands/database/generate-migration.js';
-import { generateTypes } from './commands/database/generate-types.js';
+import { migrate } from './commands/database/migrate.js';
 import { deploy } from './commands/deploy.js';
 import { develop } from './commands/develop.js';
 import { setup } from './commands/setup.js';
 import { updateData } from './commands/update-data.js';
+import { generateDatabaseTypes } from './lib/infrastructure.js';
 
-function createCommandHandler(
-	taskName: string,
-	action: (context: CommandContext) => Promise<void>,
-) {
+const databaseClient = createClient();
+
+function createCommandHandler<
+	T extends (context: CommandContext, args: any) => Promise<void>,
+>(taskName: string, action: T): (args: any) => Promise<void> {
 	const rootDirectory = path.resolve(__dirname, '../../..');
 	const packagesDirectory = path.resolve(rootDirectory, 'packages');
 	const cliPackageDirectory = path.resolve(packagesDirectory, 'cli');
@@ -28,8 +33,13 @@ function createCommandHandler(
 	const context: CommandContext = {
 		directory: rootDirectory,
 
+		databaseClient: databaseClient,
+
 		output: {
 			announce: (data) => console.log([outputPrefixFormatted, data].join(' ')),
+
+			announceError: (data) =>
+				console.error([outputPrefixFormatted, data].join(' ')),
 
 			instruct: (instruction, detail) => {
 				console.log([outputPrefixFormatted, chalk.red(instruction)].join(' '));
@@ -53,9 +63,9 @@ function createCommandHandler(
 		},
 	};
 
-	return async () => {
+	return async (args) => {
 		try {
-			await action(context);
+			await action(context, args);
 			context.output.announce('Done');
 		} catch (error) {
 			console.error(error);
@@ -69,8 +79,11 @@ export type CommandContext = {
 
 	output: {
 		announce: (announcement: string) => void;
+		announceError: (announcement: string) => void;
 		instruct: (instruction: string, detail?: string) => void;
 	};
+
+	databaseClient: DatabaseClient;
 
 	packages: {
 		cli: {
@@ -83,19 +96,21 @@ export type CommandContext = {
 	};
 };
 
-program.name('@spectakel/cli').description('CLI to manage Spectakel');
-
-program
-	.command('db:generate-migration')
-	.alias('db:gm')
-	.description('Generates migrations')
-	.action(createCommandHandler('Generate types', generateMigration));
+program.name('spectakel').description('CLI to manage Spectakel');
 
 program
 	.command('db:generate-types')
 	.alias('db:gt')
-	.description('Generates types')
-	.action(createCommandHandler('Generate types', generateTypes));
+	.description('Generate types from schema')
+	.action(
+		createCommandHandler('Database - generate types', generateDatabaseTypes),
+	);
+
+program
+	.command('db:migrate')
+	.alias('db:m')
+	.description('Run migrations in development environment')
+	.action(createCommandHandler('Database - run migrations', migrate));
 
 program
 	.command('deploy')
@@ -105,12 +120,13 @@ program
 program
 	.command('develop')
 	.alias('dev')
-	.description('Start every system required for develoment')
+	.description('Start every system required for development')
 	.action(createCommandHandler('Develop', develop));
 
 program
-	.command('update-data')
-	.alias('du')
+	.command('data:update')
+	.alias('d:u')
+	.option('-f, --force', 'Force update so no specification is skipped', false)
 	.description('Fetches new data and sends it off to the database')
 	.action(createCommandHandler('Update data', updateData));
 

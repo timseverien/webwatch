@@ -1,8 +1,12 @@
 import { spawn } from 'node:child_process';
 import { CommandContext } from '../index.js';
+import { generateDatabaseTypes } from '../lib/infrastructure.js';
 import { spawnAsync } from '../lib/spawn.js';
 
 export async function develop(context: CommandContext) {
+	context.output.announce('Generating types from schema');
+	await generateDatabaseTypes(context);
+
 	context.output.announce('Starting infrastructure systems');
 	await spawnAsync(
 		'npm',

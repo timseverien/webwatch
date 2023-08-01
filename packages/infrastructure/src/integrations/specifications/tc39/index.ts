@@ -2,7 +2,7 @@ import type {
 	GenericSpecification,
 	SpecificationIntegration,
 	SpecificationSerialized,
-} from '../../../specification/index.js';
+} from '../../../../../core/src/specification/_index.js';
 import { getSpecifications as getEcma262Specifications } from './ecma262/client.js';
 import { getSpecifications as getEcma402Specifications } from './ecma402/client.js';
 
